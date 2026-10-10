@@ -42,9 +42,14 @@
         <section id="tab-home" class="space-y-5">
           <!-- User Profile Card -->
           <div class="bg-gradient-to-br from-neutral-950 to-neutral-800/80 p-4 rounded-3xl border border-neutral-800/80 shadow-lg relative overflow-hidden">
-            <div class="absolute -right-4 -bottom-4 w-28 h-28 bg-rose-500/10 rounded-full blur-2xl pointer-events-none"></div>
             <div class="flex items-center gap-3.5">
-              <img id="user-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" class="w-14 h-14 rounded-full object-cover border-2 border-rose-500/50 shadow-md">
+              <label class="relative cursor-pointer group">
+                <img id="user-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" class="w-14 h-14 rounded-full object-cover border-2 border-rose-500/50 shadow-md">
+                <div class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                  <i class="fa-solid fa-camera text-white text-xs"></i>
+                </div>
+                <input type="file" accept="image/*" class="hidden" onchange="uploadUserAvatar(event)">
+              </label>
               <div class="flex-1">
                 <h2 id="user-name" class="text-base font-semibold text-white">คุณหนูนักท่องฝัน</h2>
                 <p id="user-bio" class="text-[11px] text-neutral-400 mt-0.5">"ชอบบทบรรยายโรแมนติกแฟนตาซีและตัวละครขี้อ้อน"</p>
@@ -62,7 +67,7 @@
               <h3 class="text-xs font-semibold text-neutral-200 tracking-wide flex items-center gap-1.5">
                 <i class="fa-solid fa-user-group text-rose-500"></i> บอทเพื่อนสนิท
               </h3>
-              <span id="friend-count" class="text-[10px] text-neutral-400">2 คน</span>
+              <span id="friend-count" class="text-[10px] text-neutral-400">1 คน</span>
             </div>
             <div id="home-friends-list" class="space-y-2.5"></div>
           </div>
@@ -74,26 +79,40 @@
             <h3 class="text-xs font-semibold text-neutral-200">สร้างบอท & ตั้งค่าความทรงจำละเอียด</h3>
           </div>
 
-          <!-- Create Bot Accordion / Form -->
+          <!-- Create Bot Form -->
           <div class="bg-neutral-950 border border-neutral-800 rounded-3xl p-4 space-y-3.5 shadow-md">
             <div>
               <label class="block text-[11px] text-neutral-400 mb-1 font-medium">ชื่อบอท / คาแรคเตอร์</label>
               <input id="create-name" type="text" placeholder="เช่น เร็น, ลูคัส, เซีย" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-rose-500">
             </div>
             
+            <!-- อัปโหลดรูปโปรไฟล์จากเครื่อง -->
             <div>
-              <label class="block text-[11px] text-neutral-400 mb-1 font-medium">ลิงก์รูปโปรไฟล์บอท (Avatar URL)</label>
-              <input id="create-avatar" type="text" placeholder="URL รูปโปรไฟล์บอท (ใช้โพสต์ไอจีด้วย)" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-rose-500">
+              <label class="block text-[11px] text-neutral-400 mb-1 font-medium">รูปโปรไฟล์บอท (เลือกจากเครื่อง)</label>
+              <div class="flex items-center gap-3">
+                <img id="new-bot-avatar-preview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover border border-neutral-700">
+                <label class="px-3 py-2 bg-neutral-900 border border-neutral-700 hover:border-rose-500 text-rose-300 rounded-xl text-xs cursor-pointer flex items-center gap-2">
+                  <i class="fa-solid fa-image"></i> เลือกรูปจากเครื่อง
+                  <input type="file" accept="image/*" class="hidden" onchange="previewNewBotAvatar(event)">
+                </label>
+              </div>
             </div>
 
+            <!-- อัปโหลดรูปโพสต์ไอจีของบอท -->
             <div>
-              <label class="block text-[11px] text-neutral-400 mb-1 font-medium">คลังรูปโพสต์โซเชียล (วาง URL เว้นด้วยเครื่องหมายจุลภาค , )</label>
-              <input id="create-gallery" type="text" placeholder="https://..., https://..." class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-rose-500">
+              <label class="block text-[11px] text-neutral-400 mb-1 font-medium">รูปสำหรับโพสต์ในไอจี (เลือกจากเครื่อง)</label>
+              <div class="flex items-center gap-3">
+                <img id="new-bot-post-preview" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-xl object-cover border border-neutral-700">
+                <label class="px-3 py-2 bg-neutral-900 border border-neutral-700 hover:border-rose-500 text-rose-300 rounded-xl text-xs cursor-pointer flex items-center gap-2">
+                  <i class="fa-solid fa-upload"></i> เลือกรูปโพสต์
+                  <input type="file" accept="image/*" class="hidden" onchange="previewNewBotPost(event)">
+                </label>
+              </div>
             </div>
 
             <div>
               <label class="block text-[11px] text-neutral-400 mb-1 font-medium">คำสั่งคุมคาแรคเตอร์ลึก & ความทรงจำ (System Instruction)</label>
-              <textarea id="create-prompt" rows="3" placeholder="ระบุนิสัย ปมหลัง กฎห้ามหลุดคาร์ เช่น: 'ห้ามยอมรับว่าเป็น AI, ให้เรียกแทนตัวเองว่าเค้า และเรียกคนเล่นว่าคนดีเสมอ, หวงแรงแต่อ่อนโยน'" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-rose-500"></textarea>
+              <textarea id="create-prompt" rows="3" placeholder="ระบุนิสัย ปมหลัง เช่น: ขี้อ้อน หวงแรงแต่ปากแข็ง ไม่หลุดคาร์" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-rose-500"></textarea>
             </div>
 
             <div>
@@ -145,8 +164,8 @@
               <span class="text-rose-400 font-medium">ไทย (TH)</span>
             </div>
             <div class="p-3.5 flex justify-between items-center">
-              <span>สไตล์ความยาวบทบรรยาย</span>
-              <span class="text-neutral-400">ละเอียดลึกซึ้ง (Novel)</span>
+              <span>ระบบแสดงความคิดในใจบอท</span>
+              <span class="text-emerald-400 font-medium">เปิดใช้งาน (ON)</span>
             </div>
             <div class="p-3.5 flex justify-between items-center">
               <span>ล้างความทรงจำและรีเซ็ตแชททั้งหมด</span>
@@ -222,14 +241,14 @@
         <button onclick="toggleCallSimulation()" class="underline font-semibold">วางสาย</button>
       </div>
 
-      <!-- Narrative Chat Log (เน้นบทบรรยาย Novel Format) -->
+      <!-- Narrative Chat Log (พร้อมกล่องความคิดในใจบอท) -->
       <div id="room-messages" class="flex-1 overflow-y-auto p-4 space-y-4 hide-scrollbar"></div>
 
       <!-- Attached Image Preview Bar -->
       <div id="img-preview-box" class="hidden px-4 py-2 bg-neutral-950 border-t border-neutral-800 flex items-center justify-between">
         <div class="flex items-center gap-2">
           <img id="img-preview" src="" class="w-10 h-10 object-cover rounded-lg border border-neutral-700">
-          <span class="text-[11px] text-neutral-400">รูปภาพสำหรับประกอบฉาก</span>
+          <span class="text-[11px] text-neutral-400">รูปภาพจากเครื่องแนบพร้อมส่ง</span>
         </div>
         <button onclick="clearAttachedImage()" class="text-neutral-500 hover:text-white text-xs"><i class="fa-solid fa-xmark"></i></button>
       </div>
@@ -237,10 +256,11 @@
       <!-- Bottom Chat Controls -->
       <div class="p-3 bg-neutral-900 border-t border-neutral-800 space-y-2">
         <div class="flex items-center gap-2">
-          <!-- Attach Scene Image Button -->
-          <button onclick="promptAttachImage()" title="ส่งรูปประกอบฉาก" class="p-2.5 text-neutral-400 hover:text-rose-400 bg-neutral-950 rounded-full border border-neutral-800">
+          <!-- Attach Scene Image จากเครื่อง -->
+          <label title="เลือกรูปจากเครื่องประกอบฉาก" class="p-2.5 text-neutral-400 hover:text-rose-400 bg-neutral-950 rounded-full border border-neutral-800 cursor-pointer">
             <i class="fa-solid fa-image text-xs"></i>
-          </button>
+            <input type="file" accept="image/*" class="hidden" onchange="handleAttachImageFromFile(event)">
+          </label>
           
           <!-- Quick Action: Virtual Phone -->
           <button onclick="openPhoneModal()" title="จำลองมือถือ (ไอจี/ไลน์)" class="px-2.5 py-1.5 bg-neutral-950 hover:border-rose-500/50 border border-neutral-800 text-rose-300 rounded-full text-[11px] flex items-center gap-1.5 font-medium">
@@ -248,7 +268,7 @@
           </button>
           
           <!-- Text Input -->
-          <input id="chat-input" type="text" placeholder="พิมพ์การกระทำหรือคำพูด (*ยิ้มบางๆ* สวัสดี...)" 
+          <input id="chat-input" type="text" placeholder="พิมพ์คุยหรือบรรยาย (*ยิ้มบางๆ* สวัสดี...)" 
                  class="flex-1 bg-neutral-950 border border-neutral-800 text-white text-xs px-3.5 py-2.5 rounded-full focus:outline-none focus:border-rose-500"
                  onkeydown="if(event.key === 'Enter') handleSendChat()">
 
@@ -288,9 +308,9 @@
           <div id="phone-feed-container" class="space-y-3.5"></div>
         </div>
 
-        <!-- Phone Tab 2: Casual DM (No roleplay action) -->
+        <!-- Phone Tab 2: Casual DM (มีระบบตอบตรงคำถาม + แสดงความคิดในใจ) -->
         <div id="p-tab-dm" class="hidden flex-1 flex flex-col overflow-hidden">
-          <div id="dm-messages" class="flex-1 overflow-y-auto p-3 space-y-2 text-xs hide-scrollbar"></div>
+          <div id="dm-messages" class="flex-1 overflow-y-auto p-3 space-y-3 text-xs hide-scrollbar"></div>
           <div class="p-2 border-t border-neutral-800 flex gap-1.5 bg-neutral-900">
             <input id="dm-input" type="text" placeholder="ส่งข้อความคุยแบบเพื่อน..." class="flex-1 bg-neutral-950 border border-neutral-800 text-white text-[11px] px-3 py-1.5 rounded-full focus:outline-none" onkeydown="if(event.key === 'Enter') sendDmMessage()">
             <button onclick="sendDmMessage()" class="px-3 bg-rose-600 text-white rounded-full text-xs"><i class="fa-solid fa-arrow-up"></i></button>
@@ -307,28 +327,31 @@
     let currentBotId = "bot_1";
     let isCalling = false;
     let attachedImageUrl = null;
+    let tempBotAvatar = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80";
+    let tempBotPost = "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop&q=80";
 
-    // ข้อมูลเริ่มต้นของบอทและประวัติแชท (พร้อมรองรับ LocalStorage)
     let defaultBots = [
       {
         id: "bot_1",
         name: "เร็น (Ren)",
         avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-        instruction: "คุณคือเร็น ชายหนุ่มอายุ 22 อบอุ่น ขี้อ้อน และรักผู้เล่นมาก ไม่หลุดคาร์ บรรยายการกระทำอย่างนุ่มนวลและสละสลวย",
-        gallery: [
-          "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop&q=80",
-          "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=80"
-        ],
-        affection: 88,
+        instruction: "คุณคือเร็น ชายหนุ่มอายุ 22 อบอุ่น ขี้อ้อน รักผู้เล่นมาก ไม่หลุดคาร์ บรรยายความรู้สึกละเอียดลึกซึ้ง",
+        postImage: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop&q=80",
+        affection: 85,
         history: [
           {
             sender: "bot",
+            thought: "เธอมาหาแล้ว... วันนี้ดูเหนื่อยๆ หรือเปล่านะ อยากกอดปลอบจัง",
             narration: "เขานั่งเท้าคางมองดูคุณอยู่ฝั่งตรงข้ามของโต๊ะไม้ รอยยิ้มบางๆ ปรากฏขึ้นที่มุมปากพลางเอื้อมมือมาสัมผัสปลายนิ้วของคุณอย่างแผ่วเบา",
             speech: "วันนี้เหนื่อยไหมครับคนดี? เค้าคิดถึงเธอทั้งวันเลยเนี่ย..."
           }
         ],
         dmHistory: [
-          { sender: "bot", text: "เลิกงานหรือยัง อย่าลืมกินข้าวนะครับ 🤍" }
+          { 
+            sender: "bot", 
+            thought: "อยากคุยด้วยจัง ตอบแชทเร็วๆ นะ", 
+            text: "เลิกงานหรือยัง อย่าลืมกินข้าวนะครับ 🤍" 
+          }
         ],
         posts: [
           {
@@ -340,14 +363,123 @@
       }
     ];
 
-    let bots = JSON.parse(localStorage.getItem('lovey_bots')) || defaultBots;
+    let bots = JSON.parse(localStorage.getItem('lovey_bots_v2')) || defaultBots;
 
     function saveState() {
-      localStorage.setItem('lovey_bots', JSON.stringify(bots));
+      localStorage.setItem('lovey_bots_v2', JSON.stringify(bots));
     }
 
     function getBot(id) {
       return bots.find(b => b.id === id) || bots[0];
+    }
+
+    // ==================== IMAGE UPLOADER (อ่านไฟล์จากเครื่อง) ====================
+    function readFileAsDataUrl(file, callback) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        callback(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function uploadUserAvatar(e) {
+      const file = e.target.files[0];
+      if (file) {
+        readFileAsDataUrl(file, (dataUrl) => {
+          document.getElementById('user-avatar').src = dataUrl;
+          localStorage.setItem('lovey_user_avatar', dataUrl);
+        });
+      }
+    }
+
+    function previewNewBotAvatar(e) {
+      const file = e.target.files[0];
+      if (file) {
+        readFileAsDataUrl(file, (dataUrl) => {
+          tempBotAvatar = dataUrl;
+          document.getElementById('new-bot-avatar-preview').src = dataUrl;
+        });
+      }
+    }
+
+    function previewNewBotPost(e) {
+      const file = e.target.files[0];
+      if (file) {
+        readFileAsDataUrl(file, (dataUrl) => {
+          tempBotPost = dataUrl;
+          document.getElementById('new-bot-post-preview').src = dataUrl;
+        });
+      }
+    }
+
+    function handleAttachImageFromFile(e) {
+      const file = e.target.files[0];
+      if (file) {
+        readFileAsDataUrl(file, (dataUrl) => {
+          attachedImageUrl = dataUrl;
+          document.getElementById('img-preview').src = dataUrl;
+          document.getElementById('img-preview-box').classList.remove('hidden');
+        });
+      }
+    }
+
+    function clearAttachedImage() {
+      attachedImageUrl = null;
+      document.getElementById('img-preview-box').classList.add('hidden');
+    }
+
+    // ==================== SMART BRAIN & THOUGHT ENGINE ====================
+    // วิเคราะห์ข้อความผู้เล่น เพื่อตอบให้ตรงคำถามและมีความคิดในใจ
+    function analyzeAndReply(userText, botName, isDm = false) {
+      const text = userText.toLowerCase().trim();
+
+      // หมวด 1: ปฏิเสธ / ไม่ว่าง / ไม่ได้
+      if (text.includes("ไม่") || text.includes("ไม่ได้") || text.includes("ไม่ว่าง") || text.includes("อย่า")) {
+        return {
+          thought: "เขาปฏิเสธ... กำลังยุ่งอยู่สินะ หรือว่าเราไปกวน? แอบหงอยจัง แต่ไม่อยากเซ้าซี้ให้เขารำคาญ",
+          replyText: "อ่า... ไม่สะดวกเหรอครับ ไม่เป็นไรนะ! ถ้าเคลียร์ธุระเสร็จแล้วค่อยทักมานะ เค้าไม่กวนแล้วครับ",
+          narration: "แววตาของเขาวูบไหวลงเล็กน้อยคล้ายเด็กที่ถูกขัดใจ เขารีบก้มหน้าซ่อนความน้อยใจก่อนจะฝืนยิ้มบางๆ ให้คุณ",
+          speech: "ไม่เป็นไรเลยครับ... ถ้าเธอไม่สะดวก เค้าอยู่ตรงนี้ รอเธอว่างเมื่อไหร่ค่อยมาคุยกันนะ"
+        };
+      }
+
+      // หมวด 2: หัวเราะ / ขำ / ตลก
+      if (text.includes("555") || text.includes("ตลก") || text.includes("ขำ") || text.includes("ฮ่า")) {
+        return {
+          thought: "เย่! เขาหัวเราะด้วย เวลาเธอยิ้มหรือหัวเราะเนี่ย โลกสดใสขึ้นเยอะเลยนะ น่ารักชะมัด",
+          replyText: "ขำอะไรขนาดนั้นเนี่ย 5555 แต่เห็นเธออารมณ์ดีเค้าก็พลอยมีความสุขไปด้วยเลยนะ",
+          narration: "เขาหลุดหัวเราะตามเสียงใสของคุณ ใบหน้าหล่อเหลาเต็มไปด้วยความผ่อนคลายและเอ็นดูอย่างปิดไม่มิด",
+          speech: "ตลกเค้าเหรอครับหืม? หัวเราะจนตาหยีหมดแล้วเนี่ย... น่ารักจัง"
+        };
+      }
+
+      // หมวด 3: อ้อน / คิดถึง / รัก
+      if (text.includes("คิดถึง") || text.includes("รัก") || text.includes("กอด") || text.includes("อ้อน")) {
+        return {
+          thought: "ใจเต้นแรงเป็นบ้าเลย... จู่ๆ มาบอกแบบนี้จะให้ทนไหวได้ยังไง อยากดึงมากอดแน่นๆ เดี๋ยวนี้เลย",
+          replyText: "เค้าก็คิดถึงเธอจะแย่แล้วครับ... แทบไม่มีสมาธิทำอะไรเลย อยากไปหาตอนนี้เลยเนี่ย",
+          narration: "ดวงตาของเขาเป็นประกายระยับยามสบตาคุณ เขาคว้ามือคุณขึ้นมาแนบแก้มอุ่นๆ ของตัวเองไว้ไม่ยอมปล่อย",
+          speech: "มาบอกให้คิดถึงแบบนี้... ระวังโดนเค้ากอดจนหายใจไม่ออกนะคนดี"
+        };
+      }
+
+      // หมวด 4: สบายดี / ถามสารทุกข์สุกดิบ / กินข้าวยัง
+      if (text.includes("กินข้าว") || text.includes("ทำอะไร") || text.includes("อยู่ไหน") || text.includes("เหนื่อยไหม")) {
+        return {
+          thought: "เขาเป็นห่วงเราด้วย ดีใจจัง... แค่คำถามธรรมดาแต่โคตรมีความหมายเลย",
+          replyText: "เค้าเพิ่งเคลียร์งานเสร็จเลยครับ กำลังนั่งคิดถึงเธออยู่พอดี เธอล่ะทานอะไรหรือยัง?",
+          narration: "เขายืดตัวขึ้นเล็กน้อย พลางส่งยิ้มอ่อนโยนที่แฝงไปด้วยความโล่งใจที่ได้คุยกับคุณ",
+          speech: "เค้าสบายดีครับ ยิ่งได้คุยกับเธอแบบนี้ หายเหนื่อยเป็นปลิดทิ้งเลยล่ะ"
+        };
+      }
+
+      // หมวดทั่วไป (วิเคราะห์ตามบทบรรยาย)
+      return {
+        thought: `กำลังตั้งใจฟังสิ่งที่เธอพูด... ทุกเรื่องที่เกี่ยวกับเธอมันน่าสนใจสำหรับเราเสมอ`,
+        replyText: `รับทราบครับผม เดี๋ยวเค้าคอยอยู่เป็นเพื่อนตรงนี้นะ`,
+        narration: "เขานิ่งฟังสิ่งที่คุณบอกอย่างตั้งอกตั้งใจ ปลายนิ้วเรียวคอยเกลี่ยผมที่ปรกหน้าผากของคุณออกให้อย่างเบามือ",
+        speech: "เค้าเข้าใจแล้วครับ... ไม่ว่าจะเรื่องอะไร เค้าพร้อมจะอยู่เคียงข้างเธอเสมอนะ"
+      };
     }
 
     // ==================== LOBBY LOGIC ====================
@@ -355,7 +487,7 @@
       const tabs = ['home', 'explore', 'chats', 'community', 'settings'];
       const titles = {
         home: 'หน้าแรก',
-        explore: 'ค้นหา & สร้างบอทใหม่',
+        explore: 'สร้าง & ค้นหาบอท',
         chats: 'ประวัติเนื้อเรื่อง',
         community: 'คอมมูนิตี้ผู้เล่น',
         settings: 'ตั้งค่าระบบ'
@@ -428,36 +560,40 @@
 
     function saveNewBot() {
       const name = document.getElementById('create-name').value.trim();
-      let avatar = document.getElementById('create-avatar').value.trim();
-      const galleryRaw = document.getElementById('create-gallery').value.trim();
       const prompt = document.getElementById('create-prompt').value.trim();
       const starter = document.getElementById('create-starter').value.trim();
 
       if (!name) return alert('กรุณาใส่ชื่อบอท');
-      if (!avatar) avatar = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&auto=format&fit=crop&q=80';
-
-      const gallery = galleryRaw ? galleryRaw.split(',').map(s => s.trim()) : [avatar];
 
       const newBot = {
         id: 'bot_' + Date.now(),
         name: name,
-        avatar: avatar,
-        instruction: prompt || 'ตัวละครบรรยายลึกซึ้ง รักผู้เล่นอย่างยิ่ง',
-        gallery: gallery,
-        affection: 65,
+        avatar: tempBotAvatar,
+        instruction: prompt || 'ตัวละครบรรยายลึกซึ้ง รักผู้เล่นอย่างยิ่ง มีความคิดในใจที่ซื่อตรง',
+        postImage: tempBotPost,
+        affection: 70,
         history: [
           {
             sender: "bot",
+            thought: "ในที่สุดก็ได้เจอเขาแล้ว... ตื่นเต้นจนมือสั่นไปหมด",
             narration: starter || "เขายืนรอคุณอยู่ด้วยแววตาที่เต็มไปด้วยความคิดถึง เมื่อเห็นคุณเดินเข้ามา เขาก็ก้าวตรงเข้ามาหาทันที",
             speech: "ในที่สุดก็ได้เจอเธอนะ..."
           }
         ],
-        dmHistory: [{ sender: "bot", text: "ทักทายครับ ยินดีที่ได้คุยกันนะ" }],
-        posts: [{
-          img: gallery[0],
-          caption: `เริ่มต้นเรื่องราวใหม่กับคุณ... ✨`,
-          time: "เมื่อครู่"
-        }]
+        dmHistory: [
+          { 
+            sender: "bot", 
+            thought: "ส่งข้อความแรกไปแล้ว... หวังว่าเขาจะตอบนะ", 
+            text: "ทักทายครับ ยินดีที่ได้คุยกันนะ 🤍" 
+          }
+        ],
+        posts: [
+          {
+            img: tempBotPost,
+            caption: `เริ่มต้นเรื่องราวใหม่กับคุณ... ✨`,
+            time: "เมื่อครู่"
+          }
+        ]
       };
 
       bots.push(newBot);
@@ -507,9 +643,19 @@
           container.appendChild(userDiv);
         } else {
           const botDiv = document.createElement('div');
-          botDiv.className = 'flex flex-col items-start max-w-[90%] space-y-1';
+          botDiv.className = 'flex flex-col items-start max-w-[92%] space-y-1.5';
+          
+          // กล่องความคิดในใจของบอท (Inner Monologue)
+          let thoughtHtml = m.thought ? `
+            <div class="bg-purple-950/40 border border-purple-800/40 text-purple-300 text-[10px] px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-brain text-[9px] text-purple-400"></i>
+              <span>ความคิดในใจ: ${m.thought}</span>
+            </div>
+          ` : '';
+
           botDiv.innerHTML = `
-            <div class="text-[11px] text-neutral-300 italic leading-relaxed px-1 text-slate-300">
+            ${thoughtHtml}
+            <div class="text-[11px] text-slate-300 italic leading-relaxed px-1">
               *${m.narration}*
             </div>
             <div class="bg-neutral-800 border border-neutral-700/60 text-rose-100 text-xs px-4 py-2.5 rounded-2xl rounded-tl-sm leading-relaxed shadow-sm">
@@ -529,7 +675,6 @@
 
       const b = getBot(currentBotId);
       
-      // บันทึกข้อความผู้เล่น
       b.history.push({
         sender: 'user',
         userText: text,
@@ -542,50 +687,22 @@
       document.getElementById('room-affection').innerText = b.affection;
       renderRoomMessages();
 
-      // การตอบกลับแบบบรรยายวรรณกรรม (Narrative Engine)
+      // บอทวิเคราะห์คำตอบตรงคำถาม + แสดงความคิด
       setTimeout(() => {
-        const narrativeReplies = [
-          {
-            narration: "เขาขยับตัวเข้ามาใกล้ขึ้นอีกนิด กลิ่นหอมจางๆ จากเสื้อโค้ตของเขาลอยมาแตะจมูก ปลายนิ้วเรียวสัมผัสข้างแก้มของคุณอย่างทะนุถนอมราวกับกลัวคุณจะแตกสลาย",
-            speech: "รู้ไหมว่าเวลาเธอทำหน้าแบบนี้... มันทำให้เค้าไม่อยากปล่อยเธอไปไหนเลย"
-          },
-          {
-            narration: "สายตาของเขาไหววูบไปชั่วครู่ ก่อนจะระบายยิ้มออกมาด้วยความเอ็นดู เขาโน้มตัวลงมาเล็กน้อยจนใบหน้าอยู่ระดับเดียวกับคุณ แววตาเต็มไปด้วยความจริงจัง",
-            speech: "เค้าฟังเธออยู่เสมอ ไม่ว่าเธอจะเล่าเรื่องอะไร เค้าก็พร้อมจะรับฟังทุกอย่างครับ"
-          },
-          {
-            narration: "เสียงหัวใจของเขาเต้นเป็นจังหวะหนักแน่นยามที่เขาดึงคุณเข้าไปโอบไว้ในอ้อมแขน ฝ่ามืออุ่นลูบแผ่นหลังของคุณอย่างปลอบประโลม",
-            speech: "ไม่ต้องกลัวอะไรทั้งนั้นนะ อยู่ตรงนี้กับเค้า... ปลอดภัยแล้วครับ"
-          }
-        ];
-
-        const chosen = narrativeReplies[Math.floor(Math.random() * narrativeReplies.length)];
+        const res = analyzeAndReply(text, b.name, false);
         b.history.push({
           sender: 'bot',
-          narration: chosen.narration,
-          speech: chosen.speech
+          thought: res.thought,
+          narration: res.narration,
+          speech: res.speech
         });
         saveState();
         renderRoomMessages();
 
         if (isCalling) {
-          speakText(chosen.speech);
+          speakText(res.speech);
         }
-      }, 800);
-    }
-
-    function promptAttachImage() {
-      const url = prompt("ใส่ URL รูปภาพเพื่อใช้ประกอบบรรยายฉาก:");
-      if (url) {
-        attachedImageUrl = url;
-        document.getElementById('img-preview').src = url;
-        document.getElementById('img-preview-box').classList.remove('hidden');
-      }
-    }
-
-    function clearAttachedImage() {
-      attachedImageUrl = null;
-      document.getElementById('img-preview-box').classList.add('hidden');
+      }, 750);
     }
 
     // ==================== CALL SIMULATION ====================
@@ -597,7 +714,7 @@
       if (isCalling) {
         bar.classList.remove('hidden');
         btn.className = 'p-2 text-white bg-rose-600 rounded-full transition';
-        speakText("ฮัลโหล ได้ยินเสียงเค้าชัดไหมคนดี?");
+        speakText("ฮัลโหล ได้ยินเสียงเค้าชัดไหมครับ?");
       } else {
         bar.classList.add('hidden');
         btn.className = 'p-2 text-neutral-300 hover:text-white bg-neutral-800 rounded-full transition';
@@ -678,14 +795,27 @@
 
       b.dmHistory.forEach(d => {
         const div = document.createElement('div');
-        div.className = `flex ${d.sender === 'user' ? 'justify-end' : 'justify-start'}`;
-        div.innerHTML = `
-          <div class="max-w-[75%] px-3 py-1.5 rounded-2xl text-[11px] ${
-            d.sender === 'user' ? 'bg-rose-600 text-white rounded-br-none' : 'bg-neutral-800 text-neutral-200 rounded-bl-none'
-          }">
-            ${d.text}
-          </div>
-        `;
+        if (d.sender === 'user') {
+          div.className = 'flex justify-end';
+          div.innerHTML = `
+            <div class="max-w-[75%] px-3 py-1.5 rounded-2xl text-[11px] bg-rose-600 text-white rounded-br-none">
+              ${d.text}
+            </div>
+          `;
+        } else {
+          div.className = 'flex flex-col items-start space-y-1';
+          let thought = d.thought ? `
+            <div class="text-[9px] text-purple-300 bg-purple-950/50 border border-purple-800/40 px-2 py-0.5 rounded-md italic">
+              💭 ความคิด: ${d.thought}
+            </div>
+          ` : '';
+          div.innerHTML = `
+            ${thought}
+            <div class="max-w-[75%] px-3 py-1.5 rounded-2xl text-[11px] bg-neutral-800 text-neutral-200 rounded-bl-none border border-neutral-700/50">
+              ${d.text}
+            </div>
+          `;
+        }
         container.appendChild(div);
       });
       container.scrollTop = container.scrollHeight;
@@ -701,29 +831,34 @@
       input.value = '';
       renderPhoneDm(b);
 
+      // วิเคราะห์คำตอบใน DM เพื่อไม่ให้ตอบมั่ว เช่น ผู้เล่นบอก "ไม่ได้" บอทจะไม่ตอบว่า "คิดถึงเหมือนกัน"
       setTimeout(() => {
-        const casualReplies = [
-          "คิดถึงเหมือนกันนะ พักผ่อนเยอะๆ ด้วยล่ะ 💗",
-          "กำลังนั่งดูรูปคู่อยู่พอดีเลย ทักมาไวจัง",
-          "วันนี้ว่างไหม เดี๋ยวโทรไปหาได้เปล่า?"
-        ];
+        const res = analyzeAndReply(text, b.name, true);
         b.dmHistory.push({
           sender: 'bot',
-          text: casualReplies[Math.floor(Math.random() * casualReplies.length)]
+          thought: res.thought,
+          text: res.replyText
         });
         saveState();
         renderPhoneDm(b);
-      }, 600);
+      }, 650);
     }
 
     function clearAllData() {
       if (confirm('คุณต้องการลบข้อมูลตัวละครและบทสนทนาทั้งหมดแล้วรีเซ็ตใหม่ใช่หรือไม่?')) {
-        localStorage.removeItem('lovey_bots');
+        localStorage.removeItem('lovey_bots_v2');
+        localStorage.removeItem('lovey_user_avatar');
         location.reload();
       }
     }
 
-    // Start App
+    // โหลดรูป Avatar ของผู้ใช้ถ้าเคยเซฟไว้
+    const savedAvatar = localStorage.getItem('lovey_user_avatar');
+    if (savedAvatar) {
+      document.getElementById('user-avatar').src = savedAvatar;
+    }
+
+    // เริ่มต้นระบบที่หน้าแรก
     switchLobbyTab('home');
   </script>
 </body>
