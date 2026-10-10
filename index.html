@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>AI Companion - Character Hub</title>
+  <title>Lovey-Companion Hub</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
@@ -13,502 +13,594 @@
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="bg-slate-950 flex justify-center items-center min-h-screen text-slate-100 p-0 sm:p-4">
+<body class="bg-neutral-950 flex justify-center items-center min-h-screen text-neutral-100 p-0 sm:p-4">
 
-  <!-- Mobile Screen Frame -->
-  <div class="w-full max-w-md h-screen sm:h-[840px] bg-neutral-900 sm:rounded-[36px] flex flex-col overflow-hidden shadow-2xl border border-neutral-800 relative">
+  <!-- Mobile Screen Container -->
+  <div class="w-full max-w-md h-screen sm:h-[860px] bg-neutral-900 sm:rounded-[36px] flex flex-col overflow-hidden shadow-2xl border border-neutral-800 relative">
     
-    <!-- Top Header Bar -->
-    <header class="p-3 bg-neutral-900/90 backdrop-blur border-b border-neutral-800 flex items-center justify-between z-20">
-      <div class="flex items-center gap-2.5">
-        <!-- Switch/Manage Character Button -->
-        <button onclick="toggleCharacterDrawer()" class="relative group cursor-pointer text-left flex items-center gap-2">
-          <div class="relative">
-            <img id="header-avatar" src="" class="w-10 h-10 rounded-full object-cover border border-rose-500/70" alt="Avatar">
-            <span class="w-3 h-3 bg-emerald-500 rounded-full border-2 border-neutral-900 absolute bottom-0 right-0"></span>
+    <!-- ==================== VIEW 1: LOBBY ==================== -->
+    <div id="view-lobby" class="flex-1 flex flex-col overflow-hidden">
+      
+      <!-- Top Lobby Header -->
+      <header class="p-3.5 bg-neutral-900/90 backdrop-blur border-b border-neutral-800 flex justify-between items-center z-10">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-rose-500 to-amber-400 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-rose-500/20">
+            LC
           </div>
-          <div>
-            <div class="flex items-center gap-1.5 text-sm font-semibold text-white">
-              <span id="header-name">เร็น</span>
-              <i class="fa-solid fa-chevron-down text-[10px] text-neutral-400"></i>
-            </div>
-            <div class="flex items-center gap-1 text-[11px] text-rose-400 font-medium">
-              <i class="fa-solid fa-heart text-[10px]"></i>
-              <span>ความชอบ: <span id="header-affection">80</span>%</span>
-            </div>
-          </div>
-        </button>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="flex items-center gap-1.5">
-        <button onclick="openCreateCharacterModal()" title="สร้างตัวละครใหม่" class="p-2 text-rose-400 hover:text-rose-300 rounded-full bg-rose-950/40 border border-rose-800/50">
-          <i class="fa-solid fa-user-plus text-xs"></i>
-        </button>
-        <button onclick="toggleScenarioModal()" title="เปลี่ยนสถานการณ์" class="p-2 text-neutral-400 hover:text-white rounded-full bg-neutral-800">
-          <i class="fa-solid fa-masks-theater text-xs"></i>
-        </button>
-        <button id="call-btn" onclick="toggleCall()" class="p-2 text-neutral-300 hover:text-white rounded-full bg-neutral-800 transition">
-          <i class="fa-solid fa-phone text-xs"></i>
-        </button>
-      </div>
-    </header>
-
-    <!-- In-Call Status Banner -->
-    <div id="call-banner" class="hidden bg-rose-950/80 border-b border-rose-800/50 px-4 py-2 flex items-center justify-between text-xs text-rose-200">
-      <span class="flex items-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
-        อยู่ในสายโทรศัพท์ (เปิดเสียงพูดอัตโนมัติ)
-      </span>
-      <button onclick="toggleCall()" class="text-rose-400 font-semibold underline text-[11px]">วางสาย</button>
-    </div>
-
-    <!-- MAIN VIEW 1: Chat Tab -->
-    <main id="chat-tab" class="flex-1 flex flex-col overflow-hidden">
-      <!-- Scenario Title -->
-      <div id="scenario-badge" class="bg-neutral-800/40 px-3 py-1.5 text-[11px] text-neutral-400 flex items-center justify-between border-b border-neutral-800">
-        <span><i class="fa-solid fa-bookmark text-rose-500 mr-1.5"></i>โหมด: <strong id="scenario-title" class="text-neutral-300">แชทปกติประจำวัน</strong></span>
-        <button onclick="resetScenario()" class="text-neutral-500 hover:text-neutral-300">รีเซ็ต</button>
-      </div>
-
-      <!-- Chat Log -->
-      <div id="chat-container" class="flex-1 overflow-y-auto p-4 space-y-3.5 hide-scrollbar"></div>
-
-      <!-- Input Bar -->
-      <div class="p-3 bg-neutral-900/90 border-t border-neutral-800 flex items-center gap-2">
-        <input id="user-input" type="text" placeholder="พิมพ์คุยกับตัวละคร..." 
-               class="flex-1 bg-neutral-950 text-neutral-200 text-xs px-4 py-3 rounded-full border border-neutral-800 focus:outline-none focus:border-rose-500"
-               onkeydown="if(event.key === 'Enter') sendMessage()">
-        <button onclick="sendMessage()" class="w-10 h-10 bg-rose-600 hover:bg-rose-500 active:scale-95 text-white rounded-full flex items-center justify-center transition">
-          <i class="fa-solid fa-paper-plane text-xs"></i>
-        </button>
-      </div>
-    </main>
-
-    <!-- MAIN VIEW 2: Feed Tab (Instagram Style) -->
-    <main id="feed-tab" class="flex-1 overflow-y-auto p-4 space-y-4 hide-scrollbar hidden">
-      <div class="text-xs font-medium text-neutral-400 px-1 flex justify-between items-center">
-        <span>โพสต์ล่าสุดของตัวละคร</span>
-        <span class="text-[10px] text-neutral-500">Social Feed</span>
-      </div>
-      <div id="feed-posts" class="space-y-4"></div>
-    </main>
-
-    <!-- Bottom Navigation Bar -->
-    <nav class="h-14 bg-neutral-950 border-t border-neutral-800 flex justify-around items-center z-20">
-      <button onclick="switchTab('chat')" id="nav-chat-btn" class="flex flex-col items-center gap-1 text-rose-500">
-        <i class="fa-solid fa-message text-sm"></i>
-        <span class="text-[10px] font-medium">แชท & โทร</span>
-      </button>
-      <button onclick="switchTab('feed')" id="nav-feed-btn" class="flex flex-col items-center gap-1 text-neutral-400 hover:text-white">
-        <i class="fa-solid fa-image text-sm"></i>
-        <span class="text-[10px] font-medium">โพสต์ฟีด</span>
-      </button>
-    </nav>
-
-    <!-- MODAL 1: Character List / Selector Drawer -->
-    <div id="character-drawer" class="hidden absolute inset-0 bg-black/80 backdrop-blur-sm z-30 flex items-end sm:items-center justify-center p-3">
-      <div class="w-full bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-4 max-h-[80%] flex flex-col">
-        <div class="flex justify-between items-center border-b border-neutral-800 pb-2.5">
-          <h3 class="text-sm font-semibold text-white flex items-center gap-2">
-            <i class="fa-solid fa-users text-rose-500"></i> เลือกตัวละครที่ต้องการคุย
-          </h3>
-          <button onclick="toggleCharacterDrawer()" class="text-neutral-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+          <span id="lobby-header-title" class="text-sm font-semibold text-white tracking-wide">หน้าแรก</span>
         </div>
+        <div class="flex items-center gap-2 text-neutral-400 text-xs">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span>ออนไลน์</span>
+        </div>
+      </header>
+
+      <!-- Lobby Body Content -->
+      <div class="flex-1 overflow-y-auto hide-scrollbar p-4">
         
-        <div id="character-list" class="flex-1 overflow-y-auto space-y-2.5 pr-1 hide-scrollbar"></div>
+        <!-- TAB 1: HOME (Profile & Friends) -->
+        <section id="tab-home" class="space-y-5">
+          <!-- User Profile Card -->
+          <div class="bg-gradient-to-br from-neutral-950 to-neutral-800/80 p-4 rounded-3xl border border-neutral-800/80 shadow-lg relative overflow-hidden">
+            <div class="absolute -right-4 -bottom-4 w-28 h-28 bg-rose-500/10 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="flex items-center gap-3.5">
+              <img id="user-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" class="w-14 h-14 rounded-full object-cover border-2 border-rose-500/50 shadow-md">
+              <div class="flex-1">
+                <h2 id="user-name" class="text-base font-semibold text-white">คุณหนูนักท่องฝัน</h2>
+                <p id="user-bio" class="text-[11px] text-neutral-400 mt-0.5">"ชอบบทบรรยายโรแมนติกแฟนตาซีและตัวละครขี้อ้อน"</p>
+                <div class="flex gap-2 mt-2">
+                  <span class="text-[10px] bg-rose-950/80 text-rose-300 border border-rose-800/40 px-2 py-0.5 rounded-full font-medium">VIP Tier</span>
+                  <span class="text-[10px] bg-neutral-800 text-neutral-300 px-2 py-0.5 rounded-full">ระดับนักเขียน</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
-        <button onclick="toggleCharacterDrawer(); openCreateCharacterModal();" class="w-full py-2.5 bg-neutral-800 hover:bg-neutral-700 text-rose-300 rounded-xl text-xs font-medium border border-rose-500/30 flex items-center justify-center gap-2">
-          <i class="fa-solid fa-plus"></i> สร้างตัวละครใหม่เพิ่ม
+          <!-- Friends List (Characters) -->
+          <div>
+            <div class="flex justify-between items-center mb-3 px-1">
+              <h3 class="text-xs font-semibold text-neutral-200 tracking-wide flex items-center gap-1.5">
+                <i class="fa-solid fa-user-group text-rose-500"></i> บอทเพื่อนสนิท
+              </h3>
+              <span id="friend-count" class="text-[10px] text-neutral-400">2 คน</span>
+            </div>
+            <div id="home-friends-list" class="space-y-2.5"></div>
+          </div>
+        </section>
+
+        <!-- TAB 2: EXPLORE & CREATE BOT -->
+        <section id="tab-explore" class="hidden space-y-4">
+          <div class="flex justify-between items-center px-1">
+            <h3 class="text-xs font-semibold text-neutral-200">สร้างบอท & ตั้งค่าความทรงจำละเอียด</h3>
+          </div>
+
+          <!-- Create Bot Accordion / Form -->
+          <div class="bg-neutral-950 border border-neutral-800 rounded-3xl p-4 space-y-3.5 shadow-md">
+            <div>
+              <label class="block text-[11px] text-neutral-400 mb-1 font-medium">ชื่อบอท / คาแรคเตอร์</label>
+              <input id="create-name" type="text" placeholder="เช่น เร็น, ลูคัส, เซีย" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-rose-500">
+            </div>
+            
+            <div>
+              <label class="block text-[11px] text-neutral-400 mb-1 font-medium">ลิงก์รูปโปรไฟล์บอท (Avatar URL)</label>
+              <input id="create-avatar" type="text" placeholder="URL รูปโปรไฟล์บอท (ใช้โพสต์ไอจีด้วย)" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-rose-500">
+            </div>
+
+            <div>
+              <label class="block text-[11px] text-neutral-400 mb-1 font-medium">คลังรูปโพสต์โซเชียล (วาง URL เว้นด้วยเครื่องหมายจุลภาค , )</label>
+              <input id="create-gallery" type="text" placeholder="https://..., https://..." class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-rose-500">
+            </div>
+
+            <div>
+              <label class="block text-[11px] text-neutral-400 mb-1 font-medium">คำสั่งคุมคาแรคเตอร์ลึก & ความทรงจำ (System Instruction)</label>
+              <textarea id="create-prompt" rows="3" placeholder="ระบุนิสัย ปมหลัง กฎห้ามหลุดคาร์ เช่น: 'ห้ามยอมรับว่าเป็น AI, ให้เรียกแทนตัวเองว่าเค้า และเรียกคนเล่นว่าคนดีเสมอ, หวงแรงแต่อ่อนโยน'" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-rose-500"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-[11px] text-neutral-400 mb-1 font-medium">พล็อตเปิดเรื่องบรรยายตอนเริ่มคุย (Opening Scenario)</label>
+              <textarea id="create-starter" rows="2" placeholder="เช่น 'ฝนตกหนักด้านนอก คุณนั่งตัวสั่นอยู่ข้างเขา เขาขยับผ้าห่มมาคลุมไหล่คุณ...'" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-rose-500"></textarea>
+            </div>
+
+            <button onclick="saveNewBot()" class="w-full py-2.5 bg-rose-600 hover:bg-rose-500 text-white font-medium rounded-xl text-xs shadow-lg shadow-rose-600/30 transition">
+              <i class="fa-solid fa-plus-circle mr-1"></i> บันทึกและสร้างบอททันที
+            </button>
+          </div>
+        </section>
+
+        <!-- TAB 3: CHAT HISTORIES -->
+        <section id="tab-chats" class="hidden space-y-3">
+          <div class="text-xs font-semibold text-neutral-200 px-1">ประวัติบทบาทสมมติ (Roleplay Records)</div>
+          <div id="chat-records-list" class="space-y-2"></div>
+        </section>
+
+        <!-- TAB 4: COMMUNITY -->
+        <section id="tab-community" class="hidden space-y-3.5">
+          <div class="flex justify-between items-center px-1">
+            <h3 class="text-xs font-semibold text-neutral-200">บอร์ดพูดคุย & แบ่งปันบอท</h3>
+            <span class="text-[10px] text-rose-400 font-medium">+ สร้างโพสต์ใหม่</span>
+          </div>
+
+          <div class="bg-neutral-950 border border-neutral-800 p-3.5 rounded-2xl space-y-2">
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-300 flex items-center justify-center text-[10px] font-bold">M</div>
+              <span class="text-xs font-medium text-white">MewMew_Writer</span>
+              <span class="text-[10px] text-neutral-500">• 1 ชม. ที่แล้ว</span>
+            </div>
+            <p class="text-xs text-neutral-300 leading-relaxed">
+              ใครมี Prompt บอทแนวเจ้าชายเย็นชาแต่คลั่งรักบ้างคะ ขอยืมไปดัดแปลงหน่อย บอทเร็นหวานจนมดขึ้นจอแล้ว 555
+            </p>
+            <div class="flex gap-4 text-neutral-400 text-[11px] pt-1">
+              <span><i class="fa-regular fa-heart"></i> 14 ไลก์</span>
+              <span><i class="fa-regular fa-comment"></i> 6 ความคิดเห็น</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 5: SETTINGS -->
+        <section id="tab-settings" class="hidden space-y-3.5">
+          <div class="text-xs font-semibold text-neutral-200 px-1">การตั้งค่าทั่วไป</div>
+          <div class="bg-neutral-950 border border-neutral-800 rounded-2xl divide-y divide-neutral-900 text-xs text-neutral-300">
+            <div class="p-3.5 flex justify-between items-center">
+              <span>ภาษาของระบบ (Language)</span>
+              <span class="text-rose-400 font-medium">ไทย (TH)</span>
+            </div>
+            <div class="p-3.5 flex justify-between items-center">
+              <span>สไตล์ความยาวบทบรรยาย</span>
+              <span class="text-neutral-400">ละเอียดลึกซึ้ง (Novel)</span>
+            </div>
+            <div class="p-3.5 flex justify-between items-center">
+              <span>ล้างความทรงจำและรีเซ็ตแชททั้งหมด</span>
+              <button onclick="clearAllData()" class="text-red-400 hover:text-red-300 underline text-[11px]">ล้างข้อมูล</button>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Bottom Tab Navigation Bar (5 TABS) -->
+      <nav class="h-16 bg-neutral-950 border-t border-neutral-800 flex justify-around items-center px-2 z-10">
+        <button onclick="switchLobbyTab('home')" id="btn-tab-home" class="flex flex-col items-center gap-1 text-rose-500 transition">
+          <i class="fa-solid fa-house text-sm"></i>
+          <span class="text-[10px]">โฮม</span>
         </button>
+        <button onclick="switchLobbyTab('explore')" id="btn-tab-explore" class="flex flex-col items-center gap-1 text-neutral-400 hover:text-white transition">
+          <i class="fa-solid fa-compass text-sm"></i>
+          <span class="text-[10px]">สร้าง/หาบอท</span>
+        </button>
+        <button onclick="switchLobbyTab('chats')" id="btn-tab-chats" class="flex flex-col items-center gap-1 text-neutral-400 hover:text-white transition">
+          <i class="fa-solid fa-book-open text-sm"></i>
+          <span class="text-[10px]">เนื้อเรื่อง</span>
+        </button>
+        <button onclick="switchLobbyTab('community')" id="btn-tab-community" class="flex flex-col items-center gap-1 text-neutral-400 hover:text-white transition">
+          <i class="fa-solid fa-users text-sm"></i>
+          <span class="text-[10px]">ชุมชน</span>
+        </button>
+        <button onclick="switchLobbyTab('settings')" id="btn-tab-settings" class="flex flex-col items-center gap-1 text-neutral-400 hover:text-white transition">
+          <i class="fa-solid fa-gear text-sm"></i>
+          <span class="text-[10px]">ตั้งค่า</span>
+        </button>
+      </nav>
+    </div>
+
+
+    <!-- ==================== VIEW 2: ROLEPLAY & CHAT ROOM ==================== -->
+    <div id="view-room" class="hidden flex-1 flex flex-col overflow-hidden relative">
+      
+      <!-- Top Chat Header -->
+      <header class="p-3 bg-neutral-900/90 backdrop-blur border-b border-neutral-800 flex items-center justify-between z-20">
+        <div class="flex items-center gap-2.5">
+          <button onclick="backToLobby()" class="p-1.5 text-neutral-400 hover:text-white rounded-full">
+            <i class="fa-solid fa-chevron-left text-sm"></i>
+          </button>
+          <img id="room-avatar" src="" class="w-9 h-9 rounded-full object-cover border border-rose-500/50">
+          <div>
+            <h2 id="room-name" class="text-xs font-semibold text-white leading-tight">ชื่อบอท</h2>
+            <div class="text-[10px] text-rose-400 flex items-center gap-1">
+              <i class="fa-solid fa-heart text-[9px]"></i>
+              <span>ความผูกพัน: <span id="room-affection">85</span>%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Call & Actions -->
+        <div class="flex items-center gap-1.5">
+          <button id="call-toggle-btn" onclick="toggleCallSimulation()" title="โทรหาบอท" class="p-2 text-neutral-300 hover:text-white bg-neutral-800 rounded-full transition">
+            <i class="fa-solid fa-phone text-xs"></i>
+          </button>
+          <button onclick="openPhoneModal()" title="เปิดโทรศัพท์เสมือน (IG)" class="p-2 text-rose-400 hover:text-rose-300 bg-rose-950/40 border border-rose-800/40 rounded-full transition">
+            <i class="fa-solid fa-mobile-screen text-xs"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Active Call Banner -->
+      <div id="call-bar" class="hidden bg-rose-950/80 border-b border-rose-800/60 px-4 py-1.5 flex justify-between items-center text-[11px] text-rose-200">
+        <span class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+          กำลังอยู่ในสาย (อ่านออกเสียงบรรยายอัตโนมัติ)
+        </span>
+        <button onclick="toggleCallSimulation()" class="underline font-semibold">วางสาย</button>
+      </div>
+
+      <!-- Narrative Chat Log (เน้นบทบรรยาย Novel Format) -->
+      <div id="room-messages" class="flex-1 overflow-y-auto p-4 space-y-4 hide-scrollbar"></div>
+
+      <!-- Attached Image Preview Bar -->
+      <div id="img-preview-box" class="hidden px-4 py-2 bg-neutral-950 border-t border-neutral-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <img id="img-preview" src="" class="w-10 h-10 object-cover rounded-lg border border-neutral-700">
+          <span class="text-[11px] text-neutral-400">รูปภาพสำหรับประกอบฉาก</span>
+        </div>
+        <button onclick="clearAttachedImage()" class="text-neutral-500 hover:text-white text-xs"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- Bottom Chat Controls -->
+      <div class="p-3 bg-neutral-900 border-t border-neutral-800 space-y-2">
+        <div class="flex items-center gap-2">
+          <!-- Attach Scene Image Button -->
+          <button onclick="promptAttachImage()" title="ส่งรูปประกอบฉาก" class="p-2.5 text-neutral-400 hover:text-rose-400 bg-neutral-950 rounded-full border border-neutral-800">
+            <i class="fa-solid fa-image text-xs"></i>
+          </button>
+          
+          <!-- Quick Action: Virtual Phone -->
+          <button onclick="openPhoneModal()" title="จำลองมือถือ (ไอจี/ไลน์)" class="px-2.5 py-1.5 bg-neutral-950 hover:border-rose-500/50 border border-neutral-800 text-rose-300 rounded-full text-[11px] flex items-center gap-1.5 font-medium">
+            <i class="fa-brands fa-instagram text-rose-400"></i> โทรศัพท์
+          </button>
+          
+          <!-- Text Input -->
+          <input id="chat-input" type="text" placeholder="พิมพ์การกระทำหรือคำพูด (*ยิ้มบางๆ* สวัสดี...)" 
+                 class="flex-1 bg-neutral-950 border border-neutral-800 text-white text-xs px-3.5 py-2.5 rounded-full focus:outline-none focus:border-rose-500"
+                 onkeydown="if(event.key === 'Enter') handleSendChat()">
+
+          <button onclick="handleSendChat()" class="p-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-full transition">
+            <i class="fa-solid fa-paper-plane text-xs"></i>
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- MODAL 2: Create Character Form -->
-    <div id="create-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-4">
-      <div class="w-full max-w-sm bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-3.5 shadow-2xl">
-        <div class="flex justify-between items-center border-b border-neutral-800 pb-2">
-          <h3 class="text-sm font-semibold text-white">✨ สร้างตัวละครใหม่</h3>
-          <button onclick="closeCreateCharacterModal()" class="text-neutral-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+
+    <!-- ==================== MODAL: VIRTUAL SMARTPHONE (IG/PHONE MODE) ==================== -->
+    <div id="phone-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-3">
+      <div class="w-full max-w-xs h-[640px] bg-neutral-950 border-2 border-neutral-700 rounded-[32px] flex flex-col overflow-hidden shadow-2xl relative">
+        
+        <!-- Phone Top Speaker & Notch -->
+        <div class="h-6 bg-neutral-950 flex justify-center items-center">
+          <div class="w-16 h-3 bg-neutral-800 rounded-full"></div>
         </div>
 
-        <div class="space-y-3 text-xs">
-          <div>
-            <label class="block text-neutral-400 mb-1">ชื่อตัวละคร</label>
-            <input id="new-char-name" type="text" placeholder="เช่น ไค, ฮารุ, มินอา" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-rose-500">
-          </div>
-          <div>
-            <label class="block text-neutral-400 mb-1">นิสัย / สไตล์การคุย</label>
-            <select id="new-char-personality" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-rose-500">
-              <option value="sweet">ขี้อ้อน ปากหวาน (Lovey-dovey)</option>
-              <option value="tsundere">ปากแข็ง ขี้เก๊กแต่แอบห่วง (ซึนเดเระ)</option>
-              <option value="caring">ผู้ใหญ่อบอุ่น สุภาพ เอาใจใส่</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-neutral-400 mb-1">ประโยคทักทายแรก</label>
-            <input id="new-char-greeting" type="text" placeholder="เช่น หวัดดี คิดถึงฉันอยู่ล่ะสิ?" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-rose-500">
-          </div>
-          <div>
-            <label class="block text-neutral-400 mb-1">ลิงก์รูปโปรไฟล์ (URL)</label>
-            <input id="new-char-avatar" type="text" placeholder="เว้นว่างได้ (ใช้รูปตั้งต้นอัตโนมัติ)" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-rose-500">
+        <!-- Phone Header (Instagram Style) -->
+        <div class="px-3 py-2 border-b border-neutral-800 flex justify-between items-center bg-neutral-900/50">
+          <span class="text-xs font-bold text-white tracking-wider flex items-center gap-1">
+            <i class="fa-brands fa-instagram text-rose-500"></i> Photogram
+          </span>
+          <button onclick="closePhoneModal()" class="text-neutral-400 hover:text-white text-xs"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <!-- Phone Tab Selector -->
+        <div class="flex border-b border-neutral-800 text-xs bg-neutral-900/30">
+          <button onclick="switchPhoneTab('feed')" id="p-tab-btn-feed" class="flex-1 py-2 text-rose-400 border-b-2 border-rose-500 font-medium">โพสต์ประจำวัน</button>
+          <button onclick="switchPhoneTab('dm')" id="p-tab-btn-dm" class="flex-1 py-2 text-neutral-400 hover:text-white font-medium">แชท DM ด่วน</button>
+        </div>
+
+        <!-- Phone Tab 1: Instagram Posts Feed -->
+        <div id="p-tab-feed" class="flex-1 overflow-y-auto p-3 space-y-3.5 hide-scrollbar">
+          <div id="phone-feed-container" class="space-y-3.5"></div>
+        </div>
+
+        <!-- Phone Tab 2: Casual DM (No roleplay action) -->
+        <div id="p-tab-dm" class="hidden flex-1 flex flex-col overflow-hidden">
+          <div id="dm-messages" class="flex-1 overflow-y-auto p-3 space-y-2 text-xs hide-scrollbar"></div>
+          <div class="p-2 border-t border-neutral-800 flex gap-1.5 bg-neutral-900">
+            <input id="dm-input" type="text" placeholder="ส่งข้อความคุยแบบเพื่อน..." class="flex-1 bg-neutral-950 border border-neutral-800 text-white text-[11px] px-3 py-1.5 rounded-full focus:outline-none" onkeydown="if(event.key === 'Enter') sendDmMessage()">
+            <button onclick="sendDmMessage()" class="px-3 bg-rose-600 text-white rounded-full text-xs"><i class="fa-solid fa-arrow-up"></i></button>
           </div>
         </div>
 
-        <button onclick="saveNewCharacter()" class="w-full py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-medium transition shadow-lg shadow-rose-600/30">
-          บันทึกและเริ่มคุยเลย
-        </button>
-      </div>
-    </div>
-
-    <!-- MODAL 3: Scenarios -->
-    <div id="scenario-modal" class="hidden absolute inset-0 bg-black/80 backdrop-blur-sm z-30 flex items-end sm:items-center justify-center p-4">
-      <div class="w-full bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-3.5">
-        <div class="flex justify-between items-center border-b border-neutral-800 pb-2">
-          <h3 class="text-sm font-semibold text-white flex items-center gap-2">
-            <i class="fa-solid fa-masks-theater text-rose-500"></i> เลือกสถานการณ์จำลอง
-          </h3>
-          <button onclick="toggleScenarioModal()" class="text-neutral-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div class="space-y-2">
-          <button onclick="setScenario('rain', 'ติดฝนอยู่ใต้ชายคาด้วยกัน')" class="w-full text-left p-2.5 rounded-xl bg-neutral-950 hover:border-rose-500/50 border border-neutral-800 transition">
-            <div class="text-xs font-medium text-rose-300">🌧️ ติดฝนอยู่ใต้ชายคาด้วยกัน</div>
-            <div class="text-[11px] text-neutral-400 mt-0.5">ฝนตกหนัก มีร่มคันเดียว แฟนดึงคุณเข้ามาใกล้ๆ เพื่อไม่ให้เปียก</div>
-          </button>
-          <button onclick="setScenario('sick', 'แฟนมาเฝ้าไข้ตอนคุณไม่สบาย')" class="w-full text-left p-2.5 rounded-xl bg-neutral-950 hover:border-rose-500/50 border border-neutral-800 transition">
-            <div class="text-xs font-medium text-rose-300">🤒 ป่วยแล้วมีแฟนมาดูแล</div>
-            <div class="text-[11px] text-neutral-400 mt-0.5">คุณนอนซมอยู่บนเตียง แฟนคอยเช็ดตัวและป้อนน้ำด้วยความเป็นห่วง</div>
-          </button>
-        </div>
       </div>
     </div>
 
   </div>
 
   <script>
-    // ฐานข้อมูลตัวละครในเครื่อง (ผู้เล่นสามารถเพิ่มใหม่ได้เรื่อยๆ)
-    let characters = [
+    // ==================== STATE MANAGEMENT ====================
+    let currentBotId = "bot_1";
+    let isCalling = false;
+    let attachedImageUrl = null;
+
+    // ข้อมูลเริ่มต้นของบอทและประวัติแชท (พร้อมรองรับ LocalStorage)
+    let defaultBots = [
       {
-        id: "char_1",
+        id: "bot_1",
         name: "เร็น (Ren)",
-        personality: "sweet",
-        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80",
-        affection: 80,
-        postCaption: "กาแฟแก้วโปรดก็ไม่หวานเท่าตอนอยู่กับเธอหรอกนะ ☕✨",
-        postImage: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop&q=80",
+        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
+        instruction: "คุณคือเร็น ชายหนุ่มอายุ 22 อบอุ่น ขี้อ้อน และรักผู้เล่นมาก ไม่หลุดคาร์ บรรยายการกระทำอย่างนุ่มนวลและสละสลวย",
+        gallery: [
+          "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop&q=80",
+          "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=80"
+        ],
+        affection: 88,
         history: [
-          { sender: "ai", text: "วันนี้เหนื่อยไหมคนดี? เค้าคิดถึงเธอทั้งวันเลยเนี่ย มีอะไรเล่าให้เค้าฟังไหมครับ?", action: "เงยหน้าขึ้นมายิ้มหวานให้คุณ" }
-        ]
-      },
-      {
-        id: "char_2",
-        name: "ไค (Kai)",
-        personality: "tsundere",
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&auto=format&fit=crop&q=80",
-        affection: 55,
-        postCaption: "ก็ไม่ได้อยากไปเดินเล่นคนเดียวหรอกนะ แต่ไม่มีใครว่างไปด้วยนี่หว่า...",
-        postImage: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format&fit=crop&q=80",
-        history: [
-          { sender: "ai", text: "มองอะไร... ไม่ได้มารอเธอสักหน่อย แค่แวะมาเฉยๆ ต่างหาก", action: "กอดอกแล้วหันหน้าหนีไปอีกทาง" }
+          {
+            sender: "bot",
+            narration: "เขานั่งเท้าคางมองดูคุณอยู่ฝั่งตรงข้ามของโต๊ะไม้ รอยยิ้มบางๆ ปรากฏขึ้นที่มุมปากพลางเอื้อมมือมาสัมผัสปลายนิ้วของคุณอย่างแผ่วเบา",
+            speech: "วันนี้เหนื่อยไหมครับคนดี? เค้าคิดถึงเธอทั้งวันเลยเนี่ย..."
+          }
+        ],
+        dmHistory: [
+          { sender: "bot", text: "เลิกงานหรือยัง อย่าลืมกินข้าวนะครับ 🤍" }
+        ],
+        posts: [
+          {
+            img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop&q=80",
+            caption: "กาแฟแก้วโปรดก็ยังสู้รอยยิ้มของเธอไม่ได้เลย ✨☕",
+            time: "1 ชม. ที่แล้ว"
+          }
         ]
       }
     ];
 
-    let activeCharId = "char_1";
-    let isCalling = false;
-    let currentScenario = 'default';
+    let bots = JSON.parse(localStorage.getItem('lovey_bots')) || defaultBots;
 
-    // คลังคำตอบจำแนกตามนิสัยและสถานการณ์
-    const dialogueBank = {
-      sweet: {
-        default: [
-          { text: "น่ารักจังเลย พูดแบบนี้เค้าก็เขินแย่สิครับ", action: "เอามือเกาท้ายทอยแล้วส่งสายตาหวานๆ" },
-          { text: "เค้าตามใจเธอทุกอย่างเลย ขอแค่ได้อยู่ด้วยกันแบบนี้ก็พอ", action: "เอื้อมมือไปลูบผมคุณอย่างอ่อนโยน" },
-          { text: "เธอคือความสุขของเค้าเลยนะ รู้ตัวบ้างไหมเนี่ย?", action: "กุมมือคุณขึ้นมาแนบแก้มตัวเอง" }
-        ],
-        rain: [
-          { text: "หนาวไหมครับ? ขยับเข้ามาใกล้ๆ เค้าอีกนิดสิ เดี๋ยวไม่สบายเอานะ", action: "โอบไหล่คุณไว้แน่นขึ้นเพื่อบังละอองฝน" }
-        ],
-        sick: [
-          { text: "กินยานอนพักผ่อนเยอะๆ นะคนเก่ง เค้าจะไม่ไปไหน จะนั่งเฝ้าตรงนี้เอง", action: "เอาหลังมือแตะหน้าผากคุณวัดไข้อย่างทะนุถนอม" }
-        ]
-      },
-      tsundere: {
-        default: [
-          { text: "อย่ามาทำเป็นพูดดีไปหน่อยเลย... แต่ก็ดีใจนะที่ทักมา", action: "แอบยิ้มมุมปากนิดๆ ก่อนจะตีหน้านิ่ง" },
-          { text: "ไม่ได้คิดถึงเธอสักหน่อย! แค่อยากรู้ว่าทำอะไรอยู่เฉยๆ ย่ะ", action: "เกาแก้มแก้เก้อแล้วแอบมองคุณทางหางตา" },
-          { text: "คราวหลังอย่าไปน่ารักใส่คนอื่นแบบนี้อีกนะ... ฉันหวง เข้าใจไหม?", action: "บ่นพึมพำในลำคอหน้าแดงระเรื่อ" }
-        ],
-        rain: [
-          { text: "ร่มมีคันเดียวก็ช่วยไม่ได้ ขยับเข้ามาใกล้ๆ สิ! เดี๋ยวก็เปียกจนเป็นหวัดหรอก", action: "เอาร่มเอียงไปทางคุณจนฝั่งตัวเองเปียก" }
-        ],
-        sick: [
-          { text: "บอกแล้วไม่รู้จักดูแลตัวเอง... อะ ดื่มน้ำซะ เดี๋ยวฉันนั่งดูอาการอยู่แถวนี้แหละ", action: "วางแก้วน้ำไว้ข้างเตียงแล้วคอยสังเกตคุณเงียบๆ" }
-        ]
-      },
-      caring: {
-        default: [
-          { text: "วันนี้เป็นวันที่ดีของคุณใช่ไหมครับ? ถ้าเหนื่อยก็ทิ้งตัวพักกับผมได้เสมอนะ", action: "ส่งยิ้มอบอุ่นให้อย่างใจเย็น" },
-          { text: "ผมคอยดูแลคุณตรงนี้เสมอ ไม่ต้องกังวลอะไรเลยนะครับ", action: "บีบมือคุณเบาๆ ให้กำลังใจ" }
-        ],
-        rain: [
-          { text: "ลมแรงมาก ระวังละอองฝนนะครับ หลบหลังผมไว้ เดี๋ยวผมกันให้เอง", action: "ก้าวมายืนบังทางลมให้คุณอย่างมั่นคง" }
-        ],
-        sick: [
-          { text: "อย่าฝืนลุกขึ้นมานะครับ นอนพักเถอะ เดี๋ยวเรื่องอาหารกับยาผมจัดการให้เรียบร้อยเอง", action: "ลูบหลังมือคุณเบาๆ อย่างปลอบประโลม" }
-        ]
-      }
-    };
-
-    function getActiveCharacter() {
-      return characters.find(c => c.id === activeCharId) || characters[0];
+    function saveState() {
+      localStorage.setItem('lovey_bots', JSON.stringify(bots));
     }
 
-    function init() {
-      renderActiveCharacter();
-      renderCharacterDrawerList();
-      renderFeed();
+    function getBot(id) {
+      return bots.find(b => b.id === id) || bots[0];
     }
 
-    function renderActiveCharacter() {
-      const char = getActiveCharacter();
-      document.getElementById('header-name').innerText = char.name;
-      document.getElementById('header-avatar').src = char.avatar;
-      document.getElementById('header-affection').innerText = char.affection;
+    // ==================== LOBBY LOGIC ====================
+    function switchLobbyTab(tab) {
+      const tabs = ['home', 'explore', 'chats', 'community', 'settings'];
+      const titles = {
+        home: 'หน้าแรก',
+        explore: 'ค้นหา & สร้างบอทใหม่',
+        chats: 'ประวัติเนื้อเรื่อง',
+        community: 'คอมมูนิตี้ผู้เล่น',
+        settings: 'ตั้งค่าระบบ'
+      };
 
-      // Render Messages
-      const container = document.getElementById('chat-container');
-      container.innerHTML = '';
-      char.history.forEach(msg => {
-        if (msg.sender === 'user') {
-          appendUserBubble(msg.text, false);
+      tabs.forEach(t => {
+        const sec = document.getElementById(`tab-${t}`);
+        const btn = document.getElementById(`btn-tab-${t}`);
+        if (t === tab) {
+          sec.classList.remove('hidden');
+          btn.className = 'flex flex-col items-center gap-1 text-rose-500 transition';
         } else {
-          appendAiBubble(msg.text, msg.action, false);
+          sec.classList.add('hidden');
+          btn.className = 'flex flex-col items-center gap-1 text-neutral-400 hover:text-white transition';
         }
       });
-      container.scrollTop = container.scrollHeight;
+
+      document.getElementById('lobby-header-title').innerText = titles[tab];
+      if (tab === 'home') renderHomeFriends();
+      if (tab === 'chats') renderChatRecords();
     }
 
-    function renderCharacterDrawerList() {
-      const list = document.getElementById('character-list');
+    function renderHomeFriends() {
+      const list = document.getElementById('home-friends-list');
       list.innerHTML = '';
+      document.getElementById('friend-count').innerText = `${bots.length} คน`;
 
-      characters.forEach(c => {
-        const isActive = c.id === activeCharId;
+      bots.forEach(b => {
         const div = document.createElement('div');
-        div.className = `p-3 rounded-2xl flex items-center justify-between cursor-pointer border transition ${
-          isActive ? 'bg-rose-950/40 border-rose-500/60' : 'bg-neutral-950 border-neutral-800 hover:border-neutral-700'
-        }`;
-        div.onclick = () => selectCharacter(c.id);
-
+        div.className = 'p-3 bg-neutral-950 border border-neutral-800/80 rounded-2xl flex items-center justify-between hover:border-rose-500/40 transition cursor-pointer';
+        div.onclick = () => openChatRoom(b.id);
         div.innerHTML = `
           <div class="flex items-center gap-3">
-            <img src="${c.avatar}" class="w-10 h-10 rounded-full object-cover border border-neutral-700">
+            <img src="${b.avatar}" class="w-11 h-11 rounded-full object-cover border border-neutral-700">
             <div>
-              <div class="text-xs font-semibold text-white flex items-center gap-1.5">
-                ${c.name}
-                ${isActive ? '<span class="text-[10px] bg-rose-600 px-1.5 py-0.2 rounded text-white font-normal">กำลังคุย</span>' : ''}
-              </div>
-              <div class="text-[11px] text-neutral-400 mt-0.5">นิสัย: ${getPersonalityLabel(c.personality)}</div>
+              <h4 class="text-xs font-semibold text-white">${b.name}</h4>
+              <p class="text-[11px] text-neutral-400 truncate max-w-[170px] mt-0.5">${b.instruction}</p>
             </div>
           </div>
-          <div class="text-[11px] text-rose-400 font-medium">
-            <i class="fa-solid fa-heart text-[10px]"></i> ${c.affection}%
+          <button class="px-3 py-1 bg-rose-600/20 text-rose-300 border border-rose-500/30 rounded-full text-[10px] font-medium hover:bg-rose-600 hover:text-white transition">
+            เข้าบท
+          </button>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function renderChatRecords() {
+      const list = document.getElementById('chat-records-list');
+      list.innerHTML = '';
+
+      bots.forEach(b => {
+        const lastMsg = b.history[b.history.length - 1];
+        const div = document.createElement('div');
+        div.className = 'p-3 bg-neutral-950 border border-neutral-800 rounded-2xl flex gap-3 cursor-pointer hover:border-neutral-700 transition';
+        div.onclick = () => openChatRoom(b.id);
+        div.innerHTML = `
+          <img src="${b.avatar}" class="w-10 h-10 rounded-full object-cover">
+          <div class="flex-1 overflow-hidden">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-semibold text-white">${b.name}</span>
+              <span class="text-[10px] text-rose-400 font-medium">${b.affection}%</span>
+            </div>
+            <p class="text-[11px] text-neutral-400 truncate mt-1 italic">${lastMsg ? (lastMsg.narration || lastMsg.speech || lastMsg.userText) : 'ยังไม่มีบท'}</p>
           </div>
         `;
         list.appendChild(div);
       });
     }
 
-    function getPersonalityLabel(p) {
-      if (p === 'tsundere') return 'ซึนเดเระ';
-      if (p === 'caring') return 'อบอุ่น สุภาพ';
-      return 'ขี้อ้อน หวานๆ';
-    }
+    function saveNewBot() {
+      const name = document.getElementById('create-name').value.trim();
+      let avatar = document.getElementById('create-avatar').value.trim();
+      const galleryRaw = document.getElementById('create-gallery').value.trim();
+      const prompt = document.getElementById('create-prompt').value.trim();
+      const starter = document.getElementById('create-starter').value.trim();
 
-    function selectCharacter(id) {
-      activeCharId = id;
-      toggleCharacterDrawer();
-      renderActiveCharacter();
-      renderFeed();
-    }
+      if (!name) return alert('กรุณาใส่ชื่อบอท');
+      if (!avatar) avatar = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&auto=format&fit=crop&q=80';
 
-    function toggleCharacterDrawer() {
-      document.getElementById('character-drawer').classList.toggle('hidden');
-    }
+      const gallery = galleryRaw ? galleryRaw.split(',').map(s => s.trim()) : [avatar];
 
-    function openCreateCharacterModal() {
-      document.getElementById('create-modal').classList.remove('hidden');
-    }
-
-    function closeCreateCharacterModal() {
-      document.getElementById('create-modal').classList.add('hidden');
-    }
-
-    function saveNewCharacter() {
-      const name = document.getElementById('new-char-name').value.trim();
-      const personality = document.getElementById('new-char-personality').value;
-      const greeting = document.getElementById('new-char-greeting').value.trim();
-      let avatar = document.getElementById('new-char-avatar').value.trim();
-
-      if (!name) {
-        alert('กรุณาตั้งชื่อตัวละคร');
-        return;
-      }
-
-      if (!avatar) {
-        avatar = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200&auto=format&fit=crop&q=80";
-      }
-
-      const newChar = {
-        id: "char_" + Date.now(),
+      const newBot = {
+        id: 'bot_' + Date.now(),
         name: name,
-        personality: personality,
         avatar: avatar,
-        affection: 60,
-        postCaption: `ยินดีที่ได้รู้จักทุกคนนะครับ แวะมาคุยกันได้นะ! ✨`,
-        postImage: avatar,
+        instruction: prompt || 'ตัวละครบรรยายลึกซึ้ง รักผู้เล่นอย่างยิ่ง',
+        gallery: gallery,
+        affection: 65,
         history: [
           {
-            sender: "ai",
-            text: greeting || "ยินดีที่ได้รู้จักนะ อยากคุยเรื่องอะไรกับฉันล่ะ?",
-            action: "ก้าวเข้ามาหาแล้วทักทายคุณอย่างเป็นกันเอง"
+            sender: "bot",
+            narration: starter || "เขายืนรอคุณอยู่ด้วยแววตาที่เต็มไปด้วยความคิดถึง เมื่อเห็นคุณเดินเข้ามา เขาก็ก้าวตรงเข้ามาหาทันที",
+            speech: "ในที่สุดก็ได้เจอเธอนะ..."
           }
-        ]
+        ],
+        dmHistory: [{ sender: "bot", text: "ทักทายครับ ยินดีที่ได้คุยกันนะ" }],
+        posts: [{
+          img: gallery[0],
+          caption: `เริ่มต้นเรื่องราวใหม่กับคุณ... ✨`,
+          time: "เมื่อครู่"
+        }]
       };
 
-      characters.push(newChar);
-      activeCharId = newChar.id;
-
-      // Reset form
-      document.getElementById('new-char-name').value = '';
-      document.getElementById('new-char-greeting').value = '';
-      document.getElementById('new-char-avatar').value = '';
-
-      closeCreateCharacterModal();
-      renderCharacterDrawerList();
-      renderActiveCharacter();
-      renderFeed();
+      bots.push(newBot);
+      saveState();
+      alert('สร้างบอทเรียบร้อยแล้ว!');
+      switchLobbyTab('home');
     }
 
-    function renderFeed() {
-      const char = getActiveCharacter();
-      const feedContainer = document.getElementById('feed-posts');
-      feedContainer.innerHTML = `
-        <div class="bg-neutral-950 border border-neutral-800 rounded-2xl overflow-hidden shadow-sm">
-          <div class="p-3 flex items-center gap-2.5 border-b border-neutral-900">
-            <img src="${char.avatar}" class="w-7 h-7 rounded-full object-cover">
-            <span class="text-xs font-medium text-white">${char.name}</span>
-          </div>
-          <img src="${char.postImage}" class="w-full aspect-square object-cover" alt="Post">
-          <div class="p-3 space-y-2">
-            <div class="flex items-center gap-3 text-neutral-300">
-              <button onclick="toggleLike(this)" class="hover:text-rose-500 transition"><i class="fa-regular fa-heart text-base"></i></button>
-              <i class="fa-regular fa-comment text-base"></i>
+    // ==================== ROLEPLAY ROOM LOGIC ====================
+    function openChatRoom(id) {
+      currentBotId = id;
+      const b = getBot(id);
+
+      document.getElementById('view-lobby').classList.add('hidden');
+      document.getElementById('view-room').classList.remove('hidden');
+
+      document.getElementById('room-name').innerText = b.name;
+      document.getElementById('room-avatar').src = b.avatar;
+      document.getElementById('room-affection').innerText = b.affection;
+
+      renderRoomMessages();
+    }
+
+    function backToLobby() {
+      document.getElementById('view-room').classList.add('hidden');
+      document.getElementById('view-lobby').classList.remove('hidden');
+      if (isCalling) toggleCallSimulation();
+      switchLobbyTab('home');
+    }
+
+    function renderRoomMessages() {
+      const b = getBot(currentBotId);
+      const container = document.getElementById('room-messages');
+      container.innerHTML = '';
+
+      b.history.forEach(m => {
+        if (m.sender === 'user') {
+          const userDiv = document.createElement('div');
+          userDiv.className = 'flex flex-col items-end self-end max-w-[85%] ml-auto space-y-1';
+          let imgHtml = m.image ? `<img src="${m.image}" class="w-48 h-32 object-cover rounded-xl border border-neutral-700 mb-1">` : '';
+          userDiv.innerHTML = `
+            ${imgHtml}
+            <div class="bg-rose-600 text-white text-xs px-4 py-2.5 rounded-2xl rounded-tr-sm leading-relaxed shadow-sm">
+              ${m.userText}
             </div>
-            <p class="text-xs text-neutral-200 leading-relaxed">
-              <strong class="text-white">${char.name}</strong> ${char.postCaption}
-            </p>
-            <span class="text-[10px] text-neutral-500 block">เพิ่งแชร์เมื่อครู่</span>
-          </div>
-        </div>
-      `;
+          `;
+          container.appendChild(userDiv);
+        } else {
+          const botDiv = document.createElement('div');
+          botDiv.className = 'flex flex-col items-start max-w-[90%] space-y-1';
+          botDiv.innerHTML = `
+            <div class="text-[11px] text-neutral-300 italic leading-relaxed px-1 text-slate-300">
+              *${m.narration}*
+            </div>
+            <div class="bg-neutral-800 border border-neutral-700/60 text-rose-100 text-xs px-4 py-2.5 rounded-2xl rounded-tl-sm leading-relaxed shadow-sm">
+              "${m.speech}"
+            </div>
+          `;
+          container.appendChild(botDiv);
+        }
+      });
+      container.scrollTop = container.scrollHeight;
     }
 
-    function sendMessage() {
-      const input = document.getElementById('user-input');
+    function handleSendChat() {
+      const input = document.getElementById('chat-input');
       const text = input.value.trim();
-      if (!text) return;
+      if (!text && !attachedImageUrl) return;
 
-      const char = getActiveCharacter();
+      const b = getBot(currentBotId);
+      
+      // บันทึกข้อความผู้เล่น
+      b.history.push({
+        sender: 'user',
+        userText: text,
+        image: attachedImageUrl
+      });
 
-      // บันทึกและแสดงข้อความ User
-      char.history.push({ sender: "user", text: text });
-      appendUserBubble(text, true);
       input.value = '';
+      clearAttachedImage();
+      b.affection = Math.min(100, b.affection + 1);
+      document.getElementById('room-affection').innerText = b.affection;
+      renderRoomMessages();
 
-      // อัปเดตความชอบ
-      char.affection = Math.min(100, char.affection + 1);
-      document.getElementById('header-affection').innerText = char.affection;
-
-      // ตอบกลับอัตโนมัติตามนิสัย
+      // การตอบกลับแบบบรรยายวรรณกรรม (Narrative Engine)
       setTimeout(() => {
-        const bank = dialogueBank[char.personality] || dialogueBank.sweet;
-        const pool = bank[currentScenario] || bank.default;
-        const reply = pool[Math.floor(Math.random() * pool.length)];
+        const narrativeReplies = [
+          {
+            narration: "เขาขยับตัวเข้ามาใกล้ขึ้นอีกนิด กลิ่นหอมจางๆ จากเสื้อโค้ตของเขาลอยมาแตะจมูก ปลายนิ้วเรียวสัมผัสข้างแก้มของคุณอย่างทะนุถนอมราวกับกลัวคุณจะแตกสลาย",
+            speech: "รู้ไหมว่าเวลาเธอทำหน้าแบบนี้... มันทำให้เค้าไม่อยากปล่อยเธอไปไหนเลย"
+          },
+          {
+            narration: "สายตาของเขาไหววูบไปชั่วครู่ ก่อนจะระบายยิ้มออกมาด้วยความเอ็นดู เขาโน้มตัวลงมาเล็กน้อยจนใบหน้าอยู่ระดับเดียวกับคุณ แววตาเต็มไปด้วยความจริงจัง",
+            speech: "เค้าฟังเธออยู่เสมอ ไม่ว่าเธอจะเล่าเรื่องอะไร เค้าก็พร้อมจะรับฟังทุกอย่างครับ"
+          },
+          {
+            narration: "เสียงหัวใจของเขาเต้นเป็นจังหวะหนักแน่นยามที่เขาดึงคุณเข้าไปโอบไว้ในอ้อมแขน ฝ่ามืออุ่นลูบแผ่นหลังของคุณอย่างปลอบประโลม",
+            speech: "ไม่ต้องกลัวอะไรทั้งนั้นนะ อยู่ตรงนี้กับเค้า... ปลอดภัยแล้วครับ"
+          }
+        ];
 
-        char.history.push({ sender: "ai", text: reply.text, action: reply.action });
-        appendAiBubble(reply.text, reply.action, true);
+        const chosen = narrativeReplies[Math.floor(Math.random() * narrativeReplies.length)];
+        b.history.push({
+          sender: 'bot',
+          narration: chosen.narration,
+          speech: chosen.speech
+        });
+        saveState();
+        renderRoomMessages();
 
         if (isCalling) {
-          speakText(reply.text);
+          speakText(chosen.speech);
         }
-      }, 700);
+      }, 800);
     }
 
-    function appendUserBubble(text, scroll = true) {
-      const container = document.getElementById('chat-container');
-      const div = document.createElement('div');
-      div.className = 'flex flex-col items-end self-end max-w-[80%]';
-      div.innerHTML = `
-        <div class="bg-rose-600 rounded-2xl rounded-tr-sm px-3.5 py-2.5 text-xs text-white leading-relaxed shadow-sm">
-          ${text}
-        </div>
-      `;
-      container.appendChild(div);
-      if (scroll) container.scrollTop = container.scrollHeight;
+    function promptAttachImage() {
+      const url = prompt("ใส่ URL รูปภาพเพื่อใช้ประกอบบรรยายฉาก:");
+      if (url) {
+        attachedImageUrl = url;
+        document.getElementById('img-preview').src = url;
+        document.getElementById('img-preview-box').classList.remove('hidden');
+      }
     }
 
-    function appendAiBubble(text, action, scroll = true) {
-      const container = document.getElementById('chat-container');
-      const div = document.createElement('div');
-      div.className = 'flex flex-col items-start max-w-[80%]';
-      div.innerHTML = `
-        <span class="text-[11px] text-rose-300/80 italic mb-1 px-1">*${action}*</span>
-        <div class="bg-neutral-800 border border-neutral-700/60 rounded-2xl rounded-tl-sm px-3.5 py-2.5 text-xs text-neutral-200 leading-relaxed shadow-sm">
-          ${text}
-        </div>
-      `;
-      container.appendChild(div);
-      if (scroll) container.scrollTop = container.scrollHeight;
+    function clearAttachedImage() {
+      attachedImageUrl = null;
+      document.getElementById('img-preview-box').classList.add('hidden');
     }
 
-    function toggleScenarioModal() {
-      document.getElementById('scenario-modal').classList.toggle('hidden');
-    }
-
-    function setScenario(key, title) {
-      currentScenario = key;
-      document.getElementById('scenario-title').innerText = title;
-      toggleScenarioModal();
-      
-      const char = getActiveCharacter();
-      const bank = dialogueBank[char.personality] || dialogueBank.sweet;
-      const starter = (bank[key] && bank[key][0]) || bank.default[0];
-
-      char.history.push({ sender: "ai", text: starter.text, action: starter.action });
-      appendAiBubble(starter.text, starter.action, true);
-    }
-
-    function resetScenario() {
-      currentScenario = 'default';
-      document.getElementById('scenario-title').innerText = 'แชทปกติประจำวัน';
-      const char = getActiveCharacter();
-      appendAiBubble("กลับมาคุยกันสบายๆ แล้วนะ มีเรื่องอะไรอยากเล่าให้ฟังอีกไหม?", "มองหน้าคุณด้วยรอยยิ้ม");
-    }
-
-    function toggleCall() {
+    // ==================== CALL SIMULATION ====================
+    function toggleCallSimulation() {
       isCalling = !isCalling;
-      const banner = document.getElementById('call-banner');
-      const callBtn = document.getElementById('call-btn');
+      const bar = document.getElementById('call-bar');
+      const btn = document.getElementById('call-toggle-btn');
 
       if (isCalling) {
-        banner.classList.remove('hidden');
-        callBtn.className = 'p-2 text-white rounded-full bg-rose-600 transition';
-        speakText("ฮัลโหล ได้ยินชัดไหมครับ?");
+        bar.classList.remove('hidden');
+        btn.className = 'p-2 text-white bg-rose-600 rounded-full transition';
+        speakText("ฮัลโหล ได้ยินเสียงเค้าชัดไหมคนดี?");
       } else {
-        banner.classList.add('hidden');
-        callBtn.className = 'p-2 text-neutral-300 hover:text-white rounded-full bg-neutral-800 transition';
+        bar.classList.add('hidden');
+        btn.className = 'p-2 text-neutral-300 hover:text-white bg-neutral-800 rounded-full transition';
         if ('speechSynthesis' in window) window.speechSynthesis.cancel();
       }
     }
@@ -516,43 +608,123 @@
     function speakText(text) {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'th-TH';
-        utterance.rate = 0.95;
-        window.speechSynthesis.speak(utterance);
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'th-TH';
+        u.rate = 0.95;
+        window.speechSynthesis.speak(u);
       }
     }
 
-    function switchTab(tab) {
-      const chatTab = document.getElementById('chat-tab');
-      const feedTab = document.getElementById('feed-tab');
-      const navChat = document.getElementById('nav-chat-btn');
-      const navFeed = document.getElementById('nav-feed-btn');
+    // ==================== VIRTUAL SMARTPHONE (IG & DM) ====================
+    function openPhoneModal() {
+      const b = getBot(currentBotId);
+      document.getElementById('phone-modal').classList.remove('hidden');
+      renderPhoneFeed(b);
+      renderPhoneDm(b);
+    }
 
-      if (tab === 'chat') {
-        chatTab.classList.remove('hidden');
-        feedTab.classList.add('hidden');
-        navChat.className = 'flex flex-col items-center gap-1 text-rose-500';
-        navFeed.className = 'flex flex-col items-center gap-1 text-neutral-400 hover:text-white';
-      } else {
-        chatTab.classList.add('hidden');
+    function closePhoneModal() {
+      document.getElementById('phone-modal').classList.add('hidden');
+    }
+
+    function switchPhoneTab(tab) {
+      const feedBtn = document.getElementById('p-tab-btn-feed');
+      const dmBtn = document.getElementById('p-tab-btn-dm');
+      const feedTab = document.getElementById('p-tab-feed');
+      const dmTab = document.getElementById('p-tab-dm');
+
+      if (tab === 'feed') {
         feedTab.classList.remove('hidden');
-        navChat.className = 'flex flex-col items-center gap-1 text-neutral-400 hover:text-white';
-        navFeed.className = 'flex flex-col items-center gap-1 text-rose-500';
+        dmTab.classList.add('hidden');
+        feedBtn.className = 'flex-1 py-2 text-rose-400 border-b-2 border-rose-500 font-medium';
+        dmBtn.className = 'flex-1 py-2 text-neutral-400 hover:text-white font-medium';
+      } else {
+        feedTab.classList.add('hidden');
+        dmTab.classList.remove('hidden');
+        dmBtn.className = 'flex-1 py-2 text-rose-400 border-b-2 border-rose-500 font-medium';
+        feedBtn.className = 'flex-1 py-2 text-neutral-400 hover:text-white font-medium';
       }
     }
 
-    function toggleLike(btn) {
-      const icon = btn.querySelector('i');
-      if (icon.classList.contains('fa-regular')) {
-        icon.className = 'fa-solid fa-heart text-base text-rose-500 animate-bounce';
-      } else {
-        icon.className = 'fa-regular fa-heart text-base';
+    function renderPhoneFeed(b) {
+      const container = document.getElementById('phone-feed-container');
+      container.innerHTML = '';
+
+      b.posts.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden';
+        div.innerHTML = `
+          <div class="p-2.5 flex items-center gap-2 border-b border-neutral-800/60">
+            <img src="${b.avatar}" class="w-6 h-6 rounded-full object-cover">
+            <span class="text-xs font-medium text-white">${b.name}</span>
+          </div>
+          <img src="${p.img}" class="w-full aspect-square object-cover">
+          <div class="p-2.5 space-y-1.5">
+            <div class="flex gap-2 text-neutral-300 text-sm">
+              <i class="fa-regular fa-heart"></i>
+              <i class="fa-regular fa-comment"></i>
+            </div>
+            <p class="text-[11px] text-neutral-200"><strong>${b.name}</strong> ${p.caption}</p>
+            <span class="text-[9px] text-neutral-500">${p.time}</span>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function renderPhoneDm(b) {
+      const container = document.getElementById('dm-messages');
+      container.innerHTML = '';
+
+      b.dmHistory.forEach(d => {
+        const div = document.createElement('div');
+        div.className = `flex ${d.sender === 'user' ? 'justify-end' : 'justify-start'}`;
+        div.innerHTML = `
+          <div class="max-w-[75%] px-3 py-1.5 rounded-2xl text-[11px] ${
+            d.sender === 'user' ? 'bg-rose-600 text-white rounded-br-none' : 'bg-neutral-800 text-neutral-200 rounded-bl-none'
+          }">
+            ${d.text}
+          </div>
+        `;
+        container.appendChild(div);
+      });
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function sendDmMessage() {
+      const input = document.getElementById('dm-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const b = getBot(currentBotId);
+      b.dmHistory.push({ sender: 'user', text: text });
+      input.value = '';
+      renderPhoneDm(b);
+
+      setTimeout(() => {
+        const casualReplies = [
+          "คิดถึงเหมือนกันนะ พักผ่อนเยอะๆ ด้วยล่ะ 💗",
+          "กำลังนั่งดูรูปคู่อยู่พอดีเลย ทักมาไวจัง",
+          "วันนี้ว่างไหม เดี๋ยวโทรไปหาได้เปล่า?"
+        ];
+        b.dmHistory.push({
+          sender: 'bot',
+          text: casualReplies[Math.floor(Math.random() * casualReplies.length)]
+        });
+        saveState();
+        renderPhoneDm(b);
+      }, 600);
+    }
+
+    function clearAllData() {
+      if (confirm('คุณต้องการลบข้อมูลตัวละครและบทสนทนาทั้งหมดแล้วรีเซ็ตใหม่ใช่หรือไม่?')) {
+        localStorage.removeItem('lovey_bots');
+        location.reload();
       }
     }
 
     // Start App
-    init();
+    switchLobbyTab('home');
   </script>
 </body>
 </html>
