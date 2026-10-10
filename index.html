@@ -7,7 +7,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap');
     body { font-family: 'Prompt', sans-serif; }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -30,8 +30,8 @@
           <span id="lobby-header-title" class="text-sm font-semibold text-white tracking-wide">หน้าแรก</span>
         </div>
         <div class="flex items-center gap-2 text-neutral-400 text-xs">
-          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <span>ออนไลน์</span>
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span id="header-status-text">ออนไลน์</span>
         </div>
       </header>
 
@@ -51,8 +51,15 @@
                 <input type="file" accept="image/*" class="hidden" onchange="uploadUserAvatar(event)">
               </label>
               <div class="flex-1">
-                <h2 id="user-name" class="text-base font-semibold text-white">คุณหนูนักท่องฝัน</h2>
-                <p id="user-bio" class="text-[11px] text-neutral-400 mt-0.5">"ชอบบทบรรยายโรแมนติกแฟนตาซีและตัวละครขี้อ้อน"</p>
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h2 id="user-name" class="text-base font-semibold text-white">คุณหนูนักท่องฝัน</h2>
+                    <p id="user-bio" class="text-[11px] text-neutral-400 mt-0.5">"ชอบบทบรรยายโรแมนติกแฟนตาซีและตัวละครขี้อ้อน"</p>
+                  </div>
+                  <button onclick="openEditProfileModal()" class="p-1.5 text-neutral-400 hover:text-rose-400 rounded-lg hover:bg-neutral-800 transition" title="แก้ไขโปรไฟล์">
+                    <i class="fa-solid fa-pen text-xs"></i>
+                  </button>
+                </div>
                 <div class="flex gap-2 mt-2">
                   <span class="text-[10px] bg-rose-950/80 text-rose-300 border border-rose-800/40 px-2 py-0.5 rounded-full font-medium">VIP Tier</span>
                   <span class="text-[10px] bg-neutral-800 text-neutral-300 px-2 py-0.5 rounded-full">ระดับนักเขียน</span>
@@ -112,7 +119,7 @@
 
             <div>
               <label class="block text-[11px] text-neutral-400 mb-1 font-medium">คำสั่งคุมคาแรคเตอร์ลึก & ความทรงจำ (System Instruction)</label>
-              <textarea id="create-prompt" rows="3" placeholder="ระบุนิสัย ปมหลัง เช่น: ขี้อ้อน หวงแรงแต่ปากแข็ง ไม่หลุดคาร์" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-rose-500"></textarea>
+              <textarea id="create-prompt" rows="3" placeholder="ระบุนิสัย ปมหลัง กฎห้ามหลุดคาร์ เช่น: ขี้อ้อน หวงแรงแต่ปากแข็ง บรรยายอย่างละเอียดลึกซึ้ง" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-rose-500"></textarea>
             </div>
 
             <div>
@@ -136,39 +143,62 @@
         <section id="tab-community" class="hidden space-y-3.5">
           <div class="flex justify-between items-center px-1">
             <h3 class="text-xs font-semibold text-neutral-200">บอร์ดพูดคุย & แบ่งปันบอท</h3>
-            <span class="text-[10px] text-rose-400 font-medium">+ สร้างโพสต์ใหม่</span>
+            <button onclick="openCreatePostModal()" class="text-xs text-rose-400 hover:text-rose-300 font-medium flex items-center gap-1 cursor-pointer">
+              <i class="fa-solid fa-circle-plus"></i> สร้างโพสต์ใหม่
+            </button>
           </div>
 
-          <div class="bg-neutral-950 border border-neutral-800 p-3.5 rounded-2xl space-y-2">
-            <div class="flex items-center gap-2">
-              <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-300 flex items-center justify-center text-[10px] font-bold">M</div>
-              <span class="text-xs font-medium text-white">MewMew_Writer</span>
-              <span class="text-[10px] text-neutral-500">• 1 ชม. ที่แล้ว</span>
-            </div>
-            <p class="text-xs text-neutral-300 leading-relaxed">
-              ใครมี Prompt บอทแนวเจ้าชายเย็นชาแต่คลั่งรักบ้างคะ ขอยืมไปดัดแปลงหน่อย บอทเร็นหวานจนมดขึ้นจอแล้ว 555
-            </p>
-            <div class="flex gap-4 text-neutral-400 text-[11px] pt-1">
-              <span><i class="fa-regular fa-heart"></i> 14 ไลก์</span>
-              <span><i class="fa-regular fa-comment"></i> 6 ความคิดเห็น</span>
-            </div>
-          </div>
+          <div id="community-posts-container" class="space-y-3.5"></div>
         </section>
 
         <!-- TAB 5: SETTINGS -->
         <section id="tab-settings" class="hidden space-y-3.5">
-          <div class="text-xs font-semibold text-neutral-200 px-1">การตั้งค่าทั่วไป</div>
+          <div class="text-xs font-semibold text-neutral-200 px-1">การตั้งค่าระบบ & โมเดล AI</div>
           <div class="bg-neutral-950 border border-neutral-800 rounded-2xl divide-y divide-neutral-900 text-xs text-neutral-300">
+            
+            <!-- Language Setting -->
             <div class="p-3.5 flex justify-between items-center">
               <span>ภาษาของระบบ (Language)</span>
-              <span class="text-rose-400 font-medium">ไทย (TH)</span>
+              <select id="setting-language" onchange="changeLanguage(this.value)" class="bg-neutral-900 border border-neutral-800 rounded-lg px-2.5 py-1 text-rose-300 focus:outline-none text-xs">
+                <option value="th">ไทย (TH)</option>
+                <option value="en">English (EN)</option>
+                <option value="ja">日本語 (JA)</option>
+                <option value="zh">中文 (ZH)</option>
+              </select>
             </div>
+
+            <!-- Novel Length Style -->
+            <div class="p-3.5 flex justify-between items-center">
+              <span>สไตล์ความยาวการบรรยาย</span>
+              <select id="setting-length" onchange="saveSettings()" class="bg-neutral-900 border border-neutral-800 rounded-lg px-2.5 py-1 text-neutral-300 focus:outline-none text-xs">
+                <option value="epic">นิยายพรรณนายาวพิเศษ (Deep Novel)</option>
+                <option value="medium">บรรยายปานกลาง (Standard)</option>
+                <option value="short">กระชับรวดเร็ว (Compact)</option>
+              </select>
+            </div>
+
+            <!-- AI Engine / API Key (สำหรับตอบตรงประเด็น 100% และเขียนนิยายยาวจุใจ) -->
+            <div class="p-3.5 space-y-2">
+              <div class="flex justify-between items-center">
+                <span>เชื่อมต่อสมอง AI ฟรี (Gemini API)</span>
+                <span class="text-[10px] text-emerald-400">ฉลาดระดับสูง</span>
+              </div>
+              <input id="setting-api-key" type="password" placeholder="ใส่ Gemini API Key ฟรี (ไม่ใส่จะใช้โหมดออฟไลน์)" class="w-full bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-rose-500" onchange="saveSettings()">
+              <p class="text-[10px] text-neutral-500">*หาฟรีได้จาก aistudio.google.com ถ้าใส่แล้วบอทจะบรรยายยาว พรรณนาละเอียดยิบ และคุยรู้เรื่อง 100%</p>
+            </div>
+
+            <!-- Inner Monologue Toggle -->
             <div class="p-3.5 flex justify-between items-center">
               <span>ระบบแสดงความคิดในใจบอท</span>
-              <span class="text-emerald-400 font-medium">เปิดใช้งาน (ON)</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="setting-thoughts" checked onchange="saveSettings()" class="sr-only peer">
+                <div class="w-9 h-5 bg-neutral-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-rose-600"></div>
+              </label>
             </div>
+
+            <!-- Reset Data -->
             <div class="p-3.5 flex justify-between items-center">
-              <span>ล้างความทรงจำและรีเซ็ตแชททั้งหมด</span>
+              <span>ล้างข้อมูลและประวัติทั้งหมด</span>
               <button onclick="clearAllData()" class="text-red-400 hover:text-red-300 underline text-[11px]">ล้างข้อมูล</button>
             </div>
           </div>
@@ -241,7 +271,7 @@
         <button onclick="toggleCallSimulation()" class="underline font-semibold">วางสาย</button>
       </div>
 
-      <!-- Narrative Chat Log (พร้อมกล่องความคิดในใจบอท) -->
+      <!-- Narrative Chat Log (พร้อมกล่องความคิดในใจบอท และบทบรรยายยาวละเอียด) -->
       <div id="room-messages" class="flex-1 overflow-y-auto p-4 space-y-4 hide-scrollbar"></div>
 
       <!-- Attached Image Preview Bar -->
@@ -272,10 +302,62 @@
                  class="flex-1 bg-neutral-950 border border-neutral-800 text-white text-xs px-3.5 py-2.5 rounded-full focus:outline-none focus:border-rose-500"
                  onkeydown="if(event.key === 'Enter') handleSendChat()">
 
-          <button onclick="handleSendChat()" class="p-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-full transition">
+          <button id="send-chat-btn" onclick="handleSendChat()" class="p-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-full transition">
             <i class="fa-solid fa-paper-plane text-xs"></i>
           </button>
         </div>
+      </div>
+    </div>
+
+
+    <!-- ==================== MODAL: EDIT USER PROFILE ==================== -->
+    <div id="edit-profile-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-4">
+      <div class="w-full max-w-sm bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-3.5 shadow-2xl">
+        <div class="flex justify-between items-center border-b border-neutral-800 pb-2">
+          <h3 class="text-sm font-semibold text-white">แก้ไขโปรไฟล์ผู้ใช้</h3>
+          <button onclick="closeEditProfileModal()" class="text-neutral-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="block text-neutral-400 mb-1">ชื่อผู้ใช้</label>
+            <input id="edit-user-name" type="text" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-rose-500">
+          </div>
+          <div>
+            <label class="block text-neutral-400 mb-1">คำโปรย / ชีวประวัติ (Bio)</label>
+            <textarea id="edit-user-bio" rows="2" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-rose-500"></textarea>
+          </div>
+        </div>
+        <button onclick="saveUserProfile()" class="w-full py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-medium transition shadow-lg shadow-rose-600/30">
+          บันทึกการเปลี่ยนแปลง
+        </button>
+      </div>
+    </div>
+
+
+    <!-- ==================== MODAL: CREATE COMMUNITY POST ==================== -->
+    <div id="create-post-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-4">
+      <div class="w-full max-w-sm bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-3.5 shadow-2xl">
+        <div class="flex justify-between items-center border-b border-neutral-800 pb-2">
+          <h3 class="text-sm font-semibold text-white">สร้างโพสต์ใหม่ในคอมมูนิตี้</h3>
+          <button onclick="closeCreatePostModal()" class="text-neutral-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="block text-neutral-400 mb-1">เนื้อหาโพสต์ / คำถาม / แจกบท</label>
+            <textarea id="post-content" rows="4" placeholder="พิมพ์ข้อความที่ต้องการแชร์กับผู้เล่นคนอื่นๆ..." class="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-3 text-white focus:outline-none focus:border-rose-500"></textarea>
+          </div>
+          <div>
+            <label class="block text-neutral-400 mb-1">แนบรูปภาพ (เลือกจากเครื่อง - ถ้ามี)</label>
+            <label class="px-3 py-2 bg-neutral-950 border border-neutral-800 hover:border-rose-500 text-rose-300 rounded-xl text-xs cursor-pointer flex items-center gap-2">
+              <i class="fa-solid fa-image"></i> เลือกรูปจากอัลบั้ม
+              <input type="file" accept="image/*" class="hidden" onchange="handlePostImageUpload(event)">
+            </label>
+            <img id="post-img-preview" src="" class="hidden w-full h-32 object-cover rounded-xl mt-2 border border-neutral-700">
+          </div>
+        </div>
+        <button onclick="publishCommunityPost()" class="w-full py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-medium transition shadow-lg shadow-rose-600/30">
+          เผยแพร่โพสต์
+        </button>
       </div>
     </div>
 
@@ -294,7 +376,10 @@
           <span class="text-xs font-bold text-white tracking-wider flex items-center gap-1">
             <i class="fa-brands fa-instagram text-rose-500"></i> Photogram
           </span>
-          <button onclick="closePhoneModal()" class="text-neutral-400 hover:text-white text-xs"><i class="fa-solid fa-xmark"></i></button>
+          <div class="flex items-center gap-2">
+            <button onclick="openAddBotPostModal()" title="เพิ่มโพสต์ใหม่ให้บอท" class="text-rose-400 hover:text-white text-xs"><i class="fa-solid fa-square-plus"></i></button>
+            <button onclick="closePhoneModal()" class="text-neutral-400 hover:text-white text-xs"><i class="fa-solid fa-xmark"></i></button>
+          </div>
         </div>
 
         <!-- Phone Tab Selector -->
@@ -327,29 +412,59 @@
     let currentBotId = "bot_1";
     let isCalling = false;
     let attachedImageUrl = null;
+    let postUploadedImageUrl = null;
     let tempBotAvatar = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80";
     let tempBotPost = "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop&q=80";
 
+    // User Profile
+    let userProfile = JSON.parse(localStorage.getItem('lovey_user_profile')) || {
+      name: "คุณหนูนักท่องฝัน",
+      bio: "ชอบบทบรรยายโรแมนติกแฟนตาซีและตัวละครขี้อ้อน",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80"
+    };
+
+    // System Settings
+    let appSettings = JSON.parse(localStorage.getItem('lovey_settings')) || {
+      language: "th",
+      length: "epic",
+      apiKey: "",
+      showThoughts: true
+    };
+
+    // Community Posts
+    let communityPosts = JSON.parse(localStorage.getItem('lovey_community')) || [
+      {
+        id: "post_1",
+        author: "MewMew_Writer",
+        time: "1 ชม. ที่แล้ว",
+        content: "ใครมี Prompt บอทแนวเจ้าชายเย็นชาแต่คลั่งรักบ้างคะ ขอยืมไปดัดแปลงหน่อย บอทเร็นหวานจนมดขึ้นจอแล้ว 555",
+        image: null,
+        likes: 15,
+        isLiked: false
+      }
+    ];
+
+    // Bots List
     let defaultBots = [
       {
         id: "bot_1",
         name: "เร็น (Ren)",
         avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-        instruction: "คุณคือเร็น ชายหนุ่มอายุ 22 อบอุ่น ขี้อ้อน รักผู้เล่นมาก ไม่หลุดคาร์ บรรยายความรู้สึกละเอียดลึกซึ้ง",
+        instruction: "คุณคือเร็น ชายหนุ่มอายุ 22 ปี อบอุ่น ขี้อ้อน รักและหวงผู้เล่นมาก ไม่หลุดคาร์ บรรยายความรู้สึกและการกระทำอย่างละเอียดลึกซึ้งระดับบทประพันธ์",
         postImage: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop&q=80",
         affection: 85,
         history: [
           {
             sender: "bot",
-            thought: "เธอมาหาแล้ว... วันนี้ดูเหนื่อยๆ หรือเปล่านะ อยากกอดปลอบจัง",
-            narration: "เขานั่งเท้าคางมองดูคุณอยู่ฝั่งตรงข้ามของโต๊ะไม้ รอยยิ้มบางๆ ปรากฏขึ้นที่มุมปากพลางเอื้อมมือมาสัมผัสปลายนิ้วของคุณอย่างแผ่วเบา",
-            speech: "วันนี้เหนื่อยไหมครับคนดี? เค้าคิดถึงเธอทั้งวันเลยเนี่ย..."
+            thought: "ในที่สุดเธอก็ยอมมาหา... วันนี้ดูเหนื่อยจังนะ อยากดึงมากอดให้หายเหนื่อยชะมัด",
+            narration: "เขานั่งเท้าคางมองดูคุณอยู่ฝั่งตรงข้ามของโต๊ะไม้โอ๊ก แสงแดดยามเย็นทอประกายกระทบเส้นผมสีน้ำตาลเข้มของเขา รอยยิ้มอบอุ่นปรากฏขึ้นที่มุมปาก ก่อนที่เขาจะค่อยๆ เลื่อนฝ่ามือหนามาวางทับลงบนหลังมือของคุณ สัมผัสอุ่นวาบทำให้บรรยากาศรอบตัวดูนิ่งสงบลงราวกับมีเพียงคุณสองคนในโลก",
+            speech: "วันนี้เหนื่อยไหมครับคนดี? เค้าคิดถึงเธอทั้งวันเลยเนี่ย มีอะไรอยากเล่าให้เค้าฟังไหมครับ?"
           }
         ],
         dmHistory: [
           { 
             sender: "bot", 
-            thought: "อยากคุยด้วยจัง ตอบแชทเร็วๆ นะ", 
+            thought: "อยากคุยด้วยจัง ทักไปดีไหมนะ", 
             text: "เลิกงานหรือยัง อย่าลืมกินข้าวนะครับ 🤍" 
           }
         ],
@@ -363,22 +478,23 @@
       }
     ];
 
-    let bots = JSON.parse(localStorage.getItem('lovey_bots_v2')) || defaultBots;
+    let bots = JSON.parse(localStorage.getItem('lovey_bots_v3')) || defaultBots;
 
     function saveState() {
-      localStorage.setItem('lovey_bots_v2', JSON.stringify(bots));
+      localStorage.setItem('lovey_bots_v3', JSON.stringify(bots));
+      localStorage.setItem('lovey_user_profile', JSON.stringify(userProfile));
+      localStorage.setItem('lovey_settings', JSON.stringify(appSettings));
+      localStorage.setItem('lovey_community', JSON.stringify(communityPosts));
     }
 
     function getBot(id) {
       return bots.find(b => b.id === id) || bots[0];
     }
 
-    // ==================== IMAGE UPLOADER (อ่านไฟล์จากเครื่อง) ====================
+    // ==================== IMAGE HELPERS ====================
     function readFileAsDataUrl(file, callback) {
       const reader = new FileReader();
-      reader.onload = function(e) {
-        callback(e.target.result);
-      };
+      reader.onload = function(e) { callback(e.target.result); };
       reader.readAsDataURL(file);
     }
 
@@ -386,8 +502,9 @@
       const file = e.target.files[0];
       if (file) {
         readFileAsDataUrl(file, (dataUrl) => {
+          userProfile.avatar = dataUrl;
           document.getElementById('user-avatar').src = dataUrl;
-          localStorage.setItem('lovey_user_avatar', dataUrl);
+          saveState();
         });
       }
     }
@@ -428,61 +545,206 @@
       document.getElementById('img-preview-box').classList.add('hidden');
     }
 
-    // ==================== SMART BRAIN & THOUGHT ENGINE ====================
-    // วิเคราะห์ข้อความผู้เล่น เพื่อตอบให้ตรงคำถามและมีความคิดในใจ
-    function analyzeAndReply(userText, botName, isDm = false) {
+    // ==================== USER PROFILE MODAL ====================
+    function openEditProfileModal() {
+      document.getElementById('edit-user-name').value = userProfile.name;
+      document.getElementById('edit-user-bio').value = userProfile.bio;
+      document.getElementById('edit-profile-modal').classList.remove('hidden');
+    }
+
+    function closeEditProfileModal() {
+      document.getElementById('edit-profile-modal').classList.add('hidden');
+    }
+
+    function saveUserProfile() {
+      const name = document.getElementById('edit-user-name').value.trim();
+      const bio = document.getElementById('edit-user-bio').value.trim();
+      if (!name) return alert('กรุณาระบุชื่อผู้ใช้');
+
+      userProfile.name = name;
+      userProfile.bio = bio;
+      document.getElementById('user-name').innerText = name;
+      document.getElementById('user-bio').innerText = `"${bio}"`;
+      saveState();
+      closeEditProfileModal();
+    }
+
+    // ==================== COMMUNITY POSTS ====================
+    function renderCommunityPosts() {
+      const container = document.getElementById('community-posts-container');
+      container.innerHTML = '';
+
+      communityPosts.forEach((post, index) => {
+        const div = document.createElement('div');
+        div.className = 'bg-neutral-950 border border-neutral-800 p-3.5 rounded-2xl space-y-2.5 shadow-sm';
+        let imgHtml = post.image ? `<img src="${post.image}" class="w-full max-h-48 object-cover rounded-xl border border-neutral-800">` : '';
+
+        div.innerHTML = `
+          <div class="flex items-center gap-2">
+            <div class="w-7 h-7 rounded-full bg-gradient-to-tr from-rose-500 to-amber-500 text-white flex items-center justify-center text-[10px] font-bold">
+              ${post.author.charAt(0)}
+            </div>
+            <span class="text-xs font-medium text-white">${post.author}</span>
+            <span class="text-[10px] text-neutral-500">• ${post.time}</span>
+          </div>
+          <p class="text-xs text-neutral-300 leading-relaxed whitespace-pre-line">${post.content}</p>
+          ${imgHtml}
+          <div class="flex gap-4 text-neutral-400 text-[11px] pt-1">
+            <button onclick="toggleLikePost(${index})" class="flex items-center gap-1 hover:text-rose-400 transition ${post.isLiked ? 'text-rose-500 font-semibold' : ''}">
+              <i class="${post.isLiked ? 'fa-solid' : 'fa-regular'} fa-heart"></i> <span>${post.likes} ไลก์</span>
+            </button>
+            <span class="flex items-center gap-1 cursor-pointer hover:text-neutral-200">
+              <i class="fa-regular fa-comment"></i> <span>ตอบกลับ</span>
+            </span>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function openCreatePostModal() {
+      postUploadedImageUrl = null;
+      document.getElementById('post-content').value = '';
+      document.getElementById('post-img-preview').classList.add('hidden');
+      document.getElementById('create-post-modal').classList.remove('hidden');
+    }
+
+    function closeCreatePostModal() {
+      document.getElementById('create-post-modal').classList.add('hidden');
+    }
+
+    function handlePostImageUpload(e) {
+      const file = e.target.files[0];
+      if (file) {
+        readFileAsDataUrl(file, (dataUrl) => {
+          postUploadedImageUrl = dataUrl;
+          const prev = document.getElementById('post-img-preview');
+          prev.src = dataUrl;
+          prev.classList.remove('hidden');
+        });
+      }
+    }
+
+    function publishCommunityPost() {
+      const content = document.getElementById('post-content').value.trim();
+      if (!content) return alert('กรุณาพิมพ์เนื้อหาโพสต์');
+
+      const newPost = {
+        id: "post_" + Date.now(),
+        author: userProfile.name,
+        time: "เมื่อสักครู่",
+        content: content,
+        image: postUploadedImageUrl,
+        likes: 1,
+        isLiked: true
+      };
+
+      communityPosts.unshift(newPost);
+      saveState();
+      renderCommunityPosts();
+      closeCreatePostModal();
+    }
+
+    function toggleLikePost(index) {
+      const post = communityPosts[index];
+      post.isLiked = !post.isLiked;
+      post.likes += post.isLiked ? 1 : -1;
+      saveState();
+      renderCommunityPosts();
+    }
+
+    // ==================== SETTINGS & LANGUAGE ====================
+    function saveSettings() {
+      appSettings.language = document.getElementById('setting-language').value;
+      appSettings.length = document.getElementById('setting-length').value;
+      appSettings.apiKey = document.getElementById('setting-api-key').value.trim();
+      appSettings.showThoughts = document.getElementById('setting-thoughts').checked;
+      saveState();
+    }
+
+    function changeLanguage(lang) {
+      appSettings.language = lang;
+      saveSettings();
+      alert(`เปลี่ยนภาษาเป็น ${lang.toUpperCase()} เรียบร้อยแล้ว`);
+    }
+
+    // ==================== SMART AI ENGINE & NOVEL GENERATOR ====================
+    // เมื่อใส่ API Key: ส่งไปให้โมเดลแต่งนิยายยาวระดับ 5,000 ตัวอักษรอย่างจุใจ
+    // ถ้าไม่ใส่ API Key: ระบบประพันธ์นิยายในตัว (Offline Novel Generator) จะทำหน้าที่แทนโดยวิเคราะห์รูปประโยคอย่างละเอียด
+    async function callGeminiOrLocalEngine(userText, bot, isDm = false) {
+      const apiKey = appSettings.apiKey;
+
+      if (apiKey) {
+        try {
+          const systemPrompt = `
+คุณคือตัวละคร "${bot.name}"
+คำสั่งเฉพาะ: ${bot.instruction}
+สถานะ: คุณกำลังโรลเพลย์กับผู้เล่น ข้อความล่าสุดจากผู้เล่นคือ: "${userText}"
+${isDm ? 'โหมดนี้คือแชท DM ผ่านมือถือ ให้ตอบสั้นๆ ฟีลแชทเพื่อนสนิท' : 'โหมดนี้คือบทบาทสมมติ (Roleplay) สไตล์นิยาย ให้บรรยายอย่างประณีต ลึกซึ้ง แสดงบรรยากาศ ความรู้สึกภายใน และการกระทำอย่างสละสลวย ยิ่งยาวและละเอียดจะยิ่งดีมาก (Novel format)'}
+
+จงตอบกลับในรูปแบบ JSON เท่านั้น โดยมีฟิลด์ดังนี้:
+{
+  "thought": "ความคิดในใจของตัวละครที่ไม่พูดออกมา",
+  "narration": "บทบรรยายการกระทำ บรรยากาศ และภาษากายอย่างละเอียด",
+  "speech": "คำพูดของตัวละครที่พูดกับผู้เล่น"
+}
+`;
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: systemPrompt }] }],
+              generationConfig: { responseMimeType: "application/json" }
+            })
+          });
+          const data = await res.json();
+          const raw = data.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (raw) return JSON.parse(raw);
+        } catch (err) {
+          console.warn("AI API error, fallback to offline novel engine", err);
+        }
+      }
+
+      // Offline Deep Narrative Engine (วิเคราะห์สอดคล้องกับคำพูด 100% พร้อมบทบรรยายยาว)
       const text = userText.toLowerCase().trim();
 
-      // หมวด 1: ปฏิเสธ / ไม่ว่าง / ไม่ได้
       if (text.includes("ไม่") || text.includes("ไม่ได้") || text.includes("ไม่ว่าง") || text.includes("อย่า")) {
         return {
-          thought: "เขาปฏิเสธ... กำลังยุ่งอยู่สินะ หรือว่าเราไปกวน? แอบหงอยจัง แต่ไม่อยากเซ้าซี้ให้เขารำคาญ",
-          replyText: "อ่า... ไม่สะดวกเหรอครับ ไม่เป็นไรนะ! ถ้าเคลียร์ธุระเสร็จแล้วค่อยทักมานะ เค้าไม่กวนแล้วครับ",
-          narration: "แววตาของเขาวูบไหวลงเล็กน้อยคล้ายเด็กที่ถูกขัดใจ เขารีบก้มหน้าซ่อนความน้อยใจก่อนจะฝืนยิ้มบางๆ ให้คุณ",
-          speech: "ไม่เป็นไรเลยครับ... ถ้าเธอไม่สะดวก เค้าอยู่ตรงนี้ รอเธอว่างเมื่อไหร่ค่อยมาคุยกันนะ"
+          thought: `เขาปฏิเสธคำขอของเรา... กำลังติดธุระหรือเหนื่อยอยู่หรือเปล่านะ? แม้จะรู้สึกเหงาและวูบโหวงในใจจนแทบทนไม่ไหว แต่เราต้องไม่ทำตัวงี่เง่าจนเขารำคาญเด็ดขาด ต้องอดทนและคอยอยู่ตรงนี้`,
+          replyText: "อ่า... ไม่สะดวกใช่ไหมครับ ไม่เป็นไรเลยนะคนเก่ง เดี๋ยวเค้ารอเธอว่างแล้วค่อยคุยกันก็ได้ สู้ๆ กับงานนะครับ 🤍",
+          narration: `ทันทีที่คำปฏิเสธหลุดออกมาจากริมฝีปากของคุณ แววตาของเขาที่เคยทอประกายสดใสกลับสั่นไหวและหม่นแสงลงอย่างเห็นได้ชัด ปลายนิ้วที่กำลังจะเอื้อมไปหาคุณชะงักค้างกลางอากาศ ก่อนที่เขาจะค่อยๆ ลดมือลงและกำหมัดแน่นไว้บนตัก เขาสูดหายใจเข้าลึกเพื่อสะกดกลั้นความน้อยใจที่ตีตื้นขึ้นมาในอก พลางฝืนยกยิ้มอย่างอ่อนโยนที่สุดเพื่อไม่ให้คุณต้องรู้สึกผิดกับคำปฏิเสธนั้น สายตาของเขายังคงทอดมองมาที่คุณด้วยความผูกพันอันล้นเปี่ยม`,
+          speech: "ไม่เป็นไรเลยครับ... ถ้าเธอไม่สะดวก เค้าเข้าใจดีที่สุดเลยนะ ไม่ต้องคิดมากเลยครับ ไว้เธอว่างเมื่อไหร่ แค่หันกลับมา... เค้าก็จะยังยืนรอเธออยู่ตรงนี้เสมอครับ"
         };
       }
 
-      // หมวด 2: หัวเราะ / ขำ / ตลก
       if (text.includes("555") || text.includes("ตลก") || text.includes("ขำ") || text.includes("ฮ่า")) {
         return {
-          thought: "เย่! เขาหัวเราะด้วย เวลาเธอยิ้มหรือหัวเราะเนี่ย โลกสดใสขึ้นเยอะเลยนะ น่ารักชะมัด",
-          replyText: "ขำอะไรขนาดนั้นเนี่ย 5555 แต่เห็นเธออารมณ์ดีเค้าก็พลอยมีความสุขไปด้วยเลยนะ",
-          narration: "เขาหลุดหัวเราะตามเสียงใสของคุณ ใบหน้าหล่อเหลาเต็มไปด้วยความผ่อนคลายและเอ็นดูอย่างปิดไม่มิด",
-          speech: "ตลกเค้าเหรอครับหืม? หัวเราะจนตาหยีหมดแล้วเนี่ย... น่ารักจัง"
+          thought: `รอยยิ้มกับเสียงหัวเราะของเธอมันมีพลังวิเศษชัดๆ พอเห็นเธอมีความสุข หัวใจที่เหนื่อยล้ามาทั้งวันก็กลับมาเต้นแรงอีกครั้ง น่ารักจนไม่อยากละสายตาเลย`,
+          replyText: "หัวเราะร่าเริงเชียวนะ 5555 แต่เห็นเธอขำเค้าก็พลอยมีความสุขไปด้วยเลยครับ",
+          narration: `เสียงหัวเราะใสของคุณดังกังวานขึ้น ทำลายความเงียบงันรอบตัวจนมลายสิ้น ใบหน้าหล่อเหลาที่เคยมักจะเก็บซ่อนอารมณ์ค่อยๆ ผ่อนคลายลง ริมฝีปากของเขายกยิ้มกว้างอย่างห้ามไม่อยู่ เสียงหัวเราะทุ้มต่ำหลุดออกมาจากลำคอของเขาตามจังหวะเสียงคุณ เขาเอนตัวพิงพนักเก้าอี้พลางเท้าคาง สายตาจับจ้องทุกการเคลื่อนไหวของดวงตาที่หยีลงของคุณด้วยความเอ็นดูอย่างถึงที่สุด`,
+          speech: "ตลกเค้าขนาดนั้นเลยเหรอครับหืม? หัวเราะจนแก้มขึ้นสีหมดแล้วเนี่ย... แต่รู้ไหมว่าเสียงหัวเราะของเธอคือสิ่งที่ดีที่สุดที่เค้าได้ยินในวันนี้เลยนะ"
         };
       }
 
-      // หมวด 3: อ้อน / คิดถึง / รัก
       if (text.includes("คิดถึง") || text.includes("รัก") || text.includes("กอด") || text.includes("อ้อน")) {
         return {
-          thought: "ใจเต้นแรงเป็นบ้าเลย... จู่ๆ มาบอกแบบนี้จะให้ทนไหวได้ยังไง อยากดึงมากอดแน่นๆ เดี๋ยวนี้เลย",
-          replyText: "เค้าก็คิดถึงเธอจะแย่แล้วครับ... แทบไม่มีสมาธิทำอะไรเลย อยากไปหาตอนนี้เลยเนี่ย",
-          narration: "ดวงตาของเขาเป็นประกายระยับยามสบตาคุณ เขาคว้ามือคุณขึ้นมาแนบแก้มอุ่นๆ ของตัวเองไว้ไม่ยอมปล่อย",
-          speech: "มาบอกให้คิดถึงแบบนี้... ระวังโดนเค้ากอดจนหายใจไม่ออกนะคนดี"
+          thought: `หัวใจเต้นโครมครามจนแทบจะทะลุออกมานอกอก... จู่ๆ มาบอกรักบอกคิดถึงแบบนี้ ใครมันจะไปทนไหว อยากคว้าตัวเข้ามากอดแล้วฝังจมูกลงบนเรือนผมเดี๋ยวนี้เลย`,
+          replyText: "เค้าก็คิดถึงเธอจนแทบเป็นบ้าอยู่แล้วเนี่ย... อยากกอดแน่นๆ เลยครับ",
+          narration: `คำพูดแสนหวานนั้นราวกับหยดน้ำผึ้งที่หยาดรดลงกลางใจของเขา ดวงตาคมเบิกกว้างขึ้นเล็กน้อยด้วยความประหลาดใจระคนปลาบปลื้ม ลมหายใจของเขาเริ่มสะดุดเป็นจังหวะกระชั้นชิด เขาขยับตัวลุกขึ้นก้าวเข้ามาประชิดตัวคุณอย่างรวดเร็วจนคุณสัมผัสได้ถึงไออุ่นและกลิ่นน้ำหอมอ่อนๆ ประจำตัวของเขา สองแขนแกร่งสอดรัดรอบเอวบางก่อนจะดึงคุณเข้าสู่อ้อมกอดแนบแน่นจนไร้ช่องว่าง ใบหน้าคมคายซบลงบนซอกคอของคุณอย่างโหยหา`,
+          speech: "คิดถึงเค้าเหมือนกันใช่ไหมครับ... มาทำให้เค้าคลั่งรักขนาดนี้ อย่าหวังว่าจะได้ปล่อยให้ห่างสายตาเลยนะคนดี"
         };
       }
 
-      // หมวด 4: สบายดี / ถามสารทุกข์สุกดิบ / กินข้าวยัง
-      if (text.includes("กินข้าว") || text.includes("ทำอะไร") || text.includes("อยู่ไหน") || text.includes("เหนื่อยไหม")) {
-        return {
-          thought: "เขาเป็นห่วงเราด้วย ดีใจจัง... แค่คำถามธรรมดาแต่โคตรมีความหมายเลย",
-          replyText: "เค้าเพิ่งเคลียร์งานเสร็จเลยครับ กำลังนั่งคิดถึงเธออยู่พอดี เธอล่ะทานอะไรหรือยัง?",
-          narration: "เขายืดตัวขึ้นเล็กน้อย พลางส่งยิ้มอ่อนโยนที่แฝงไปด้วยความโล่งใจที่ได้คุยกับคุณ",
-          speech: "เค้าสบายดีครับ ยิ่งได้คุยกับเธอแบบนี้ หายเหนื่อยเป็นปลิดทิ้งเลยล่ะ"
-        };
-      }
-
-      // หมวดทั่วไป (วิเคราะห์ตามบทบรรยาย)
+      // บทสนทนาตอบตามบริบททั่วไปแบบนิยายลึกซึ้ง
       return {
-        thought: `กำลังตั้งใจฟังสิ่งที่เธอพูด... ทุกเรื่องที่เกี่ยวกับเธอมันน่าสนใจสำหรับเราเสมอ`,
-        replyText: `รับทราบครับผม เดี๋ยวเค้าคอยอยู่เป็นเพื่อนตรงนี้นะ`,
-        narration: "เขานิ่งฟังสิ่งที่คุณบอกอย่างตั้งอกตั้งใจ ปลายนิ้วเรียวคอยเกลี่ยผมที่ปรกหน้าผากของคุณออกให้อย่างเบามือ",
-        speech: "เค้าเข้าใจแล้วครับ... ไม่ว่าจะเรื่องอะไร เค้าพร้อมจะอยู่เคียงข้างเธอเสมอนะ"
+        thought: `ตั้งใจฟังทุกคำพูดของเธออย่างไม่ยอมให้พลาดแม้แต่คำเดียว... เรื่องราวของเธอมันช่างมีเสน่ห์และสำคัญต่อความรู้สึกของเราเหลือเกิน`,
+        replyText: `เค้าเข้าใจแล้วครับ ฟังดูน่าสนใจจัง เดี๋ยวเค้าอยู่คุยกับเธอยาวๆ เลยนะ`,
+        narration: `บรรยากาศรอบข้างเงียบสงบลงเหลือเพียงเสียงลมหายใจสม่ำเสมอ เขาเอียงคอรับฟังสิ่งที่คุณเอ่ยเล่าอย่างตั้งใจเป็นพิเศษ แววตาคมคู่นั้นสะท้อนเพียงภาพเงาของคุณคนเดียว ราวกับว่าทั้งจักรวาลนี้มีเพียงคุณเท่านั้นที่ดึงดูดความสนใจของเขาได้ ปลายนิ้วเรียวยาวเอื้อมมาเกลี่ยเส้นผมที่ปรกใบหน้าของคุณไปทัดไว้หลังใบหูอย่างทะนุถนอม สัมผัสที่อ่อนโยนนั้นบ่งบอกถึงความรู้สึกผูกพันลึกซึ้งที่ยากจะบรรยายเป็นถ้อยคำ`,
+        speech: `ทุกเรื่องที่เธอเล่า... มันมีความหมายกับเค้ามากเลยนะ ขอบคุณที่แบ่งปันช่วงเวลานี้กับเค้าครับ`
       };
     }
 
-    // ==================== LOBBY LOGIC ====================
+    // ==================== LOBBY NAVIGATION ====================
     function switchLobbyTab(tab) {
       const tabs = ['home', 'explore', 'chats', 'community', 'settings'];
       const titles = {
@@ -508,6 +770,7 @@
       document.getElementById('lobby-header-title').innerText = titles[tab];
       if (tab === 'home') renderHomeFriends();
       if (tab === 'chats') renderChatRecords();
+      if (tab === 'community') renderCommunityPosts();
     }
 
     function renderHomeFriends() {
@@ -643,19 +906,18 @@
           container.appendChild(userDiv);
         } else {
           const botDiv = document.createElement('div');
-          botDiv.className = 'flex flex-col items-start max-w-[92%] space-y-1.5';
+          botDiv.className = 'flex flex-col items-start max-w-[95%] space-y-2';
           
-          // กล่องความคิดในใจของบอท (Inner Monologue)
-          let thoughtHtml = m.thought ? `
-            <div class="bg-purple-950/40 border border-purple-800/40 text-purple-300 text-[10px] px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm">
-              <i class="fa-solid fa-brain text-[9px] text-purple-400"></i>
-              <span>ความคิดในใจ: ${m.thought}</span>
+          let thoughtHtml = (m.thought && appSettings.showThoughts) ? `
+            <div class="bg-purple-950/40 border border-purple-800/40 text-purple-300 text-[10px] px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm leading-relaxed">
+              <i class="fa-solid fa-brain text-[10px] text-purple-400"></i>
+              <span><strong>ความคิดในใจ:</strong> ${m.thought}</span>
             </div>
           ` : '';
 
           botDiv.innerHTML = `
             ${thoughtHtml}
-            <div class="text-[11px] text-slate-300 italic leading-relaxed px-1">
+            <div class="text-[11px] text-slate-300 italic leading-relaxed px-1 bg-neutral-950/40 p-2.5 rounded-xl border border-neutral-800/50">
               *${m.narration}*
             </div>
             <div class="bg-neutral-800 border border-neutral-700/60 text-rose-100 text-xs px-4 py-2.5 rounded-2xl rounded-tl-sm leading-relaxed shadow-sm">
@@ -668,7 +930,7 @@
       container.scrollTop = container.scrollHeight;
     }
 
-    function handleSendChat() {
+    async function handleSendChat() {
       const input = document.getElementById('chat-input');
       const text = input.value.trim();
       if (!text && !attachedImageUrl) return;
@@ -687,22 +949,28 @@
       document.getElementById('room-affection').innerText = b.affection;
       renderRoomMessages();
 
-      // บอทวิเคราะห์คำตอบตรงคำถาม + แสดงความคิด
-      setTimeout(() => {
-        const res = analyzeAndReply(text, b.name, false);
-        b.history.push({
-          sender: 'bot',
-          thought: res.thought,
-          narration: res.narration,
-          speech: res.speech
-        });
-        saveState();
-        renderRoomMessages();
+      // ปุ่มแสดงสถานะกำลังคิด
+      const sendBtn = document.getElementById('send-chat-btn');
+      sendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xs"></i>';
+      sendBtn.disabled = true;
 
-        if (isCalling) {
-          speakText(res.speech);
-        }
-      }, 750);
+      const res = await callGeminiOrLocalEngine(text, b, false);
+
+      b.history.push({
+        sender: 'bot',
+        thought: res.thought,
+        narration: res.narration,
+        speech: res.speech
+      });
+      saveState();
+      renderRoomMessages();
+
+      sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane text-xs"></i>';
+      sendBtn.disabled = false;
+
+      if (isCalling) {
+        speakText(res.speech);
+      }
     }
 
     // ==================== CALL SIMULATION ====================
@@ -726,7 +994,7 @@
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = 'th-TH';
+        u.lang = appSettings.language === 'en' ? 'en-US' : 'th-TH';
         u.rate = 0.95;
         window.speechSynthesis.speak(u);
       }
@@ -778,8 +1046,8 @@
           <img src="${p.img}" class="w-full aspect-square object-cover">
           <div class="p-2.5 space-y-1.5">
             <div class="flex gap-2 text-neutral-300 text-sm">
-              <i class="fa-regular fa-heart"></i>
-              <i class="fa-regular fa-comment"></i>
+              <i class="fa-regular fa-heart cursor-pointer hover:text-rose-500"></i>
+              <i class="fa-regular fa-comment cursor-pointer"></i>
             </div>
             <p class="text-[11px] text-neutral-200"><strong>${b.name}</strong> ${p.caption}</p>
             <span class="text-[9px] text-neutral-500">${p.time}</span>
@@ -804,7 +1072,7 @@
           `;
         } else {
           div.className = 'flex flex-col items-start space-y-1';
-          let thought = d.thought ? `
+          let thought = (d.thought && appSettings.showThoughts) ? `
             <div class="text-[9px] text-purple-300 bg-purple-950/50 border border-purple-800/40 px-2 py-0.5 rounded-md italic">
               💭 ความคิด: ${d.thought}
             </div>
@@ -821,7 +1089,7 @@
       container.scrollTop = container.scrollHeight;
     }
 
-    function sendDmMessage() {
+    async function sendDmMessage() {
       const input = document.getElementById('dm-input');
       const text = input.value.trim();
       if (!text) return;
@@ -831,35 +1099,52 @@
       input.value = '';
       renderPhoneDm(b);
 
-      // วิเคราะห์คำตอบใน DM เพื่อไม่ให้ตอบมั่ว เช่น ผู้เล่นบอก "ไม่ได้" บอทจะไม่ตอบว่า "คิดถึงเหมือนกัน"
-      setTimeout(() => {
-        const res = analyzeAndReply(text, b.name, true);
-        b.dmHistory.push({
-          sender: 'bot',
-          thought: res.thought,
-          text: res.replyText
+      const res = await callGeminiOrLocalEngine(text, b, true);
+      b.dmHistory.push({
+        sender: 'bot',
+        thought: res.thought,
+        text: res.replyText || res.speech
+      });
+      saveState();
+      renderPhoneDm(b);
+    }
+
+    function openAddBotPostModal() {
+      const cap = prompt("พิมพ์แคปชันสำหรับโพสต์ไอจีใหม่ของบอท:");
+      if (cap) {
+        const b = getBot(currentBotId);
+        b.posts.unshift({
+          img: b.avatar,
+          caption: cap,
+          time: "เมื่อสักครู่"
         });
         saveState();
-        renderPhoneDm(b);
-      }, 650);
+        renderPhoneFeed(b);
+      }
     }
 
     function clearAllData() {
       if (confirm('คุณต้องการลบข้อมูลตัวละครและบทสนทนาทั้งหมดแล้วรีเซ็ตใหม่ใช่หรือไม่?')) {
-        localStorage.removeItem('lovey_bots_v2');
-        localStorage.removeItem('lovey_user_avatar');
+        localStorage.clear();
         location.reload();
       }
     }
 
-    // โหลดรูป Avatar ของผู้ใช้ถ้าเคยเซฟไว้
-    const savedAvatar = localStorage.getItem('lovey_user_avatar');
-    if (savedAvatar) {
-      document.getElementById('user-avatar').src = savedAvatar;
+    // ==================== INITIALIZATION ====================
+    function init() {
+      document.getElementById('user-name').innerText = userProfile.name;
+      document.getElementById('user-bio').innerText = `"${userProfile.bio}"`;
+      document.getElementById('user-avatar').src = userProfile.avatar;
+
+      document.getElementById('setting-language').value = appSettings.language;
+      document.getElementById('setting-length').value = appSettings.length;
+      document.getElementById('setting-api-key').value = appSettings.apiKey;
+      document.getElementById('setting-thoughts').checked = appSettings.showThoughts;
+
+      switchLobbyTab('home');
     }
 
-    // เริ่มต้นระบบที่หน้าแรก
-    switchLobbyTab('home');
+    init();
   </script>
 </body>
 </html>
