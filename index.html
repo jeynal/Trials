@@ -78,10 +78,8 @@
           </div>
         </section>
 
-        <!-- TAB 2: EXPLORE & BOT CREATOR (UI แบบ Multi-tab ตามภาพเป๊ะๆ) -->
+        <!-- TAB 2: EXPLORE & BOT CREATOR -->
         <section id="tab-explore" class="hidden space-y-3 pb-8">
-          
-          <!-- Top Sub-Header Bar -->
           <div class="flex items-center justify-between text-neutral-400 text-xs px-1">
             <div class="flex items-center gap-1.5 cursor-pointer hover:text-white" onclick="switchLobbyTab('home')">
               <i class="fa-solid fa-chevron-left text-[11px]"></i>
@@ -93,34 +91,29 @@
             </div>
           </div>
 
-          <!-- Horizontal Sliding Tabs -->
           <div class="flex gap-4 overflow-x-auto hide-scrollbar border-b border-neutral-800 pb-1 text-xs font-medium whitespace-nowrap">
-            <button onclick="switchBotTab('profile')" id="btab-btn-profile" class="text-rose-500 border-b-2 border-rose-500 pb-1 px-1 transition">*โปรไฟล์</button>
-            <button onclick="switchBotTab('basic')" id="btab-btn-basic" class="text-neutral-400 hover:text-white pb-1 px-1 transition">*ตั้งค่าพื้นฐาน</button>
-            <button onclick="switchBotTab('first')" id="btab-btn-first" class="text-neutral-400 hover:text-white pb-1 px-1 transition">ฉากแรก</button>
-            <button onclick="switchBotTab('details')" id="btab-btn-details" class="text-neutral-400 hover:text-white pb-1 px-1 transition">ตั้งค่ารายละเอียด</button>
-            <button onclick="switchBotTab('event')" id="btab-btn-event" class="text-neutral-400 hover:text-white pb-1 px-1 transition">อีเวนต์</button>
-            <button onclick="switchBotTab('lore')" id="btab-btn-lore" class="text-neutral-400 hover:text-white pb-1 px-1 transition">ลอร์บุ๊ก</button>
+            <button onclick="switchBotTab('profile')" id="btab-btn-profile" class="text-rose-500 border-b-2 border-rose-500 pb-1 px-1 transition font-bold">*โปรไฟล์</button>
+            <button onclick="switchBotTab('basic')" id="btab-btn-basic" class="text-neutral-400 hover:text-white pb-1 px-1 transition font-medium">*ตั้งค่าพื้นฐาน</button>
+            <button onclick="switchBotTab('first')" id="btab-btn-first" class="text-neutral-400 hover:text-white pb-1 px-1 transition font-medium">ฉากแรก</button>
+            <button onclick="switchBotTab('details')" id="btab-btn-details" class="text-neutral-400 hover:text-white pb-1 px-1 transition font-medium">ตั้งค่ารายละเอียด</button>
+            <button onclick="switchBotTab('event')" id="btab-btn-event" class="text-neutral-400 hover:text-white pb-1 px-1 transition font-medium">อีเวนต์</button>
+            <button onclick="switchBotTab('lore')" id="btab-btn-lore" class="text-neutral-400 hover:text-white pb-1 px-1 transition font-medium">ลอร์บุ๊ก</button>
           </div>
 
           <!-- FORM CONTAINER -->
           <div class="bg-white text-neutral-800 rounded-3xl p-4 space-y-4 shadow-xl border border-neutral-200">
-            
-            <!-- SUB-TAB 1: *โปรไฟล์ -->
             <div id="btab-profile" class="space-y-3.5">
               <div class="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 px-3 py-1 rounded-xl text-xs font-semibold">
                 <span class="bg-purple-200 text-purple-800 rounded-md w-4 h-4 flex items-center justify-center text-[10px]">ก</span>
                 ภาษาไทย
               </div>
 
-              <!-- Name -->
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">ชื่อ</label>
                 <input id="bot-name-input" type="text" placeholder="กรุณากรอกชื่อตัวละคร" maxlength="20" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
                 <div class="text-[10px] text-right text-neutral-400 mt-1">0/20</div>
               </div>
 
-              <!-- Gender -->
               <div>
                 <label class="block text-xs font-bold text-neutral-800 mb-2">เพศ</label>
                 <div class="flex items-center gap-4 text-xs text-neutral-600">
@@ -136,48 +129,26 @@
                 </div>
               </div>
 
-              <!-- Age -->
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">อายุ</label>
                 <input id="bot-age-input" type="text" placeholder="กรุณากรอกอายุของตัวละคร" maxlength="20" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
-                <div class="text-[10px] text-right text-neutral-400 mt-1">0/20</div>
               </div>
 
-              <!-- Career -->
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">อาชีพ</label>
                 <input id="bot-career-input" type="text" placeholder="กรุณากรอกอาชีพของตัวละคร" maxlength="20" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
-                <div class="text-[10px] text-right text-neutral-400 mt-1">0/20</div>
               </div>
 
-              <!-- Catchphrase / Quote -->
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
-                <div class="flex justify-between items-center mb-1">
-                  <label class="text-xs font-bold text-neutral-800 flex items-center gap-1">
-                    คำพูดจากตัวละคร <i class="fa-regular fa-circle-question text-neutral-400 text-[10px]"></i>
-                  </label>
-                </div>
+                <label class="block text-xs font-bold text-neutral-800 mb-1">คำพูดจากตัวละคร</label>
                 <input id="bot-quote-input" type="text" placeholder="กรุณาใส่บทพูด" maxlength="100" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
-                <div class="text-[10px] text-right text-neutral-400 mt-1">0/100</div>
               </div>
 
-              <!-- Story / Lore -->
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">เรื่องเล่า (ตัวเลือก)</label>
                 <textarea id="bot-story-input" rows="3" placeholder="กรุณาใส่เรื่องราว" maxlength="1000" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
-                <div class="text-[10px] text-right text-neutral-400 mt-1">0/1000</div>
               </div>
 
-              <!-- Creator Note -->
-              <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
-                <label class="block text-xs font-bold text-neutral-800 mb-1 flex items-center gap-1">
-                  โน้ตของผู้สร้าง (ตัวเลือก) <i class="fa-regular fa-circle-question text-neutral-400 text-[10px]"></i>
-                </label>
-                <textarea id="bot-note-input" rows="2" placeholder="กรุณากรอกโน้ตของผู้สร้าง" maxlength="200" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
-                <div class="text-[10px] text-right text-neutral-400 mt-1">0/200</div>
-              </div>
-
-              <!-- Upload Images -->
               <div class="border border-dashed border-neutral-300 rounded-2xl p-3 space-y-2 bg-neutral-50">
                 <div class="flex items-center justify-between">
                   <span class="text-xs font-bold text-neutral-700">รูปภาพตัวละคร (จากเครื่อง)</span>
@@ -188,123 +159,73 @@
                 </div>
                 <div class="flex items-center gap-3">
                   <img id="new-bot-avatar-preview" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover border border-neutral-300">
-                  <span class="text-[11px] text-neutral-400">รูปนี้จะใช้เป็นโปรไฟล์และรูปโพสต์ใน Photogram</span>
+                  <span class="text-[11px] text-neutral-400">รูปนี้จะใช้เป็นโปรไฟล์และรูปโพสต์</span>
                 </div>
               </div>
             </div>
 
-            <!-- SUB-TAB 2: *ตั้งค่าพื้นฐาน -->
             <div id="btab-basic" class="hidden space-y-3.5">
-              <h4 class="text-sm font-bold text-neutral-800">การตั้งค่าพื้นฐานของตัวละคร</h4>
-              
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">ข้อมูลพื้นฐาน</label>
-                <textarea id="bot-info-input" rows="3" placeholder="กรุณากรอกข้อมูลพื้นฐาน เช่น ภูมิหลัง ครอบครัว MBTI ส่วนสูง เป็นต้น" maxlength="1000" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
-                <div class="text-[10px] text-right text-neutral-400 mt-1">0 / 1000</div>
+                <textarea id="bot-info-input" rows="3" placeholder="ภูมิหลัง ครอบครัว MBTI ส่วนสูง เป็นต้น" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
               </div>
-
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">บุคลิกภาพ</label>
-                <textarea id="bot-personality-input" rows="3" placeholder="กรุณาใส่ลักษณะนิสัยของตัวละคร" maxlength="1000" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
-                <div class="text-[10px] text-right text-neutral-400 mt-1">0 / 1000</div>
+                <textarea id="bot-personality-input" rows="3" placeholder="ลักษณะนิสัยของตัวละคร" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
               </div>
-
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">สไตล์การพูดและนิสัย</label>
-                <textarea id="bot-speaking-style-input" rows="3" placeholder="กรุณาใส่ตัวอย่างประโยคพูด เช่น พูดแทนตัวเองว่าเค้า และเรียกคุณว่าคนดี" maxlength="1000" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
-                <div class="text-[10px] text-right text-neutral-400 mt-1">0 / 1000</div>
+                <textarea id="bot-speaking-style-input" rows="3" placeholder="ตัวอย่าง: พูดแทนตัวเองว่าเค้า และเรียกคุณว่าคนดี" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
               </div>
             </div>
 
-            <!-- SUB-TAB 3: ฉากแรก -->
             <div id="btab-first" class="hidden space-y-3.5">
-              <div class="flex items-center justify-between">
-                <div>
-                  <h4 class="text-sm font-bold text-neutral-800">ฉากแชทครั้งแรก</h4>
-                  <p class="text-[10px] text-neutral-500 mt-0.5">เมื่อคุณตั้งค่าฉากแรก สถานการณ์นั้นจะถูกใช้เมื่อเริ่มแชท</p>
-                </div>
-                <span class="text-[10px] text-pink-600 bg-pink-50 px-2 py-0.5 rounded-full border border-pink-200 font-semibold"><i class="fa-regular fa-eye"></i> ดูตัวอย่าง</span>
-              </div>
-
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">บทพูดสถานการณ์ (ตัวเลือก)</label>
-                <textarea id="bot-scene-desc-input" rows="3" placeholder="ตัวอย่าง: ก่อนนอน, ตัวละครรู้สึกเบื่อจึงส่งข้อความไปก่อน หรือ ฝนตกหนักข้างนอก..." maxlength="1000" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
-                <div class="text-[10px] text-right text-neutral-400 mt-1">0 / 1000</div>
+                <textarea id="bot-scene-desc-input" rows="3" placeholder="ตัวอย่าง: ก่อนนอน, ตัวละครรู้สึกเบื่อจึงส่งข้อความไปก่อน..." class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
               </div>
-
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">บทสนทนาของตัวละคร (ตัวเลือก)</label>
-                <textarea id="bot-scene-dialogue-input" rows="3" placeholder="ตัวอย่าง: นอนหรือยังคนดี? คืนนี้เค้าคิดถึงเธอจัง..." maxlength="1000" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
-                <div class="text-[10px] text-right text-neutral-400 mt-1">0 / 1000</div>
+                <textarea id="bot-scene-dialogue-input" rows="3" placeholder="ตัวอย่าง: นอนหรือยังคนดี? คืนนี้เค้าคิดถึงเธอจัง..." class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
               </div>
             </div>
 
-            <!-- SUB-TAB 4: ตั้งค่ารายละเอียด -->
             <div id="btab-details" class="hidden space-y-3.5">
-              <div>
-                <h4 class="text-sm font-bold text-neutral-800">การตั้งค่ารายละเอียดตัวละคร</h4>
-                <p class="text-[10px] text-neutral-500 mt-0.5">หากคุณต้องการป้อนข้อมูลโดยละเอียดนอกเหนือจากการตั้งค่าพื้นฐาน</p>
-              </div>
-
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">ชอบ (ตัวเลือก)</label>
-                <input id="bot-likes-input" type="text" placeholder="กรุณาใส่สิ่งที่ตัวละครชอบ เช่น กาแฟ, หนังสือ, ของหวาน" maxlength="70" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
-                <div class="text-[10px] text-right text-neutral-400 mt-1">0 / 70</div>
+                <input id="bot-likes-input" type="text" placeholder="เช่น กาแฟ, หนังสือ, ของหวาน" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
               </div>
-
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">ไม่ชอบ (ตัวเลือก)</label>
-                <input id="bot-dislikes-input" type="text" placeholder="กรุณาป้อนสิ่งที่ตัวละครไม่ชอบ" maxlength="70" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
-                <div class="text-[10px] text-right text-neutral-400 mt-1">0 / 70</div>
+                <input id="bot-dislikes-input" type="text" placeholder="ป้อนสิ่งที่ตัวละครไม่ชอบ" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
               </div>
-
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
-                <div class="flex justify-between items-center mb-1">
-                  <label class="text-xs font-bold text-neutral-800">วันเกิด (ตัวเลือก)</label>
-                  <i class="fa-regular fa-calendar-check text-neutral-400 text-xs"></i>
-                </div>
-                <input id="bot-birthday-input" type="text" placeholder="กรุณากรอกวันเดือนปีเกิด เช่น 14 กุมภาพันธ์" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
+                <label class="block text-xs font-bold text-neutral-800 mb-1">วันเกิด (ตัวเลือก)</label>
+                <input id="bot-birthday-input" type="text" placeholder="เช่น 14 มีนาคม" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
               </div>
-
-              <button type="button" class="w-full py-2.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-600 rounded-2xl text-xs font-semibold flex items-center justify-center gap-1.5 transition">
-                <i class="fa-solid fa-plus text-[10px]"></i> เพิ่มข้อมูลเพิ่มเติม (0/10)
-              </button>
             </div>
 
-            <!-- SUB-TAB 5: อีเวนต์ -->
             <div id="btab-event" class="hidden space-y-3.5">
-              <h4 class="text-sm font-bold text-neutral-800 flex items-center gap-1.5">
-                อีเวนต์ของครีเอเตอร์ <i class="fa-regular fa-circle-question text-neutral-400 text-xs"></i>
-              </h4>
-              <p class="text-[11px] text-neutral-500 leading-relaxed">
-                การตั้งค่าสถานการณ์พิเศษที่ AI จะอ้างอิงเมื่อมีคีย์เวิร์ดที่เกี่ยวข้องในบทสนทนา
-              </p>
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">คีย์เวิร์ดกระตุ้นอีเวนต์</label>
                 <input id="bot-event-trigger" type="text" placeholder="เช่น หึง, ป่วย, วันครบรอบ" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
               </div>
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">พฤติกรรมเมื่อเกิดอีเวนต์</label>
-                <textarea id="bot-event-behavior" rows="2" placeholder="เช่น จะแสดงอาการหวงเป็นพิเศษ และดึงผู้เล่นเข้ามากอดแน่น" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
+                <textarea id="bot-event-behavior" rows="2" placeholder="เช่น แสดงอาการหวงเป็นพิเศษ และดึงเข้ามากอดแน่น" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
               </div>
             </div>
 
-            <!-- SUB-TAB 6: ลอร์บุ๊ก -->
             <div id="btab-lore" class="hidden space-y-3.5">
-              <h4 class="text-sm font-bold text-neutral-800">ลอร์บุ๊กและความทรงจำลึก</h4>
-              <p class="text-[11px] text-neutral-500 leading-relaxed">
-                คลังข้อมูลโลกและกฎเกณฑ์ เพื่อให้สมอง AI จดจำความจริงเหล่านี้ได้แม่นยำ 100%
-              </p>
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
-                <textarea id="bot-lorebook-input" rows="4" placeholder="พิมพ์ประวัติศาสตร์โลก ความลับ หรือข้อเท็จจริงสำคัญที่ห้ามลืม..." class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
+                <label class="block text-xs font-bold text-neutral-800 mb-1">ลอร์บุ๊กและความทรงจำลึก</label>
+                <textarea id="bot-lorebook-input" rows="4" placeholder="พิมพ์ประวัติศาสตร์โลก ความลับ หรือข้อเท็จจริงสำคัญ..." class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
               </div>
             </div>
 
-            <!-- ปุ่มสีชมพู "เสร็จสมบูรณ์" ตามภาพเป๊ะๆ -->
             <button onclick="submitCompleteCharacter()" class="w-full py-3.5 bg-[#ff2d6c] hover:bg-[#e0205b] active:scale-95 text-white font-bold rounded-full text-sm shadow-lg shadow-pink-500/30 transition">
               เสร็จสมบูรณ์
             </button>
-
           </div>
         </section>
 
@@ -325,7 +246,7 @@
           <div id="community-posts-container" class="space-y-3.5"></div>
         </section>
 
-        <!-- TAB 5: SETTINGS -->
+        <!-- TAB 5: SETTINGS (รองรับทั้ง Gemini-3.8-Flash และ Groq Llama-3.3) -->
         <section id="tab-settings" class="hidden space-y-3.5">
           <div class="text-xs font-semibold text-neutral-200 px-1">การตั้งค่าระบบ & สมอง AI</div>
           <div class="bg-neutral-950 border border-neutral-800 rounded-2xl divide-y divide-neutral-900 text-xs text-neutral-300">
@@ -349,17 +270,29 @@
               </select>
             </div>
 
-            <!-- API Connect Box -->
+            <!-- API Connect Box: Gemini / Groq -->
             <div class="p-4 space-y-3 bg-neutral-900/40 rounded-xl">
               <div class="flex justify-between items-center">
                 <span class="font-medium text-white flex items-center gap-1.5">
-                  <i class="fa-solid fa-key text-rose-400"></i> เชื่อมต่อ Gemini API Key ฟรี
+                  <i class="fa-solid fa-brain text-rose-400"></i> เลือกผู้ให้บริการ AI ฟรี
                 </span>
                 <span id="api-indicator" class="text-[11px] px-2 py-0.5 rounded-full bg-neutral-800 text-neutral-400 font-medium">ยังไม่เชื่อมต่อ</span>
               </div>
+
+              <!-- Provider Selector -->
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <label class="flex items-center gap-2 p-2 bg-neutral-950 border border-neutral-800 rounded-xl cursor-pointer">
+                  <input type="radio" name="api-provider" value="gemini" checked onchange="switchApiProvider('gemini')" class="accent-rose-500">
+                  <span>Google Gemini</span>
+                </label>
+                <label class="flex items-center gap-2 p-2 bg-neutral-950 border border-neutral-800 rounded-xl cursor-pointer">
+                  <input type="radio" name="api-provider" value="groq" onchange="switchApiProvider('groq')" class="accent-rose-500">
+                  <span>Groq Cloud (ตอบไว)</span>
+                </label>
+              </div>
               
               <div class="relative">
-                <input id="setting-api-key" type="password" placeholder="วางรหัสที่ขึ้นต้นด้วย AIzaSy..." class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 pr-10 text-xs text-white focus:outline-none focus:border-rose-500">
+                <input id="setting-api-key" type="password" placeholder="วางรหัส API Key..." class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 pr-10 text-xs text-white focus:outline-none focus:border-rose-500">
                 <button type="button" onclick="toggleApiKeyVisibility()" class="absolute right-3 top-2.5 text-neutral-500 hover:text-neutral-300">
                   <i id="eye-icon" class="fa-solid fa-eye text-xs"></i>
                 </button>
@@ -485,7 +418,6 @@
 
 
     <!-- ==================== MODALS ==================== -->
-    <!-- Edit Profile Modal -->
     <div id="edit-profile-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-4">
       <div class="w-full max-w-sm bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-3.5 shadow-2xl">
         <div class="flex justify-between items-center border-b border-neutral-800 pb-2">
@@ -508,7 +440,6 @@
       </div>
     </div>
 
-    <!-- Create Post Modal -->
     <div id="create-post-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-4">
       <div class="w-full max-w-sm bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-3.5 shadow-2xl">
         <div class="flex justify-between items-center border-b border-neutral-800 pb-2">
@@ -535,7 +466,6 @@
       </div>
     </div>
 
-    <!-- Virtual Phone Modal (IG/Photogram) -->
     <div id="phone-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-3">
       <div class="w-full max-w-xs h-[640px] bg-neutral-950 border-2 border-neutral-700 rounded-[32px] flex flex-col overflow-hidden shadow-2xl relative">
         <div class="h-6 bg-neutral-950 flex justify-center items-center">
@@ -583,9 +513,10 @@
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80"
     };
 
-    let appSettings = JSON.parse(localStorage.getItem('lovey_settings')) || {
+    let appSettings = JSON.parse(localStorage.getItem('lovey_settings_v5')) || {
       language: "th",
       length: "epic",
+      provider: "gemini", // "gemini" หรือ "groq"
       apiKey: "",
       showThoughts: true
     };
@@ -644,12 +575,12 @@
       }
     ];
 
-    let bots = JSON.parse(localStorage.getItem('lovey_bots_v4')) || defaultBots;
+    let bots = JSON.parse(localStorage.getItem('lovey_bots_v5')) || defaultBots;
 
     function saveState() {
-      localStorage.setItem('lovey_bots_v4', JSON.stringify(bots));
+      localStorage.setItem('lovey_bots_v5', JSON.stringify(bots));
       localStorage.setItem('lovey_user_profile', JSON.stringify(userProfile));
-      localStorage.setItem('lovey_settings', JSON.stringify(appSettings));
+      localStorage.setItem('lovey_settings_v5', JSON.stringify(appSettings));
       localStorage.setItem('lovey_community', JSON.stringify(communityPosts));
     }
 
@@ -686,7 +617,6 @@
       const career = document.getElementById('bot-career-input').value.trim();
       const quote = document.getElementById('bot-quote-input').value.trim();
       const story = document.getElementById('bot-story-input').value.trim();
-      const creatorNote = document.getElementById('bot-note-input').value.trim();
 
       const basicInfo = document.getElementById('bot-info-input').value.trim();
       const personality = document.getElementById('bot-personality-input').value.trim();
@@ -698,9 +628,6 @@
       const likes = document.getElementById('bot-likes-input').value.trim();
       const dislikes = document.getElementById('bot-dislikes-input').value.trim();
       const birthday = document.getElementById('bot-birthday-input').value.trim();
-
-      const eventTrigger = document.getElementById('bot-event-trigger').value.trim();
-      const eventBehavior = document.getElementById('bot-event-behavior').value.trim();
       const lorebook = document.getElementById('bot-lorebook-input').value.trim();
 
       const newBot = {
@@ -712,7 +639,6 @@
         career: career,
         quote: quote,
         story: story,
-        creatorNote: creatorNote,
         basicInfo: basicInfo,
         personality: personality,
         speakingStyle: speakingStyle,
@@ -721,8 +647,6 @@
         likes: likes,
         dislikes: dislikes,
         birthday: birthday,
-        eventTrigger: eventTrigger,
-        eventBehavior: eventBehavior,
         lorebook: lorebook,
         affection: 70,
         history: [
@@ -751,7 +675,14 @@
       switchLobbyTab('home');
     }
 
-    // ==================== API VERIFICATION ====================
+    // ==================== PROVIDER & API VERIFICATION ====================
+    function switchApiProvider(provider) {
+      appSettings.provider = provider;
+      const input = document.getElementById('setting-api-key');
+      input.placeholder = provider === 'gemini' ? 'วางรหัส Google Gemini (AIzaSy...)' : 'วางรหัส Groq Cloud (gsk_...)';
+      saveGeneralSettings();
+    }
+
     function toggleApiKeyVisibility() {
       const input = document.getElementById('setting-api-key');
       const icon = document.getElementById('eye-icon');
@@ -773,6 +704,7 @@
       const label = document.getElementById('api-status-label');
 
       const key = input.value.trim();
+      const provider = appSettings.provider || 'gemini';
 
       if (!key) {
         appSettings.apiKey = '';
@@ -787,28 +719,50 @@
       }
 
       btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> กำลังตรวจสอบกับเซิร์ฟเวอร์ Google...';
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> กำลังตรวจสอบกับเซิร์ฟเวอร์...';
 
       try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: "สวัสดี" }] }]
-          })
-        });
+        if (provider === 'gemini') {
+          // ใช้โมเดล gemini-3.8-flash ตามที่ API แนะนำ
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${key}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: "สวัสดี" }] }]
+            })
+          });
 
-        const data = await res.json();
-        if (data.error) throw new Error(data.error.message || "API Key ไม่ถูกต้อง");
+          const data = await res.json();
+          if (data.error) throw new Error(data.error.message || "API Key ไม่ถูกต้อง");
+
+        } else if (provider === 'groq') {
+          // ตรวจสอบกับ Groq Cloud
+          const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${key}`
+            },
+            body: JSON.stringify({
+              model: 'llama-3.3-70b-versatile',
+              messages: [{ role: 'user', content: 'สวัสดี' }],
+              max_tokens: 10
+            })
+          });
+
+          const data = await res.json();
+          if (data.error) throw new Error(data.error.message || "Groq API Key ไม่ถูกต้อง");
+        }
 
         appSettings.apiKey = key;
         saveState();
 
+        const providerName = provider === 'gemini' ? 'Google Gemini 3.8' : 'Groq Llama 3.3';
         msgBox.className = 'text-[11px] p-2.5 rounded-xl bg-emerald-950/60 border border-emerald-800/80 text-emerald-300 block';
-        msgBox.innerHTML = '<i class="fa-solid fa-circle-check mr-1 text-emerald-400"></i> <strong>เชื่อมต่อสำเร็จ 100%!</strong> สมอง AI ออนไลน์แล้ว สามารถแชทและบรรยายยาวได้ทันที';
+        msgBox.innerHTML = `<i class="fa-solid fa-circle-check mr-1 text-emerald-400"></i> <strong>เชื่อมต่อ ${providerName} สำเร็จ 100%!</strong> AI พร้อมทำงาน`;
 
         indicator.className = 'text-[11px] px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800/60 font-semibold';
-        indicator.innerText = 'ออนไลน์ (เชื่อมต่อแล้ว)';
+        indicator.innerText = `ออนไลน์ (${provider.toUpperCase()})`;
 
         dot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
         label.innerText = 'AI ออนไลน์';
@@ -991,6 +945,7 @@
     // ==================== AI DEEP NOVEL ENGINE ====================
     async function callGeminiOrLocalEngine(userText, bot, isDm = false) {
       const apiKey = appSettings.apiKey;
+      const provider = appSettings.provider || 'gemini';
 
       if (apiKey) {
         try {
@@ -1014,24 +969,46 @@ ${isDm
   ? '- ตอบกลับแบบแชทในแอปมือถือสั้นๆ เป็นธรรมชาติ สอดคล้องกับสิ่งที่ผู้เล่นพูด 100%' 
   : '- บรรยายแบบ "นิยายโรแมนติกขนาดยาวและประณีตลึกซึ้ง" (Deep Novel Style) พรรณนาบรรยากาศ กลิ่นอาย กิริยาท่าทาง การสบตา และความรู้สึกภายในอย่างลึกซึ้ง ห้ามตอบสั้นเด็ดขาด และต้องตอบสนองตรงกับสิ่งที่ผู้เล่นพูด 100%'}
 
-จงตอบกลับในรูปแบบ JSON เท่านั้น:
+จงตอบกลับในรูปแบบ JSON เท่านั้น (Strict JSON format without markdown code fences):
 {
   "thought": "ความคิดในใจของ ${bot.name} ที่ไม่ได้พูดออกมา แต่สะท้อนความรู้สึกจริงข้างในอย่างซื่อตรง",
   "narration": "บทบรรยายพรรณนาฉาก การกระทำ และความรู้สึกลึกซึ้งอย่างสละสลวย",
   "speech": "คำพูดของ ${bot.name} ที่พูดกับผู้เล่น"
 }
 `;
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: systemPrompt }] }],
-              generationConfig: { responseMimeType: "application/json" }
-            })
-          });
-          const data = await res.json();
-          const raw = data.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (raw) return JSON.parse(raw);
+
+          if (provider === 'gemini') {
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [{ parts: [{ text: systemPrompt }] }],
+                generationConfig: { responseMimeType: "application/json" }
+              })
+            });
+            const data = await res.json();
+            const raw = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (raw) return JSON.parse(raw);
+          } else if (provider === 'groq') {
+            const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+              },
+              body: JSON.stringify({
+                model: 'llama-3.3-70b-versatile',
+                messages: [
+                  { role: 'system', content: 'You must respond only in valid JSON format.' },
+                  { role: 'user', content: systemPrompt }
+                ],
+                response_format: { type: "json_object" }
+              })
+            });
+            const data = await res.json();
+            const raw = data.choices?.[0]?.message?.content;
+            if (raw) return JSON.parse(raw);
+          }
         } catch (err) {
           console.warn("API Error, fallback to offline", err);
         }
@@ -1409,9 +1386,13 @@ ${isDm
       document.getElementById('setting-api-key').value = appSettings.apiKey;
       document.getElementById('setting-thoughts').checked = appSettings.showThoughts;
 
+      // เซ็ต Radio Provider
+      const rad = document.querySelector(`input[name="api-provider"][value="${appSettings.provider || 'gemini'}"]`);
+      if (rad) rad.checked = true;
+
       if (appSettings.apiKey) {
         document.getElementById('api-indicator').className = 'text-[11px] px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800/60 font-semibold';
-        document.getElementById('api-indicator').innerText = 'ออนไลน์ (มีคีย์แล้ว)';
+        document.getElementById('api-indicator').innerText = `ออนไลน์ (${(appSettings.provider || 'gemini').toUpperCase()})`;
         document.getElementById('api-status-dot').className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
         document.getElementById('api-status-label').innerText = 'AI ออนไลน์';
       }
