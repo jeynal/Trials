@@ -134,6 +134,7 @@
             <button onclick="switchBotTab('lore')" id="btab-btn-lore" class="text-neutral-400 hover:text-white pb-1 px-1 transition font-medium">ลอร์บุ๊ก</button>
           </div>
 
+          <!-- FORM CONTAINER -->
           <div class="bg-white text-neutral-800 rounded-3xl p-4 space-y-4 shadow-xl border border-neutral-200">
             <div id="btab-profile" class="space-y-3.5">
               <div class="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 px-3 py-1 rounded-xl text-xs font-semibold">
@@ -165,21 +166,31 @@
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">อายุ</label>
                 <input id="bot-age-input" type="text" placeholder="กรุณากรอกอายุของตัวละคร" maxlength="20" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
+                <div class="text-[10px] text-right text-neutral-400 mt-1">0/20</div>
               </div>
 
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">อาชีพ</label>
                 <input id="bot-career-input" type="text" placeholder="กรุณากรอกอาชีพของตัวละคร" maxlength="20" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
+                <div class="text-[10px] text-right text-neutral-400 mt-1">0/20</div>
               </div>
 
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">คำพูดจากตัวละคร</label>
                 <input id="bot-quote-input" type="text" placeholder="กรุณาใส่บทพูด" maxlength="100" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
+                <div class="text-[10px] text-right text-neutral-400 mt-1">0/100</div>
               </div>
 
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">เรื่องเล่า (ตัวเลือก)</label>
                 <textarea id="bot-story-input" rows="3" placeholder="กรุณาใส่เรื่องราว" maxlength="1000" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
+                <div class="text-[10px] text-right text-neutral-400 mt-1">0/1000</div>
+              </div>
+
+              <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
+                <label class="block text-xs font-bold text-neutral-800 mb-1">โน้ตของผู้สร้าง (ตัวเลือก)</label>
+                <textarea id="bot-note-input" rows="2" placeholder="กรุณากรอกโน้ตของผู้สร้าง" maxlength="200" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
+                <div class="text-[10px] text-right text-neutral-400 mt-1">0/200</div>
               </div>
 
               <div class="border border-dashed border-neutral-300 rounded-2xl p-3 space-y-2 bg-neutral-50">
@@ -231,6 +242,10 @@
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">ไม่ชอบ (ตัวเลือก)</label>
                 <input id="bot-dislikes-input" type="text" placeholder="ป้อนสิ่งที่ตัวละครไม่ชอบ" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
+              </div>
+              <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
+                <label class="block text-xs font-bold text-neutral-800 mb-1">วันเกิด (ตัวเลือก)</label>
+                <input id="bot-birthday-input" type="text" placeholder="เช่น 14 มีนาคม" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
               </div>
             </div>
 
@@ -299,8 +314,6 @@
               <select id="setting-language" onchange="changeLanguage(this.value)" class="bg-neutral-900 border border-neutral-800 rounded-lg px-2.5 py-1 text-rose-300 focus:outline-none text-xs">
                 <option value="th">ไทย (TH)</option>
                 <option value="en">English (EN)</option>
-                <option value="ja">日本語 (JA)</option>
-                <option value="zh">中文 (ZH)</option>
               </select>
             </div>
 
@@ -404,7 +417,7 @@
     <!-- ==================== VIEW 2: MULTI-ROOM CHAT VIEW ==================== -->
     <div id="view-room" class="hidden flex-1 flex flex-col overflow-hidden relative">
       
-      <!-- Top Chat Header -->
+      <!-- Top Chat Header พร้อมปุ่มกดย้อนกลับชัดเจน -->
       <header class="p-3 bg-neutral-900/90 backdrop-blur border-b border-neutral-800 flex items-center justify-between z-20">
         <div class="flex items-center gap-2">
           <button onclick="handleBackAction()" class="flex items-center gap-1.5 px-2.5 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 hover:text-white rounded-xl text-xs font-medium border border-neutral-700 transition" title="ย้อนกลับ">
@@ -481,7 +494,7 @@
     </div>
 
 
-    <!-- ==================== MODALS ==================== -->
+    <!-- ==================== MODAL 1: EDIT PROFILE ==================== -->
     <div id="edit-profile-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-4">
       <div class="w-full max-w-sm bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-3.5 shadow-2xl">
         <div class="flex justify-between items-center border-b border-neutral-800 pb-2">
@@ -504,6 +517,7 @@
       </div>
     </div>
 
+    <!-- ==================== MODAL 2: CREATE COMMUNITY POST ==================== -->
     <div id="create-post-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-4">
       <div class="w-full max-w-sm bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-3.5 shadow-2xl">
         <div class="flex justify-between items-center border-b border-neutral-800 pb-2">
@@ -530,6 +544,7 @@
       </div>
     </div>
 
+    <!-- ==================== MODAL 3: VIRTUAL SMARTPHONE (PHOTOGRAM/IG) ==================== -->
     <div id="phone-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-3">
       <div class="w-full max-w-xs h-[640px] bg-neutral-950 border-2 border-neutral-700 rounded-[32px] flex flex-col overflow-hidden shadow-2xl relative">
         <div class="h-6 bg-neutral-950 flex justify-center items-center">
@@ -545,22 +560,23 @@
           </div>
         </div>
         <div class="flex border-b border-neutral-800 text-xs bg-neutral-900/30">
-          <button onclick="switchPhoneTab('feed')" id="p-tab-btn-feed" class="flex-1 py-2 text-rose-400 border-b-2 border-rose-500 font-medium">โพสต์ประจำวัน</button>
-          <button onclick="switchPhoneTab('dm')" id="p-tab-btn-dm" class="flex-1 py-2 text-neutral-400 hover:text-white font-medium">แชท DM ด่วน</button>
+          <button onclick="switchPhoneTab('feed')" id="p-tab-btn-feed" class="flex-1 py-2 text-neutral-400 hover:text-white font-medium">โพสต์ประจำวัน</button>
+          <button onclick="switchPhoneTab('dm')" id="p-tab-btn-dm" class="flex-1 py-2 text-rose-400 border-b-2 border-rose-500 font-medium">แชท DM ด่วน</button>
         </div>
-        <div id="p-tab-feed" class="flex-1 overflow-y-auto p-3 space-y-3.5 hide-scrollbar">
+        <div id="p-tab-feed" class="hidden flex-1 overflow-y-auto p-3 space-y-3.5 hide-scrollbar">
           <div id="phone-feed-container" class="space-y-3.5"></div>
         </div>
-        <div id="p-tab-dm" class="hidden flex-1 flex flex-col overflow-hidden">
+        <div id="p-tab-dm" class="flex-1 flex flex-col overflow-hidden">
           <div id="dm-messages" class="flex-1 overflow-y-auto p-3 space-y-3 text-xs hide-scrollbar"></div>
           <div class="p-2 border-t border-neutral-800 flex gap-1.5 bg-neutral-900">
             <input id="dm-input" type="text" placeholder="ส่งข้อความคุยแบบเพื่อน..." class="flex-1 bg-neutral-950 border border-neutral-800 text-white text-[11px] px-3 py-1.5 rounded-full focus:outline-none" onkeydown="if(event.key === 'Enter') sendDmMessage()">
-            <button onclick="sendDmMessage()" class="px-3 bg-rose-600 text-white rounded-full text-xs"><i class="fa-solid fa-arrow-up"></i></button>
+            <button id="dm-send-btn" onclick="sendDmMessage()" class="px-3 bg-rose-600 hover:bg-rose-500 text-white rounded-full text-xs transition"><i class="fa-solid fa-arrow-up"></i></button>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- ==================== MODAL 4: ROOM PICKER / NAVIGATION ==================== -->
     <div id="room-picker-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-4">
       <div class="w-full max-w-sm bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-3 shadow-2xl">
         <div class="flex justify-between items-center border-b border-neutral-800 pb-2">
@@ -579,6 +595,7 @@
       </div>
     </div>
 
+    <!-- ==================== MODAL 5: CREATE GROUP CHAT ==================== -->
     <div id="create-group-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-4">
       <div class="w-full max-w-sm bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-3.5 shadow-2xl">
         <div class="flex justify-between items-center border-b border-neutral-800 pb-2">
@@ -621,6 +638,13 @@
       return `lovey_${currentUserEmail}_${key}`;
     }
 
+    function getCurrentTimeStr() {
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      return `${hours}:${minutes} น.`;
+    }
+
     let defaultBots = [
       {
         id: "bot_1",
@@ -637,16 +661,15 @@
                 thought: "ในที่สุดเธอก็ยอมมาหา... วันนี้ดูเหนื่อยจังนะ อยากดึงมากอดให้หายเหนื่อยชะมัด",
                 paragraphs: [
                   { type: "narration", text: "เขานั่งเท้าคางมองดูคุณอยู่ฝั่งตรงข้ามของโต๊ะไม้โอ๊ก แสงแดดยามเย็นทอประกายกระทบเส้นผมสีน้ำตาลเข้มของเขา รอยยิ้มอบอุ่นปรากฏขึ้นที่มุมปาก" },
-                  { type: "speech", text: "วันนี้เหนื่อยไหมครับคนดี? เค้าคิดถึงเธอทั้งวันเลยเนี่ย..." },
-                  { type: "narration", text: "เขาค่อยๆ เลื่อนฝ่ามือหนามาวางทับลงบนหลังมือของคุณ สัมผัสอุ่นวาบทำให้บรรยากาศรอบตัวดูนิ่งสงบลง" },
-                  { type: "speech", text: "มีอะไรอยากเล่าให้เค้าฟังไหมครับ? เค้าพร้อมจะนั่งฟังเธอทั้งคืนเลยนะ" }
-                ]
+                  { type: "speech", text: "วันนี้เหนื่อยไหมครับคนดี? เค้าคิดถึงเธอทั้งวันเลยเนี่ย..." }
+                ],
+                time: "18:25 น."
               }
             ]
           }
         ],
         dmHistory: [
-          { sender: "bot", thought: "อยากคุยด้วยจัง ทักไปดีไหมนะ", text: "เลิกงานหรือยัง อย่าลืมกินข้าวนะครับ 🤍" }
+          { sender: "bot", text: "เลิกงานหรือยัง อย่าลืมกินข้าวนะครับ 🤍", time: "18:30 น." }
         ],
         posts: [
           {
@@ -709,7 +732,7 @@
     }
 
     function handleLogout() {
-      if (confirm('คุณต้องการออกจากระบบหรือไม่? (ข้อมูลจะยังถูกบันทึกไว้ในอีเมลนี้)')) {
+      if (confirm('คุณต้องการออกจากระบบหรือไม่?')) {
         localStorage.removeItem('lovey_current_email');
         location.reload();
       }
@@ -757,7 +780,7 @@
               ${r.name}
               ${isCurrent ? '<span class="text-[9px] bg-rose-600 px-1.5 py-0.2 rounded text-white">ห้องปัจจุบัน</span>' : ''}
             </div>
-            <span class="text-[10px] text-neutral-400 mt-0.5 block">${r.history ? r.history.length : 0} ข้อความที่คุยค้างไว้</span>
+            <span class="text-[10px] text-neutral-400 mt-0.5 block">${r.history ? r.history.length : 0} ข้อความ</span>
           </div>
           <i class="fa-solid fa-chevron-right text-xs text-neutral-500"></i>
         `;
@@ -771,7 +794,7 @@
     }
 
     function createNewRoomForCurrentBot() {
-      const name = prompt("ตั้งชื่อห้องเนื้อเรื่องใหม่ (เช่น ฉากในโรงเรียน, พล็อตติดฝน, แฟนตาซี):");
+      const name = prompt("ตั้งชื่อห้องเนื้อเรื่องใหม่:");
       if (name) {
         const b = getBot(currentBotId);
         const newRoom = {
@@ -780,12 +803,12 @@
           history: [
             {
               sender: "bot",
-              thought: "เริ่มต้นเนื้อเรื่องบทใหม่ด้วยกัน... ตื่นเต้นจัง",
+              thought: "เริ่มต้นเนื้อเรื่องบทใหม่ด้วยกัน...",
               paragraphs: [
-                { type: "narration", text: `สายลมอ่อนพัดพาบรรยากาศรอบตัวให้แปรเปลี่ยนไป ในฉากใหม่นี้ ${b.name} ยืนรอคุณอยู่ด้วยสายตาที่ทอประกายความสุขอย่างปิดไม่มิด` },
-                { type: "speech", text: "ยินดีต้อนรับสู่เรื่องราวบทใหม่ของเรานะคนดี..." },
-                { type: "narration", text: "เขาก้าวเข้ามาใกล้พลางยื่นมือมาตรงหน้าคุณเพื่อเชื้อเชิญให้ร่วมก้าวไปด้วยกัน" }
-              ]
+                { type: "narration", text: `บรรยากาศใหม่เริ่มต้นขึ้น ${b.name} ยืนรอคุณอยู่ในฉากใหม่ด้วยความตื่นเต้น` },
+                { type: "speech", text: "ยินดีต้อนรับสู่เรื่องราวบทใหม่ของเรานะคนดี..." }
+              ],
+              time: getCurrentTimeStr()
             }
           ]
         };
@@ -839,13 +862,14 @@
                 paragraphs: [
                   { type: "narration", text: desc || "เขายืนรอคุณอยู่ด้วยสายตาที่เปี่ยมไปด้วยความคิดถึง เมื่อเห็นคุณเดินเข้ามา เขาก็ก้าวตรงเข้ามาหาทันที" },
                   { type: "speech", text: dial || quote || "ยินดีที่ได้พบกันนะคนดี..." }
-                ]
+                ],
+                time: getCurrentTimeStr()
               }
             ]
           }
         ],
         dmHistory: [
-          { sender: "bot", thought: "ทักทายคนโปรด", text: quote || "ทักทายครับ ยินดีที่ได้คุยกันนะ 🤍" }
+          { sender: "bot", text: quote || "ทักทายครับ ยินดีที่ได้คุยกันนะ 🤍", time: getCurrentTimeStr() }
         ],
         posts: [
           {
@@ -956,7 +980,6 @@
       }
     }
 
-    // ตรวจสอบ API KEY โดยเรียก gemini-3.8-flash ตามที่ Google แจ้งเตือน 100%
     async function verifyAndSaveApiKey() {
       const input = document.getElementById('setting-api-key');
       const btn = document.getElementById('btn-verify-key');
@@ -984,7 +1007,6 @@
 
       try {
         if (provider === 'gemini') {
-          // ใช้ gemini-3.8-flash และ fallback gemini-1.5-flash
           let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${key}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -992,7 +1014,6 @@
           });
           let data = await res.json();
           if (data.error) {
-            // ลอง fallback ไป gemini-1.5-flash เผื่อกรณีบัญชีรองรับ
             res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -1038,63 +1059,63 @@
       }
     }
 
-    // ==================== NARRATIVE ENGINE (4,000-6,000 CHARACTERS) ====================
-    async function callDynamicNarrativeEngine(userText, bot) {
+    // ==================== DM MESSAGING (PHOTOGRAM/IG) ====================
+    async function sendDmMessage() {
+      const input = document.getElementById('dm-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const b = getBot(currentBotId);
+      if (!b.dmHistory) b.dmHistory = [];
+
+      const timeStr = getCurrentTimeStr();
+      b.dmHistory.push({ sender: 'user', text: text, time: timeStr });
+      input.value = '';
+      renderPhoneDm(b);
+
+      const sendBtn = document.getElementById('dm-send-btn');
+      sendBtn.disabled = true;
+      sendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xs"></i>';
+
+      const reply = await callShortDmEngine(text, b);
+      b.dmHistory.push({
+        sender: 'bot',
+        text: reply,
+        time: getCurrentTimeStr()
+      });
+
+      saveUserData();
+      renderPhoneDm(b);
+
+      sendBtn.disabled = false;
+      sendBtn.innerHTML = '<i class="fa-solid fa-arrow-up text-xs"></i>';
+    }
+
+    async function callShortDmEngine(userText, bot) {
       const apiKey = appSettings.apiKey;
       const provider = appSettings.provider || 'gemini';
 
       if (apiKey) {
         try {
-          const systemPrompt = `
-คุณคือนักประพันธ์นวนิยายโรแมนติกวรรณกรรมชั้นสูง โดยรับบทบาทเป็นตัวละคร "${bot.name}"
-ข้อมูลตัวละคร: ${bot.personality}
-ข้อความล่าสุดจากผู้เล่น: "${userText}"
+          const prompt = `คุณคือ ${bot.name} กำลังคุยแชทในไอจีกับคนรัก/เพื่อนสนิท ตอบกลับข้อความนี้แบบธรรมชาติ 1-2 ประโยคสั้นๆ ห้ามใส่คำบรรยายการกระทำ: "${userText}"`;
 
-ข้อกำหนดสำคัญที่สุดเรื่องความยาวและการบรรยาย:
-1. ความยาวรวมทั้งหมดต้องมี "ความยาวและละเอียดลึกซึ้งมาก" อยู่ที่ประมาณ 4,000 - 6,000 ตัวอักษร
-2. โครงสร้างแบบนวนิยายประณีต (Dynamic Turn-Taking Paragraphs):
-   - บรรยายสภาพแวดล้อม กลิ่นอาย แสงเงา ภาษากาย ลมหายใจ และอารมณ์ความรู้สึกภายในอย่างลึกซึ้ง
-   - สลับด้วยคำพูดของตัวละคร และมีบทบรรยายคั่นระหว่างคำพูดต่อเนื่องหลายช่วง
-3. ตอบในรูปแบบ JSON เท่านั้น:
-{
-  "thought": "ความคิดในใจของตัวละครที่ไม่พูดออกมา แต่สะท้อนความรู้สึกจริงข้างในอย่างซื่อตรงและลึกซึ้ง",
-  "paragraphs": [
-    { "type": "narration", "text": "บทบรรยายฉาก บรรยากาศ และภาษากายช่วงที่ 1..." },
-    { "type": "speech", "text": "คำพูดของตัวละคร..." },
-    { "type": "narration", "text": "บทบรรยายปฏิกิริยา คั่นกิริยา และความคิดที่แล่นผ่านในเสี้ยววินาทีช่วงที่ 2..." },
-    { "type": "speech", "text": "คำพูดประโยคถัดไปของตัวละคร..." },
-    { "type": "narration", "text": "บทบรรยายปิดท้าย การกระทำต่อเนื่อง และบรรยากาศที่ยังคงอบอวล..." }
-  ]
-}
-`;
           if (provider === 'gemini') {
-            // เรียกโมเดล gemini-3.8-flash ตัวล่าสุด
             let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                contents: [{ parts: [{ text: systemPrompt }] }],
-                generationConfig: {
-                  responseMimeType: "application/json",
-                  maxOutputTokens: 8192
-                }
-              })
+              body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
             });
             let data = await res.json();
             if (data.error) {
-              // fallback gemini-1.5-flash
               res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  contents: [{ parts: [{ text: systemPrompt }] }],
-                  generationConfig: { responseMimeType: "application/json", maxOutputTokens: 8192 }
-                })
+                body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
               });
               data = await res.json();
             }
-            const raw = data.candidates?.[0]?.content?.parts?.[0]?.text;
-            if (raw) return JSON.parse(raw);
+            const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (reply) return reply.trim();
           } else {
             const endpoint = provider === 'groq' ? 'https://api.groq.com/openai/v1/chat/completions' : 'https://openrouter.ai/api/v1/chat/completions';
             const modelName = provider === 'groq' ? 'llama-3.3-70b-versatile' : 'meta-llama/llama-3.3-70b-instruct:free';
@@ -1103,170 +1124,52 @@
               headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
               body: JSON.stringify({
                 model: modelName,
-                messages: [{ role: 'system', content: 'Respond only in strict valid JSON.' }, { role: 'user', content: systemPrompt }],
-                max_tokens: 4096,
-                response_format: { type: "json_object" }
+                messages: [{ role: 'user', content: prompt }],
+                max_tokens: 150
               })
             });
             const data = await res.json();
-            const raw = data.choices?.[0]?.message?.content;
-            if (raw) return JSON.parse(raw);
+            const reply = data.choices?.[0]?.message?.content;
+            if (reply) return reply.trim();
           }
         } catch (e) {
-          console.warn("API fallback to deep offline narrative", e);
+          console.warn("DM API Fallback", e);
         }
       }
 
-      // Offline Ultra-Deep Fallback Narrative
-      return {
-        thought: "ทุกคำพูดของเธอ ทุกการกระทำตรงหน้า... มันทำให้หัวใจของผมเต้นผิดจังหวะจนควบคุมไม่อยู่ อยากจะหยุดเวลาตรงนี้ไว้ตลอดไป",
-        paragraphs: [
-          { 
-            type: "narration", 
-            text: `ความเงียบงันภายในห้องค่อยๆ ถูกเติมเต็มด้วยเสียงลมหายใจที่สม่ำเสมอ แสงอาทิตย์ยามอัสดงที่ทอดผ่านบานหน้าต่างกระจกใสฉาบไล้ลงบนแผ่นหลังและเส้นผมของเขาจนเกิดเป็นประกายสีทองอบอุ่น สายตาคมคู่นั้นไม่ได้ละไปจากใบหน้าของคุณแม้แต่เสี้ยววินาทีเดียว แววตาของเขาสะท้อนภาพเงาของคุณอย่างชัดเจน ราวกับโลกทั้งใบได้ถูกย่อส่วนลงเหลือเพียงพื้นที่ว่างระหว่างคุณกับเขาเพียงเท่านั้น เขาลอบมองริมฝีปากและดวงตาของคุณด้วยความรู้สึกผูกพันอันลึกซึ้งที่อัดแน่นอยู่เต็มอก` 
-          },
-          { 
-            type: "speech", 
-            text: "รู้ไหมครับ... ทุกครั้งที่ได้ยินเสียงเธอ ไม่ว่าในใจเค้าจะเหนื่อยล้าหรือกังวลเรื่องอะไรมา มันกลับมลายหายไปหมดเลย" 
-          },
-          { 
-            type: "narration", 
-            text: `ปลายนิ้วเรียวยาวของเขาค่อยๆ ขยับเลื่อนเข้ามาใกล้ ก่อนจะแตะลงบนหลังมือของคุณอย่างแผ่วเบา สัมผัสอุ่นซ่านที่แผ่กระจายออกมาทำให้หัวใจของคุณกระตุกวูบ เขาไม่เพียงแต่แตะไว้เฉยๆ แต่กลับค่อยๆ สอดประสานนิ้วทั้งห้าเข้ากับเรียวนิ้วของคุณอย่างช้าๆ แนบแน่นและมั่นคง ปลายนิ้วโป้งของเขาเกลี่ยหลังมือของคุณเบาๆ คล้ายกำลังปลอบประโลมและทะนุถนอมสิ่งที่มีค่าที่สุดในชีวิต รอยยิ้มบางๆ ผุดขึ้นที่มุมปากอย่างอ่อนโยนจนสายตานั้นดูหวานซึ้งเกินกว่าจะต้านทานได้` 
-          },
-          { 
-            type: "speech", 
-            text: "เค้าอยากให้เวลาหยุดหมุนอยู่ตรงนี้จัง... มีแค่เค้ากับเธอ นั่งมองตากันแบบนี้ไปเรื่อยๆ โดยไม่ต้องสนใจโลกข้างนอกเลยสักนิด" 
-          },
-          { 
-            type: "narration", 
-            text: `เขาโน้มใบหน้าลงมาอีกเล็กน้อยจนระยะห่างลดลงจนแทบจะได้ยินเสียงจังหวะการเต้นของหัวใจ กลิ่นน้ำหอมอ่อนๆ ประจำตัวที่ผสมผสานกับไออุ่นจากตัวเขาลอยมาแตะจมูก เขาสบตาคุณนิ่งลึก แววตาคู่นั้นเต็มไปด้วยความจริงใจและความรู้สึกที่อัดแน่นจนยากจะหาถ้อยคำใดมาเปรียบเปรย เขาขยับริมฝีปากเอ่ยขึ้นอีกครั้งด้วยน้ำเสียงทุ้มต่ำที่แผ่วเบาแต่กังวานลึกเข้าไปในความรู้สึกของคุณ` 
-          },
-          { 
-            type: "speech", 
-            text: "ไม่ว่าวันข้างหน้าจะเป็นยังไง... แค่เธอยังอยู่ข้างๆ เค้าแบบนี้ เค้าก็ไม่ต้องการอะไรอีกแล้วครับคนดี" 
-          }
-        ]
-      };
+      const text = userText.toLowerCase();
+      if (text.includes("ทำไร") || text.includes("อยู่ไหน")) return "กำลังนั่งคิดถึงเธออยู่พอดีเลยครับ ทำอะไรอยู่เหรอ?";
+      if (text.includes("hello") || text.includes("หวัดดี") || text.includes("สวัสดี")) return "ฮัลโหลลล ทักมาหาเค้าคิดถึงล่ะสิ 🤍";
+      return "ตอบช้าหน่อยนะ พอดีเพิ่งเห็นข้อความ มีอะไรเล่าให้เค้าฟังไหมครับ?";
     }
 
-    // ==================== ROLEPLAY ROOM LOGIC ====================
-    function openChatRoom(id) {
-      currentBotId = id;
-      const b = getBot(id);
-      const room = getCurrentRoom(b);
-
-      document.getElementById('view-lobby').classList.add('hidden');
-      document.getElementById('view-room').classList.remove('hidden');
-
-      document.getElementById('room-name').innerText = b.name;
-      document.getElementById('room-avatar').src = b.avatar;
-      document.getElementById('room-current-name').innerText = room.name;
-
-      renderRoomMessages();
-    }
-
-    function backToLobby() {
-      document.getElementById('view-room').classList.add('hidden');
-      document.getElementById('view-lobby').classList.remove('hidden');
-      if (isCalling) toggleCallSimulation();
-      switchLobbyTab('home');
-    }
-
-    function renderRoomMessages() {
-      const b = getBot(currentBotId);
-      const room = getCurrentRoom(b);
-      const container = document.getElementById('room-messages');
+    function renderPhoneDm(b) {
+      const container = document.getElementById('dm-messages');
       container.innerHTML = '';
 
-      if (!room.history) room.history = [];
+      if (!b.dmHistory) b.dmHistory = [];
+      b.dmHistory.forEach(d => {
+        const div = document.createElement('div');
+        const isUser = d.sender === 'user';
+        div.className = `flex flex-col ${isUser ? 'items-end' : 'items-start'} space-y-0.5`;
 
-      room.history.forEach(m => {
-        if (m.sender === 'user') {
-          const userDiv = document.createElement('div');
-          userDiv.className = 'flex flex-col items-end self-end max-w-[85%] ml-auto space-y-1';
-          let imgHtml = m.image ? `<img src="${m.image}" class="w-48 h-32 object-cover rounded-xl border border-neutral-700 mb-1">` : '';
-          userDiv.innerHTML = `
-            ${imgHtml}
-            <div class="bg-rose-600 text-white text-xs px-4 py-2.5 rounded-2xl rounded-tr-sm leading-relaxed shadow-sm">
-              ${m.userText}
-            </div>
-          `;
-          container.appendChild(userDiv);
-        } else {
-          const botDiv = document.createElement('div');
-          botDiv.className = 'flex flex-col items-start max-w-[95%] space-y-2.5';
-
-          let thoughtHtml = (m.thought && appSettings.showThoughts) ? `
-            <div class="bg-purple-950/40 border border-purple-800/40 text-purple-300 text-[10px] px-3.5 py-2 rounded-xl flex items-start gap-2 shadow-sm leading-relaxed">
-              <i class="fa-solid fa-brain text-[11px] text-purple-400 mt-0.5"></i>
-              <span><strong>ความคิดในใจ:</strong> ${m.thought}</span>
-            </div>
-          ` : '';
-
-          let contentHtml = '';
-          if (m.paragraphs) {
-            m.paragraphs.forEach(p => {
-              if (p.type === 'narration') {
-                contentHtml += `<div class="text-[11px] text-slate-300 italic leading-loose px-2 bg-neutral-950/50 p-3 rounded-2xl border border-neutral-800/60 shadow-sm">*${p.text}*</div>`;
-              } else {
-                contentHtml += `<div class="bg-neutral-800 border border-neutral-700/60 text-rose-100 text-xs px-4 py-2.5 rounded-2xl rounded-tl-sm leading-relaxed shadow-sm">"${p.text}"</div>`;
-              }
-            });
-          }
-
-          botDiv.innerHTML = `${thoughtHtml}${contentHtml}`;
-          container.appendChild(botDiv);
-        }
+        div.innerHTML = `
+          <div class="max-w-[78%] px-3.5 py-2 rounded-2xl text-[11px] leading-relaxed ${
+            isUser ? 'bg-rose-600 text-white rounded-br-none shadow-sm' : 'bg-neutral-800 text-neutral-200 rounded-bl-none border border-neutral-700/60 shadow-sm'
+          }">
+            ${d.text}
+          </div>
+          <span class="text-[9px] text-neutral-500 px-1 font-mono">${d.time || getCurrentTimeStr()}</span>
+        `;
+        container.appendChild(div);
       });
       container.scrollTop = container.scrollHeight;
     }
 
-    async function handleSendChat() {
-      const input = document.getElementById('chat-input');
-      const text = input.value.trim();
-      if (!text && !attachedImageUrl) return;
-
-      const b = getBot(currentBotId);
-      const room = getCurrentRoom(b);
-
-      room.history.push({
-        sender: 'user',
-        userText: text,
-        image: attachedImageUrl
-      });
-
-      input.value = '';
-      clearAttachedImage();
-      renderRoomMessages();
-
-      const sendBtn = document.getElementById('send-chat-btn');
-      sendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xs"></i>';
-      sendBtn.disabled = true;
-
-      const res = await callDynamicNarrativeEngine(text, b);
-
-      room.history.push({
-        sender: 'bot',
-        thought: res.thought,
-        paragraphs: res.paragraphs
-      });
-      saveUserData();
-      renderRoomMessages();
-
-      sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane text-xs"></i>';
-      sendBtn.disabled = false;
-
-      if (isCalling && res.paragraphs) {
-        const spoken = res.paragraphs.filter(p => p.type === 'speech').map(p => p.text).join(' ');
-        if (spoken) speakText(spoken);
-      }
-    }
-
-    // ==================== VIRTUAL SMARTPHONE (PHOTOGRAM/IG) ====================
     function openPhoneModal() {
       const b = getBot(currentBotId);
       document.getElementById('phone-modal').classList.remove('hidden');
-      renderPhoneFeed(b);
+      switchPhoneTab('dm');
       renderPhoneDm(b);
     }
 
@@ -1285,11 +1188,13 @@
         dmTab.classList.add('hidden');
         feedBtn.className = 'flex-1 py-2 text-rose-400 border-b-2 border-rose-500 font-medium';
         dmBtn.className = 'flex-1 py-2 text-neutral-400 hover:text-white font-medium';
+        renderPhoneFeed(getBot(currentBotId));
       } else {
         feedTab.classList.add('hidden');
         dmTab.classList.remove('hidden');
         dmBtn.className = 'flex-1 py-2 text-rose-400 border-b-2 border-rose-500 font-medium';
         feedBtn.className = 'flex-1 py-2 text-neutral-400 hover:text-white font-medium';
+        renderPhoneDm(getBot(currentBotId));
       }
     }
 
@@ -1318,61 +1223,6 @@
         `;
         container.appendChild(div);
       });
-    }
-
-    function renderPhoneDm(b) {
-      const container = document.getElementById('dm-messages');
-      container.innerHTML = '';
-
-      if (!b.dmHistory) b.dmHistory = [];
-      b.dmHistory.forEach(d => {
-        const div = document.createElement('div');
-        if (d.sender === 'user') {
-          div.className = 'flex justify-end';
-          div.innerHTML = `
-            <div class="max-w-[75%] px-3 py-1.5 rounded-2xl text-[11px] bg-rose-600 text-white rounded-br-none">
-              ${d.text}
-            </div>
-          `;
-        } else {
-          div.className = 'flex flex-col items-start space-y-1';
-          let thought = (d.thought && appSettings.showThoughts) ? `
-            <div class="text-[9px] text-purple-300 bg-purple-950/50 border border-purple-800/40 px-2 py-0.5 rounded-md italic">
-              💭 ความคิด: ${d.thought}
-            </div>
-          ` : '';
-          div.innerHTML = `
-            ${thought}
-            <div class="max-w-[75%] px-3 py-1.5 rounded-2xl text-[11px] bg-neutral-800 text-neutral-200 rounded-bl-none border border-neutral-700/50">
-              ${d.text}
-            </div>
-          `;
-        }
-        container.appendChild(div);
-      });
-      container.scrollTop = container.scrollHeight;
-    }
-
-    async function sendDmMessage() {
-      const input = document.getElementById('dm-input');
-      const text = input.value.trim();
-      if (!text) return;
-
-      const b = getBot(currentBotId);
-      if (!b.dmHistory) b.dmHistory = [];
-      b.dmHistory.push({ sender: 'user', text: text });
-      input.value = '';
-      renderPhoneDm(b);
-
-      const res = await callDynamicNarrativeEngine(text, b);
-      const reply = res.paragraphs ? res.paragraphs.find(p => p.type === 'speech')?.text || "ตอบรับครับคนดี" : "คิดถึงเสมอนะครับ";
-      b.dmHistory.push({
-        sender: 'bot',
-        thought: res.thought,
-        text: reply
-      });
-      saveUserData();
-      renderPhoneDm(b);
     }
 
     function openAddBotPostModal() {
@@ -1497,18 +1347,172 @@
       renderCommunityPosts();
     }
 
-    // ==================== LOBBY TABS ====================
+    // ==================== ROLEPLAY & NOVEL ENGINE ====================
+    async function callDynamicNarrativeEngine(userText, bot) {
+      const apiKey = appSettings.apiKey;
+      const provider = appSettings.provider || 'gemini';
+
+      if (apiKey) {
+        try {
+          const systemPrompt = `
+คุณคือนักประพันธ์นวนิยายโรแมนติก โดยรับบทบาทเป็นตัวละคร "${bot.name}"
+ข้อมูลตัวละคร: ${bot.personality}
+ข้อความล่าสุดจากผู้เล่น: "${userText}"
+
+ข้อกำหนดความยาว 4,000 - 6,000 ตัวอักษร:
+- มีการบรรยายสลับคำพูดอย่างสละสลวย พรรณนาบรรยากาศ แสงเงา ภาษากาย และความรู้สึกภายใน
+ตอบเป็น JSON เท่านั้น:
+{
+  "thought": "ความคิดในใจของตัวละคร",
+  "paragraphs": [
+    { "type": "narration", "text": "บทบรรยายฉาก บรรยากาศ และภาษากายช่วงที่ 1..." },
+    { "type": "speech", "text": "คำพูดของตัวละคร..." },
+    { "type": "narration", "text": "บทบรรยายคั่นกิริยา..." },
+    { "type": "speech", "text": "คำพูดประโยคถัดไป..." }
+  ]
+}
+`;
+          if (provider === 'gemini') {
+            let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ contents: [{ parts: [{ text: systemPrompt }] }], generationConfig: { responseMimeType: "application/json" } })
+            });
+            let data = await res.json();
+            if (data.error) {
+              res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents: [{ parts: [{ text: systemPrompt }] }], generationConfig: { responseMimeType: "application/json" } })
+              });
+              data = await res.json();
+            }
+            const raw = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (raw) return JSON.parse(raw);
+          } else {
+            const endpoint = provider === 'groq' ? 'https://api.groq.com/openai/v1/chat/completions' : 'https://openrouter.ai/api/v1/chat/completions';
+            const modelName = provider === 'groq' ? 'llama-3.3-70b-versatile' : 'meta-llama/llama-3.3-70b-instruct:free';
+            const res = await fetch(endpoint, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+              body: JSON.stringify({ model: modelName, messages: [{ role: 'system', content: 'Respond in JSON' }, { role: 'user', content: systemPrompt }], response_format: { type: "json_object" } })
+            });
+            const data = await res.json();
+            const raw = data.choices?.[0]?.message?.content;
+            if (raw) return JSON.parse(raw);
+          }
+        } catch (e) {
+          console.warn("API fallback", e);
+        }
+      }
+
+      return {
+        thought: "ทุกคำพูดของเธอทำให้ใจเต้นแรงเสมอ...",
+        paragraphs: [
+          { type: "narration", text: `ความเงียบงันถูกเติมเต็มด้วยเสียงลมหายใจสม่ำเสมอ แสงแดดยามเย็นทอดประกายกระทบเส้นผมของเขาจนเกิดประกายสีทองอบอุ่น สายตาคมคู่นั้นไม่ได้ละไปจากใบหน้าของคุณแม้แต่วินาทีเดียว` },
+          { type: "speech", text: "รู้ไหมครับ... ทุกครั้งที่ได้ยินเสียงเธอ มันทำให้เค้าหายเหนื่อยไปหมดเลย" },
+          { type: "narration", text: `เขาค่อยๆ สอดประสานนิ้วทั้งห้าเข้ากับเรียวนิ้วของคุณอย่างช้าๆ แนบแน่นและมั่นคง ปลายนิ้วโป้งเกลี่ยหลังมือของคุณเบาๆ ด้วยความทะนุถนอม` },
+          { type: "speech", text: "อยู่กับเค้าแบบนี้นานๆ นะครับคนดี" }
+        ]
+      };
+    }
+
+    function renderRoomMessages() {
+      const b = getBot(currentBotId);
+      const room = getCurrentRoom(b);
+      const container = document.getElementById('room-messages');
+      container.innerHTML = '';
+
+      if (!room.history) room.history = [];
+
+      room.history.forEach(m => {
+        if (m.sender === 'user') {
+          const userDiv = document.createElement('div');
+          userDiv.className = 'flex flex-col items-end self-end max-w-[85%] ml-auto space-y-1';
+          let imgHtml = m.image ? `<img src="${m.image}" class="w-48 h-32 object-cover rounded-xl border border-neutral-700 mb-1">` : '';
+          userDiv.innerHTML = `
+            ${imgHtml}
+            <div class="bg-rose-600 text-white text-xs px-4 py-2.5 rounded-2xl rounded-tr-sm leading-relaxed shadow-sm">
+              ${m.userText}
+            </div>
+            <span class="text-[9px] text-neutral-500 font-mono pr-1">${m.time || getCurrentTimeStr()}</span>
+          `;
+          container.appendChild(userDiv);
+        } else {
+          const botDiv = document.createElement('div');
+          botDiv.className = 'flex flex-col items-start max-w-[95%] space-y-2.5';
+
+          let thoughtHtml = (m.thought && appSettings.showThoughts) ? `
+            <div class="bg-purple-950/40 border border-purple-800/40 text-purple-300 text-[10px] px-3.5 py-2 rounded-xl flex items-start gap-2 shadow-sm leading-relaxed">
+              <i class="fa-solid fa-brain text-[11px] text-purple-400 mt-0.5"></i>
+              <span><strong>ความคิดในใจ:</strong> ${m.thought}</span>
+            </div>
+          ` : '';
+
+          let contentHtml = '';
+          if (m.paragraphs) {
+            m.paragraphs.forEach(p => {
+              if (p.type === 'narration') {
+                contentHtml += `<div class="text-[11px] text-slate-300 italic leading-loose px-2 bg-neutral-950/50 p-3 rounded-2xl border border-neutral-800/60 shadow-sm">*${p.text}*</div>`;
+              } else {
+                contentHtml += `<div class="bg-neutral-800 border border-neutral-700/60 text-rose-100 text-xs px-4 py-2.5 rounded-2xl rounded-tl-sm leading-relaxed shadow-sm">"${p.text}"</div>`;
+              }
+            });
+          }
+
+          botDiv.innerHTML = `
+            ${thoughtHtml}
+            ${contentHtml}
+            <span class="text-[9px] text-neutral-500 font-mono pl-1">${m.time || getCurrentTimeStr()}</span>
+          `;
+          container.appendChild(botDiv);
+        }
+      });
+      container.scrollTop = container.scrollHeight;
+    }
+
+    async function handleSendChat() {
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text && !attachedImageUrl) return;
+
+      const b = getBot(currentBotId);
+      const room = getCurrentRoom(b);
+
+      const timeStr = getCurrentTimeStr();
+      room.history.push({
+        sender: 'user',
+        userText: text,
+        image: attachedImageUrl,
+        time: timeStr
+      });
+
+      input.value = '';
+      clearAttachedImage();
+      renderRoomMessages();
+
+      const sendBtn = document.getElementById('send-chat-btn');
+      sendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xs"></i>';
+      sendBtn.disabled = true;
+
+      const res = await callDynamicNarrativeEngine(text, b);
+
+      room.history.push({
+        sender: 'bot',
+        thought: res.thought,
+        paragraphs: res.paragraphs,
+        time: getCurrentTimeStr()
+      });
+      saveUserData();
+      renderRoomMessages();
+
+      sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane text-xs"></i>';
+      sendBtn.disabled = false;
+    }
+
+    // ==================== LOBBY & APP INIT ====================
     function switchLobbyTab(tab) {
       const tabs = ['home', 'explore', 'chats', 'relations', 'community', 'settings'];
-      const titles = {
-        home: 'หน้าแรก',
-        explore: 'สร้างบอทใหม่',
-        chats: 'ประวัติเนื้อเรื่อง',
-        relations: 'ผูกสัมพันธ์ & กลุ่มแชท',
-        community: 'คอมมูนิตี้ผู้เล่น',
-        settings: 'ตั้งค่าระบบ'
-      };
-
       tabs.forEach(t => {
         const sec = document.getElementById(`tab-${t}`);
         const btn = document.getElementById(`btn-tab-${t}`);
@@ -1520,8 +1524,6 @@
           btn.className = 'flex flex-col items-center gap-0.5 text-neutral-400 hover:text-white transition';
         }
       });
-
-      document.getElementById('lobby-header-title').innerText = titles[tab];
       if (tab === 'home') renderHomeFriends();
       if (tab === 'chats') renderChatRecords();
       if (tab === 'relations') renderGroupChats();
@@ -1532,8 +1534,6 @@
     function renderHomeFriends() {
       const list = document.getElementById('home-friends-list');
       list.innerHTML = '';
-      document.getElementById('friend-count').innerText = `${bots.length} คน`;
-
       bots.forEach(b => {
         const div = document.createElement('div');
         div.className = 'p-3 bg-neutral-950 border border-neutral-800 rounded-2xl flex items-center justify-between hover:border-rose-500/40 transition cursor-pointer';
@@ -1546,9 +1546,7 @@
               <p class="text-[11px] text-neutral-400 truncate max-w-[170px] mt-0.5">${b.rooms ? b.rooms.length : 1} ห้องเนื้อเรื่อง</p>
             </div>
           </div>
-          <button class="px-3 py-1 bg-rose-600/20 text-rose-300 border border-rose-500/30 rounded-full text-[10px] font-medium hover:bg-rose-600 hover:text-white transition">
-            เข้าบท
-          </button>
+          <button class="px-3 py-1 bg-rose-600/20 text-rose-300 border border-rose-500/30 rounded-full text-[10px] font-medium">เข้าบท</button>
         `;
         list.appendChild(div);
       });
@@ -1557,16 +1555,12 @@
     function renderChatRecords() {
       const list = document.getElementById('chat-records-list');
       list.innerHTML = '';
-
       bots.forEach(b => {
         if (!b.rooms) return;
         b.rooms.forEach(r => {
           const div = document.createElement('div');
           div.className = 'p-3 bg-neutral-950 border border-neutral-800 rounded-2xl flex gap-3 cursor-pointer hover:border-neutral-700 transition';
-          div.onclick = () => {
-            currentRoomId = r.id;
-            openChatRoom(b.id);
-          };
+          div.onclick = () => { currentRoomId = r.id; openChatRoom(b.id); };
           div.innerHTML = `
             <img src="${b.avatar}" class="w-10 h-10 rounded-full object-cover">
             <div class="flex-1 overflow-hidden">
@@ -1574,7 +1568,7 @@
                 <span class="text-xs font-semibold text-white">${b.name} (${r.name})</span>
                 <span class="text-[10px] text-rose-400 font-medium">${r.history ? r.history.length : 0} ตอน</span>
               </div>
-              <p class="text-[11px] text-neutral-400 truncate mt-1 italic">แตะเพื่อเข้าสู่บทสนทนาห้องนี้</p>
+              <p class="text-[11px] text-neutral-400 truncate mt-1 italic">แตะเพื่อเข้าสู่บทสนทนา</p>
             </div>
           `;
           list.appendChild(div);
@@ -1582,7 +1576,6 @@
       });
     }
 
-    // ==================== IMAGE & UTILITY ====================
     function readFileAsDataUrl(file, callback) {
       const reader = new FileReader();
       reader.onload = function(e) { callback(e.target.result); };
@@ -1675,17 +1668,11 @@
       }
     }
 
-    // ==================== APP INIT ====================
     function initApp() {
       document.getElementById('user-name').innerText = userProfile.name;
-      document.getElementById('user-bio').innerText = `"${userProfile.bio}"`;
-      document.getElementById('user-avatar').src = userProfile.avatar;
       document.getElementById('user-email-display').innerText = currentUserEmail;
-
-      document.getElementById('setting-language').value = appSettings.language || 'th';
-      document.getElementById('setting-length').value = appSettings.length || 'epic';
+      document.getElementById('user-avatar').src = userProfile.avatar;
       document.getElementById('setting-api-key').value = appSettings.apiKey || '';
-      document.getElementById('setting-thoughts').checked = appSettings.showThoughts !== false;
 
       const rad = document.querySelector(`input[name="api-provider"][value="${appSettings.provider || 'gemini'}"]`);
       if (rad) rad.checked = true;
