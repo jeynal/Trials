@@ -15,6 +15,34 @@
 </head>
 <body class="bg-neutral-950 flex justify-center items-center min-h-screen text-neutral-100 p-0 sm:p-4">
 
+  <!-- ==================== LOGIN OVERLAY SCREEN ==================== -->
+  <div id="login-screen" class="fixed inset-0 bg-neutral-950 z-50 flex items-center justify-center p-4">
+    <div class="w-full max-w-sm bg-neutral-900 border border-neutral-800 rounded-3xl p-6 space-y-4 shadow-2xl">
+      <div class="text-center space-y-1">
+        <div class="w-12 h-12 mx-auto rounded-full bg-gradient-to-tr from-rose-500 to-amber-400 flex items-center justify-center text-white text-lg font-bold shadow-lg shadow-rose-500/30">
+          LC
+        </div>
+        <h2 class="text-base font-bold text-white pt-2">เข้าสู่ระบบ Lovey-Companion</h2>
+        <p class="text-xs text-neutral-400">ระบุอีเมลของคุณเพื่อบันทึกและจดจำความทรงจำของบอท</p>
+      </div>
+
+      <div class="space-y-3 pt-2">
+        <div>
+          <label class="block text-xs text-neutral-300 font-medium mb-1">อีเมลผู้ใช้งาน</label>
+          <input id="login-email-input" type="email" placeholder="youremail@example.com" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-rose-500">
+        </div>
+        <div>
+          <label class="block text-xs text-neutral-300 font-medium mb-1">ชื่อเล่นของคุณในเกม</label>
+          <input id="login-name-input" type="text" placeholder="คุณหนูนักท่องฝัน" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-rose-500">
+        </div>
+      </div>
+
+      <button onclick="handleLogin()" class="w-full py-3 bg-[#ff2d6c] hover:bg-[#e0205b] text-white font-bold rounded-xl text-xs transition shadow-lg shadow-pink-500/20">
+        เข้าสู่ระบบและเริ่มเล่น
+      </button>
+    </div>
+  </div>
+
   <!-- Mobile Container -->
   <div class="w-full max-w-md h-screen sm:h-[860px] bg-neutral-900 sm:rounded-[36px] flex flex-col overflow-hidden shadow-2xl border border-neutral-800 relative">
     
@@ -31,7 +59,7 @@
         </div>
         <div class="flex items-center gap-2 text-neutral-400 text-xs">
           <span id="api-status-dot" class="w-2 h-2 rounded-full bg-neutral-500"></span>
-          <span id="api-status-label">ออฟไลน์</span>
+          <span id="api-status-label" class="text-[11px]">ออฟไลน์</span>
         </div>
       </header>
 
@@ -53,15 +81,12 @@
                 <div class="flex justify-between items-start">
                   <div>
                     <h2 id="user-name" class="text-base font-semibold text-white">คุณหนูนักท่องฝัน</h2>
+                    <p id="user-email-display" class="text-[10px] text-rose-400 font-mono"></p>
                     <p id="user-bio" class="text-[11px] text-neutral-400 mt-0.5">"ชอบบทบรรยายโรแมนติกแฟนตาซีและตัวละครขี้อ้อน"</p>
                   </div>
-                  <button onclick="openEditProfileModal()" class="p-1.5 text-neutral-400 hover:text-rose-400 rounded-lg hover:bg-neutral-800 transition">
-                    <i class="fa-solid fa-pen text-xs"></i>
+                  <button onclick="handleLogout()" class="p-1.5 text-neutral-500 hover:text-red-400 text-xs" title="ออกจากระบบ">
+                    <i class="fa-solid fa-right-from-bracket"></i>
                   </button>
-                </div>
-                <div class="flex gap-2 mt-2">
-                  <span class="text-[10px] bg-rose-950/80 text-rose-300 border border-rose-800/40 px-2 py-0.5 rounded-full font-medium">VIP Tier</span>
-                  <span class="text-[10px] bg-neutral-800 text-neutral-300 px-2 py-0.5 rounded-full">ระดับนักเขียน</span>
                 </div>
               </div>
             </div>
@@ -91,16 +116,15 @@
             </div>
           </div>
 
+          <!-- Horizontal Sliding Tabs -->
           <div class="flex gap-4 overflow-x-auto hide-scrollbar border-b border-neutral-800 pb-1 text-xs font-medium whitespace-nowrap">
             <button onclick="switchBotTab('profile')" id="btab-btn-profile" class="text-rose-500 border-b-2 border-rose-500 pb-1 px-1 transition font-bold">*โปรไฟล์</button>
             <button onclick="switchBotTab('basic')" id="btab-btn-basic" class="text-neutral-400 hover:text-white pb-1 px-1 transition font-medium">*ตั้งค่าพื้นฐาน</button>
             <button onclick="switchBotTab('first')" id="btab-btn-first" class="text-neutral-400 hover:text-white pb-1 px-1 transition font-medium">ฉากแรก</button>
             <button onclick="switchBotTab('details')" id="btab-btn-details" class="text-neutral-400 hover:text-white pb-1 px-1 transition font-medium">ตั้งค่ารายละเอียด</button>
-            <button onclick="switchBotTab('event')" id="btab-btn-event" class="text-neutral-400 hover:text-white pb-1 px-1 transition font-medium">อีเวนต์</button>
             <button onclick="switchBotTab('lore')" id="btab-btn-lore" class="text-neutral-400 hover:text-white pb-1 px-1 transition font-medium">ลอร์บุ๊ก</button>
           </div>
 
-          <!-- FORM CONTAINER -->
           <div class="bg-white text-neutral-800 rounded-3xl p-4 space-y-4 shadow-xl border border-neutral-200">
             <div id="btab-profile" class="space-y-3.5">
               <div class="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 px-3 py-1 rounded-xl text-xs font-semibold">
@@ -111,7 +135,6 @@
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">ชื่อ</label>
                 <input id="bot-name-input" type="text" placeholder="กรุณากรอกชื่อตัวละคร" maxlength="20" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
-                <div class="text-[10px] text-right text-neutral-400 mt-1">0/20</div>
               </div>
 
               <div>
@@ -135,18 +158,8 @@
               </div>
 
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
-                <label class="block text-xs font-bold text-neutral-800 mb-1">อาชีพ</label>
-                <input id="bot-career-input" type="text" placeholder="กรุณากรอกอาชีพของตัวละคร" maxlength="20" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
-              </div>
-
-              <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">คำพูดจากตัวละคร</label>
                 <input id="bot-quote-input" type="text" placeholder="กรุณาใส่บทพูด" maxlength="100" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
-              </div>
-
-              <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
-                <label class="block text-xs font-bold text-neutral-800 mb-1">เรื่องเล่า (ตัวเลือก)</label>
-                <textarea id="bot-story-input" rows="3" placeholder="กรุณาใส่เรื่องราว" maxlength="1000" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
               </div>
 
               <div class="border border-dashed border-neutral-300 rounded-2xl p-3 space-y-2 bg-neutral-50">
@@ -199,21 +212,6 @@
                 <label class="block text-xs font-bold text-neutral-800 mb-1">ไม่ชอบ (ตัวเลือก)</label>
                 <input id="bot-dislikes-input" type="text" placeholder="ป้อนสิ่งที่ตัวละครไม่ชอบ" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
               </div>
-              <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
-                <label class="block text-xs font-bold text-neutral-800 mb-1">วันเกิด (ตัวเลือก)</label>
-                <input id="bot-birthday-input" type="text" placeholder="เช่น 14 มีนาคม" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
-              </div>
-            </div>
-
-            <div id="btab-event" class="hidden space-y-3.5">
-              <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
-                <label class="block text-xs font-bold text-neutral-800 mb-1">คีย์เวิร์ดกระตุ้นอีเวนต์</label>
-                <input id="bot-event-trigger" type="text" placeholder="เช่น หึง, ป่วย, วันครบรอบ" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
-              </div>
-              <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
-                <label class="block text-xs font-bold text-neutral-800 mb-1">พฤติกรรมเมื่อเกิดอีเวนต์</label>
-                <textarea id="bot-event-behavior" rows="2" placeholder="เช่น แสดงอาการหวงเป็นพิเศษ และดึงเข้ามากอดแน่น" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
-              </div>
             </div>
 
             <div id="btab-lore" class="hidden space-y-3.5">
@@ -223,7 +221,7 @@
               </div>
             </div>
 
-            <button onclick="submitCompleteCharacter()" class="w-full py-3.5 bg-[#ff2d6c] hover:bg-[#e0205b] active:scale-95 text-white font-bold rounded-full text-sm shadow-lg shadow-pink-500/30 transition">
+            <button onclick="submitCompleteCharacter()" class="w-full py-3.5 bg-[#ff2d6c] hover:bg-[#e0205b] text-white font-bold rounded-full text-sm shadow-lg shadow-pink-500/30 transition">
               เสร็จสมบูรณ์
             </button>
           </div>
@@ -231,11 +229,26 @@
 
         <!-- TAB 3: CHAT HISTORIES -->
         <section id="tab-chats" class="hidden space-y-3">
-          <div class="text-xs font-semibold text-neutral-200 px-1">ประวัติบทบาทสมมติ (Roleplay Records)</div>
+          <div class="text-xs font-semibold text-neutral-200 px-1">ประวัติเนื้อเรื่องทั้งหมด</div>
           <div id="chat-records-list" class="space-y-2"></div>
         </section>
 
-        <!-- TAB 4: COMMUNITY -->
+        <!-- TAB 4: BOT RELATIONSHIPS & GROUP CHAT (แถบใหม่ เชื่อมต่อบอทเข้าด้วยกัน) -->
+        <section id="tab-relations" class="hidden space-y-4">
+          <div class="flex justify-between items-center px-1">
+            <div>
+              <h3 class="text-xs font-semibold text-neutral-200">เชื่อมโยงบอท & แชทรวมกลุ่ม</h3>
+              <p class="text-[10px] text-neutral-500 mt-0.5">รวมบอทหลายตัวมาคุยในห้องเดียวกัน</p>
+            </div>
+            <button onclick="openCreateGroupModal()" class="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded-full text-[11px] font-medium flex items-center gap-1 shadow-md shadow-rose-600/30">
+              <i class="fa-solid fa-plus text-[10px]"></i> สร้างห้องรวม
+            </button>
+          </div>
+
+          <div id="group-chats-list" class="space-y-2.5"></div>
+        </section>
+
+        <!-- TAB 5: COMMUNITY -->
         <section id="tab-community" class="hidden space-y-3.5">
           <div class="flex justify-between items-center px-1">
             <h3 class="text-xs font-semibold text-neutral-200">บอร์ดพูดคุย & แบ่งปันบอท</h3>
@@ -246,31 +259,12 @@
           <div id="community-posts-container" class="space-y-3.5"></div>
         </section>
 
-        <!-- TAB 5: SETTINGS (รองรับทั้ง Gemini-3.8-Flash และ Groq Llama-3.3) -->
+        <!-- TAB 6: SETTINGS (รองรับทั้ง Gemini-3.8-Flash, Groq, และ OpenRouter) -->
         <section id="tab-settings" class="hidden space-y-3.5">
           <div class="text-xs font-semibold text-neutral-200 px-1">การตั้งค่าระบบ & สมอง AI</div>
           <div class="bg-neutral-950 border border-neutral-800 rounded-2xl divide-y divide-neutral-900 text-xs text-neutral-300">
             
-            <div class="p-3.5 flex justify-between items-center">
-              <span>ภาษาของระบบ (Language)</span>
-              <select id="setting-language" onchange="changeLanguage(this.value)" class="bg-neutral-900 border border-neutral-800 rounded-lg px-2.5 py-1 text-rose-300 focus:outline-none text-xs">
-                <option value="th">ไทย (TH)</option>
-                <option value="en">English (EN)</option>
-                <option value="ja">日本語 (JA)</option>
-                <option value="zh">中文 (ZH)</option>
-              </select>
-            </div>
-
-            <div class="p-3.5 flex justify-between items-center">
-              <span>สไตล์ความยาวการบรรยาย</span>
-              <select id="setting-length" onchange="saveGeneralSettings()" class="bg-neutral-900 border border-neutral-800 rounded-lg px-2.5 py-1 text-neutral-300 focus:outline-none text-xs">
-                <option value="epic">นิยายพรรณนายาวพิเศษ (Deep Novel)</option>
-                <option value="medium">บรรยายปานกลาง (Standard)</option>
-                <option value="short">กระชับรวดเร็ว (Compact)</option>
-              </select>
-            </div>
-
-            <!-- API Connect Box: Gemini / Groq -->
+            <!-- API Connect Box -->
             <div class="p-4 space-y-3 bg-neutral-900/40 rounded-xl">
               <div class="flex justify-between items-center">
                 <span class="font-medium text-white flex items-center gap-1.5">
@@ -279,15 +273,19 @@
                 <span id="api-indicator" class="text-[11px] px-2 py-0.5 rounded-full bg-neutral-800 text-neutral-400 font-medium">ยังไม่เชื่อมต่อ</span>
               </div>
 
-              <!-- Provider Selector -->
-              <div class="grid grid-cols-2 gap-2 text-xs">
-                <label class="flex items-center gap-2 p-2 bg-neutral-950 border border-neutral-800 rounded-xl cursor-pointer">
-                  <input type="radio" name="api-provider" value="gemini" checked onchange="switchApiProvider('gemini')" class="accent-rose-500">
-                  <span>Google Gemini</span>
+              <!-- Provider Selector 3 ค่าย -->
+              <div class="grid grid-cols-3 gap-1.5 text-[11px]">
+                <label class="flex flex-col items-center p-2 bg-neutral-950 border border-neutral-800 rounded-xl cursor-pointer text-center">
+                  <input type="radio" name="api-provider" value="gemini" checked onchange="switchApiProvider('gemini')" class="accent-rose-500 mb-1">
+                  <span>Gemini 3.8</span>
                 </label>
-                <label class="flex items-center gap-2 p-2 bg-neutral-950 border border-neutral-800 rounded-xl cursor-pointer">
-                  <input type="radio" name="api-provider" value="groq" onchange="switchApiProvider('groq')" class="accent-rose-500">
-                  <span>Groq Cloud (ตอบไว)</span>
+                <label class="flex flex-col items-center p-2 bg-neutral-950 border border-neutral-800 rounded-xl cursor-pointer text-center">
+                  <input type="radio" name="api-provider" value="groq" onchange="switchApiProvider('groq')" class="accent-rose-500 mb-1">
+                  <span>Groq (ไวมาก)</span>
+                </label>
+                <label class="flex flex-col items-center p-2 bg-neutral-950 border border-neutral-800 rounded-xl cursor-pointer text-center">
+                  <input type="radio" name="api-provider" value="openrouter" onchange="switchApiProvider('openrouter')" class="accent-rose-500 mb-1">
+                  <span>OpenRouter</span>
                 </label>
               </div>
               
@@ -306,14 +304,6 @@
             </div>
 
             <div class="p-3.5 flex justify-between items-center">
-              <span>ระบบแสดงความคิดในใจบอท</span>
-              <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" id="setting-thoughts" checked onchange="saveGeneralSettings()" class="sr-only peer">
-                <div class="w-9 h-5 bg-neutral-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-rose-600"></div>
-              </label>
-            </div>
-
-            <div class="p-3.5 flex justify-between items-center">
               <span>ล้างข้อมูลและประวัติทั้งหมด</span>
               <button onclick="clearAllData()" class="text-red-400 hover:text-red-300 underline text-[11px]">ล้างข้อมูล</button>
             </div>
@@ -322,35 +312,40 @@
 
       </div>
 
-      <!-- Bottom Nav (5 TABS) -->
-      <nav class="h-16 bg-neutral-950 border-t border-neutral-800 flex justify-around items-center px-2 z-10">
-        <button onclick="switchLobbyTab('home')" id="btn-tab-home" class="flex flex-col items-center gap-1 text-rose-500 transition">
-          <i class="fa-solid fa-house text-sm"></i>
-          <span class="text-[10px]">โฮม</span>
+      <!-- Bottom Nav (6 TABS ครบทุกฟังก์ชัน) -->
+      <nav class="h-16 bg-neutral-950 border-t border-neutral-800 flex justify-around items-center px-1 z-10">
+        <button onclick="switchLobbyTab('home')" id="btn-tab-home" class="flex flex-col items-center gap-0.5 text-rose-500 transition">
+          <i class="fa-solid fa-house text-xs"></i>
+          <span class="text-[9px]">โฮม</span>
         </button>
-        <button onclick="switchLobbyTab('explore')" id="btn-tab-explore" class="flex flex-col items-center gap-1 text-neutral-400 hover:text-white transition">
-          <i class="fa-solid fa-compass text-sm"></i>
-          <span class="text-[10px]">สร้าง/หาบอท</span>
+        <button onclick="switchLobbyTab('explore')" id="btn-tab-explore" class="flex flex-col items-center gap-0.5 text-neutral-400 hover:text-white transition">
+          <i class="fa-solid fa-compass text-xs"></i>
+          <span class="text-[9px]">สร้างบอท</span>
         </button>
-        <button onclick="switchLobbyTab('chats')" id="btn-tab-chats" class="flex flex-col items-center gap-1 text-neutral-400 hover:text-white transition">
-          <i class="fa-solid fa-book-open text-sm"></i>
-          <span class="text-[10px]">เนื้อเรื่อง</span>
+        <button onclick="switchLobbyTab('chats')" id="btn-tab-chats" class="flex flex-col items-center gap-0.5 text-neutral-400 hover:text-white transition">
+          <i class="fa-solid fa-book-open text-xs"></i>
+          <span class="text-[9px]">เนื้อเรื่อง</span>
         </button>
-        <button onclick="switchLobbyTab('community')" id="btn-tab-community" class="flex flex-col items-center gap-1 text-neutral-400 hover:text-white transition">
-          <i class="fa-solid fa-users text-sm"></i>
-          <span class="text-[10px]">ชุมชน</span>
+        <button onclick="switchLobbyTab('relations')" id="btn-tab-relations" class="flex flex-col items-center gap-0.5 text-neutral-400 hover:text-white transition">
+          <i class="fa-solid fa-link text-xs"></i>
+          <span class="text-[9px]">ผูกสัมพันธ์</span>
         </button>
-        <button onclick="switchLobbyTab('settings')" id="btn-tab-settings" class="flex flex-col items-center gap-1 text-neutral-400 hover:text-white transition">
-          <i class="fa-solid fa-gear text-sm"></i>
-          <span class="text-[10px]">ตั้งค่า</span>
+        <button onclick="switchLobbyTab('community')" id="btn-tab-community" class="flex flex-col items-center gap-0.5 text-neutral-400 hover:text-white transition">
+          <i class="fa-solid fa-users text-xs"></i>
+          <span class="text-[9px]">ชุมชน</span>
+        </button>
+        <button onclick="switchLobbyTab('settings')" id="btn-tab-settings" class="flex flex-col items-center gap-0.5 text-neutral-400 hover:text-white transition">
+          <i class="fa-solid fa-gear text-xs"></i>
+          <span class="text-[9px]">ตั้งค่า</span>
         </button>
       </nav>
     </div>
 
 
-    <!-- ==================== VIEW 2: ROLEPLAY & CHAT ROOM ==================== -->
+    <!-- ==================== VIEW 2: MULTI-ROOM CHAT VIEW ==================== -->
     <div id="view-room" class="hidden flex-1 flex flex-col overflow-hidden relative">
       
+      <!-- Top Chat Header -->
       <header class="p-3 bg-neutral-900/90 backdrop-blur border-b border-neutral-800 flex items-center justify-between z-20">
         <div class="flex items-center gap-2.5">
           <button onclick="backToLobby()" class="p-1.5 text-neutral-400 hover:text-white rounded-full">
@@ -359,23 +354,26 @@
           <img id="room-avatar" src="" class="w-9 h-9 rounded-full object-cover border border-rose-500/50">
           <div>
             <h2 id="room-name" class="text-xs font-semibold text-white leading-tight">ชื่อบอท</h2>
-            <div class="text-[10px] text-rose-400 flex items-center gap-1">
-              <i class="fa-solid fa-heart text-[9px]"></i>
-              <span>ความผูกพัน: <span id="room-affection">85</span>%</span>
-            </div>
+            <!-- Room Selector Dropdown: ให้บอท 1 ตัวมีได้หลายห้องแชทแยกเนื้อเรื่อง -->
+            <button onclick="openRoomPickerModal()" class="text-[10px] text-rose-400 flex items-center gap-1 hover:underline">
+              <i class="fa-solid fa-comments text-[9px]"></i>
+              <span id="room-current-name">เนื้อเรื่องหลัก</span>
+              <i class="fa-solid fa-chevron-down text-[8px]"></i>
+            </button>
           </div>
         </div>
 
         <div class="flex items-center gap-1.5">
+          <button onclick="createNewRoomForCurrentBot()" title="เปิดห้องเนื้อเรื่องใหม่" class="p-2 text-rose-400 hover:text-white bg-neutral-800 rounded-full transition">
+            <i class="fa-solid fa-plus text-xs"></i>
+          </button>
           <button id="call-toggle-btn" onclick="toggleCallSimulation()" title="โทรหาบอท" class="p-2 text-neutral-300 hover:text-white bg-neutral-800 rounded-full transition">
             <i class="fa-solid fa-phone text-xs"></i>
-          </button>
-          <button onclick="openPhoneModal()" title="เปิดโทรศัพท์เสมือน (IG)" class="p-2 text-rose-400 hover:text-rose-300 bg-rose-950/40 border border-rose-800/40 rounded-full transition">
-            <i class="fa-solid fa-mobile-screen text-xs"></i>
           </button>
         </div>
       </header>
 
+      <!-- Active Call Banner -->
       <div id="call-bar" class="hidden bg-rose-950/80 border-b border-rose-800/60 px-4 py-1.5 flex justify-between items-center text-[11px] text-rose-200">
         <span class="flex items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
@@ -384,8 +382,10 @@
         <button onclick="toggleCallSimulation()" class="underline font-semibold">วางสาย</button>
       </div>
 
+      <!-- Messages Area -->
       <div id="room-messages" class="flex-1 overflow-y-auto p-4 space-y-4 hide-scrollbar"></div>
 
+      <!-- Attached Image Preview Bar -->
       <div id="img-preview-box" class="hidden px-4 py-2 bg-neutral-950 border-t border-neutral-800 flex items-center justify-between">
         <div class="flex items-center gap-2">
           <img id="img-preview" src="" class="w-10 h-10 object-cover rounded-lg border border-neutral-700">
@@ -394,6 +394,7 @@
         <button onclick="clearAttachedImage()" class="text-neutral-500 hover:text-white text-xs"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
+      <!-- Bottom Chat Controls -->
       <div class="p-3 bg-neutral-900 border-t border-neutral-800 space-y-2">
         <div class="flex items-center gap-2">
           <label title="เลือกรูปจากเครื่องประกอบฉาก" class="p-2.5 text-neutral-400 hover:text-rose-400 bg-neutral-950 rounded-full border border-neutral-800 cursor-pointer">
@@ -401,11 +402,7 @@
             <input type="file" accept="image/*" class="hidden" onchange="handleAttachImageFromFile(event)">
           </label>
           
-          <button onclick="openPhoneModal()" title="จำลองมือถือ (ไอจี/ไลน์)" class="px-2.5 py-1.5 bg-neutral-950 hover:border-rose-500/50 border border-neutral-800 text-rose-300 rounded-full text-[11px] flex items-center gap-1.5 font-medium">
-            <i class="fa-brands fa-instagram text-rose-400"></i> โทรศัพท์
-          </button>
-          
-          <input id="chat-input" type="text" placeholder="พิมพ์คุยหรือบรรยาย (*ยิ้มบางๆ* สวัสดี...)" 
+          <input id="chat-input" type="text" placeholder="พิมพ์คุยหรือบรรยาย (*ก้าวเข้าไปหา* สวัสดี...)" 
                  class="flex-1 bg-neutral-950 border border-neutral-800 text-white text-xs px-3.5 py-2.5 rounded-full focus:outline-none focus:border-rose-500"
                  onkeydown="if(event.key === 'Enter') handleSendChat()">
 
@@ -417,180 +414,202 @@
     </div>
 
 
-    <!-- ==================== MODALS ==================== -->
-    <div id="edit-profile-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-4">
-      <div class="w-full max-w-sm bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-3.5 shadow-2xl">
+    <!-- ==================== MODAL: ROOM PICKER ==================== -->
+    <div id="room-picker-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-4">
+      <div class="w-full max-w-sm bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-3 shadow-2xl">
         <div class="flex justify-between items-center border-b border-neutral-800 pb-2">
-          <h3 class="text-sm font-semibold text-white">แก้ไขโปรไฟล์ผู้ใช้</h3>
-          <button onclick="closeEditProfileModal()" class="text-neutral-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+          <h3 class="text-xs font-semibold text-white">เลือกห้องเนื้อเรื่องของบอทนี้</h3>
+          <button onclick="closeRoomPickerModal()" class="text-neutral-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div class="space-y-3 text-xs">
-          <div>
-            <label class="block text-neutral-400 mb-1">ชื่อผู้ใช้</label>
-            <input id="edit-user-name" type="text" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-rose-500">
-          </div>
-          <div>
-            <label class="block text-neutral-400 mb-1">คำโปรย / ชีวประวัติ (Bio)</label>
-            <textarea id="edit-user-bio" rows="2" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-rose-500"></textarea>
-          </div>
-        </div>
-        <button onclick="saveUserProfile()" class="w-full py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-medium transition shadow-lg shadow-rose-600/30">
-          บันทึกการเปลี่ยนแปลง
+        <div id="room-list-container" class="space-y-2 max-h-60 overflow-y-auto pr-1 hide-scrollbar"></div>
+        <button onclick="createNewRoomForCurrentBot()" class="w-full py-2 bg-neutral-800 hover:bg-neutral-700 text-rose-300 rounded-xl text-xs font-medium border border-rose-500/30 flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-plus text-[10px]"></i> เปิดห้องเนื้อเรื่องใหม่
         </button>
       </div>
     </div>
 
-    <div id="create-post-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-4">
+    <!-- ==================== MODAL: CREATE GROUP CHAT ==================== -->
+    <div id="create-group-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-4">
       <div class="w-full max-w-sm bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-3.5 shadow-2xl">
         <div class="flex justify-between items-center border-b border-neutral-800 pb-2">
-          <h3 class="text-sm font-semibold text-white">สร้างโพสต์ใหม่ในคอมมูนิตี้</h3>
-          <button onclick="closeCreatePostModal()" class="text-neutral-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+          <h3 class="text-xs font-semibold text-white">สร้างห้องแชทรวมบอท</h3>
+          <button onclick="closeCreateGroupModal()" class="text-neutral-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div class="space-y-3 text-xs">
           <div>
-            <label class="block text-neutral-400 mb-1">เนื้อหาโพสต์ / คำถาม / แจกบท</label>
-            <textarea id="post-content" rows="4" placeholder="พิมพ์ข้อความที่ต้องการแชร์กับผู้เล่นคนอื่นๆ..." class="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-3 text-white focus:outline-none focus:border-rose-500"></textarea>
+            <label class="block text-neutral-400 mb-1">ชื่อกลุ่มแชท</label>
+            <input id="group-title-input" type="text" placeholder="เช่น แก๊งเพื่อนสนิท, ครอบครัว" class="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-rose-500">
           </div>
           <div>
-            <label class="block text-neutral-400 mb-1">แนบรูปภาพ (เลือกจากเครื่อง)</label>
-            <label class="px-3 py-2 bg-neutral-950 border border-neutral-800 hover:border-rose-500 text-rose-300 rounded-xl text-xs cursor-pointer flex items-center gap-2">
-              <i class="fa-solid fa-image"></i> เลือกรูปจากอัลบั้ม
-              <input type="file" accept="image/*" class="hidden" onchange="handlePostImageUpload(event)">
-            </label>
-            <img id="post-img-preview" src="" class="hidden w-full h-32 object-cover rounded-xl mt-2 border border-neutral-700">
+            <label class="block text-neutral-400 mb-1">เลือกบอทที่จะดึงเข้ากลุ่ม (เลือกอย่างน้อย 2 ตัว)</label>
+            <div id="group-bot-checkboxes" class="space-y-2 max-h-40 overflow-y-auto"></div>
+          </div>
+          <div>
+            <label class="block text-neutral-400 mb-1">ความสัมพันธ์ระหว่างบอทในกลุ่ม</label>
+            <textarea id="group-relations-input" rows="2" placeholder="เช่น เร็นกับลูคัสเป็นเพื่อนสนิทกันแต่แอบแย่งจีบคุณ..." class="w-full bg-neutral-950 border border-neutral-800 rounded-xl p-2.5 text-white focus:outline-none focus:border-rose-500"></textarea>
           </div>
         </div>
-        <button onclick="publishCommunityPost()" class="w-full py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-medium transition shadow-lg shadow-rose-600/30">
-          เผยแพร่โพสต์
+        <button onclick="submitCreateGroupChat()" class="w-full py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-medium transition shadow-lg shadow-rose-600/30">
+          สร้างห้องแชทรวม
         </button>
-      </div>
-    </div>
-
-    <div id="phone-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-3">
-      <div class="w-full max-w-xs h-[640px] bg-neutral-950 border-2 border-neutral-700 rounded-[32px] flex flex-col overflow-hidden shadow-2xl relative">
-        <div class="h-6 bg-neutral-950 flex justify-center items-center">
-          <div class="w-16 h-3 bg-neutral-800 rounded-full"></div>
-        </div>
-        <div class="px-3 py-2 border-b border-neutral-800 flex justify-between items-center bg-neutral-900/50">
-          <span class="text-xs font-bold text-white tracking-wider flex items-center gap-1">
-            <i class="fa-brands fa-instagram text-rose-500"></i> Photogram
-          </span>
-          <div class="flex items-center gap-2">
-            <button onclick="openAddBotPostModal()" title="เพิ่มโพสต์ใหม่ให้บอท" class="text-rose-400 hover:text-white text-xs"><i class="fa-solid fa-square-plus"></i></button>
-            <button onclick="closePhoneModal()" class="text-neutral-400 hover:text-white text-xs"><i class="fa-solid fa-xmark"></i></button>
-          </div>
-        </div>
-        <div class="flex border-b border-neutral-800 text-xs bg-neutral-900/30">
-          <button onclick="switchPhoneTab('feed')" id="p-tab-btn-feed" class="flex-1 py-2 text-rose-400 border-b-2 border-rose-500 font-medium">โพสต์ประจำวัน</button>
-          <button onclick="switchPhoneTab('dm')" id="p-tab-btn-dm" class="flex-1 py-2 text-neutral-400 hover:text-white font-medium">แชท DM ด่วน</button>
-        </div>
-        <div id="p-tab-feed" class="flex-1 overflow-y-auto p-3 space-y-3.5 hide-scrollbar">
-          <div id="phone-feed-container" class="space-y-3.5"></div>
-        </div>
-        <div id="p-tab-dm" class="hidden flex-1 flex flex-col overflow-hidden">
-          <div id="dm-messages" class="flex-1 overflow-y-auto p-3 space-y-3 text-xs hide-scrollbar"></div>
-          <div class="p-2 border-t border-neutral-800 flex gap-1.5 bg-neutral-900">
-            <input id="dm-input" type="text" placeholder="ส่งข้อความคุยแบบเพื่อน..." class="flex-1 bg-neutral-950 border border-neutral-800 text-white text-[11px] px-3 py-1.5 rounded-full focus:outline-none" onkeydown="if(event.key === 'Enter') sendDmMessage()">
-            <button onclick="sendDmMessage()" class="px-3 bg-rose-600 text-white rounded-full text-xs"><i class="fa-solid fa-arrow-up"></i></button>
-          </div>
-        </div>
       </div>
     </div>
 
   </div>
 
   <script>
-    // ==================== STATE MANAGEMENT ====================
-    let currentBotId = "bot_1";
+    // ==================== MULTI-USER & EMAIL PERSISTENCE ====================
+    let currentUserEmail = localStorage.getItem('lovey_current_email') || '';
+    let currentBotId = 'bot_1';
+    let currentRoomId = 'room_default';
     let isCalling = false;
     let attachedImageUrl = null;
-    let postUploadedImageUrl = null;
-    let tempBotAvatar = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80";
+    let tempBotAvatar = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80';
 
-    let userProfile = JSON.parse(localStorage.getItem('lovey_user_profile')) || {
-      name: "คุณหนูนักท่องฝัน",
-      bio: "ชอบบทบรรยายโรแมนติกแฟนตาซีและตัวละครขี้อ้อน",
-      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80"
-    };
-
-    let appSettings = JSON.parse(localStorage.getItem('lovey_settings_v5')) || {
-      language: "th",
-      length: "epic",
-      provider: "gemini", // "gemini" หรือ "groq"
-      apiKey: "",
-      showThoughts: true
-    };
-
-    let communityPosts = JSON.parse(localStorage.getItem('lovey_community')) || [
-      {
-        id: "post_1",
-        author: "MewMew_Writer",
-        time: "1 ชม. ที่แล้ว",
-        content: "ใครมี Prompt บอทแนวเจ้าชายเย็นชาแต่คลั่งรักบ้างคะ ขอยืมไปดัดแปลงหน่อย บอทเร็นหวานจนมดขึ้นจอแล้ว 555",
-        image: null,
-        likes: 15,
-        isLiked: false
-      }
-    ];
+    // ฟังก์ชันสร้างคีย์แยกตามอีเมล
+    function getUserKey(key) {
+      return `lovey_${currentUserEmail}_${key}`;
+    }
 
     let defaultBots = [
       {
         id: "bot_1",
         name: "เร็น (Ren)",
         avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-        gender: "male",
-        age: "22",
-        career: "นักศึกษาคณะดนตรี",
-        quote: "ต่อให้โลกนี้มืดมิดแค่ไหน เค้าจะส่องสว่างเพื่อเธอคนเดียว",
-        story: "เติบโตมาในครอบครัวนักดนตรี อบอุ่น ขี้อ้อน และรักผู้เล่นมาก ไม่ยอมให้ใครมาทำร้ายผู้เล่น",
-        creatorNote: "แนะนำให้เล่นแนวแชทอ้อนๆ หรือโทรศัพท์คุยช่วงดึกๆ",
-        basicInfo: "ส่วนสูง 183 ซม. MBTI คือ ENFJ กรุ๊ปเลือด B อบอุ่นและซื่อสัตย์",
-        personality: "ขี้อ้อน อ่อนโยน ขี้หึงนิดๆ ปากหวาน ไม่หลุดคาร์",
-        speakingStyle: "แทนตัวเองว่า 'เค้า' เรียกผู้เล่นว่า 'คนดี' หรือ 'เธอ' ลงท้ายด้วยครับ",
-        sceneDesc: "ในห้องซ้อมเปียโนยามเย็น แสงแดดสีส้มส่องลอดหน้าต่าง เขาหยุดเล่นแล้วเงยหน้ามองคุณ",
-        sceneDialogue: "วันนี้เหนื่อยไหมครับคนดี? เค้าคิดถึงเธอทั้งวันเลยเนี่ย มีอะไรอยากเล่าให้เค้าฟังไหมครับ?",
-        likes: "กาแฟลาเต้, แมว, เสียงหัวเราะของคุณ",
-        dislikes: "ฝนตกหนัก, การเห็นคุณร้องไห้",
-        birthday: "14 มีนาคม",
-        lorebook: "เร็นเป็นแฟนของคุณมาได้ 1 ปีแล้ว ทั้งคู่สนิทสนมกันมาก",
-        affection: 85,
-        history: [
+        personality: "ขี้อ้อน อ่อนโยน ขี้หึงนิดๆ ปากหวาน ไม่หลุดคาร์ บรรยายความรู้สึกและการกระทำอย่างละเอียด",
+        rooms: [
           {
-            sender: "bot",
-            thought: "ในที่สุดเธอก็ยอมมาหา... วันนี้ดูเหนื่อยจังนะ อยากดึงมากอดให้หายเหนื่อยชะมัด",
-            narration: "เขานั่งเท้าคางมองดูคุณอยู่ฝั่งตรงข้ามของโต๊ะไม้โอ๊ก แสงแดดยามเย็นทอประกายกระทบเส้นผมสีน้ำตาลเข้มของเขา รอยยิ้มอบอุ่นปรากฏขึ้นที่มุมปาก ก่อนที่เขาจะค่อยๆ เลื่อนฝ่ามือหนามาวางทับลงบนหลังมือของคุณ สัมผัสอุ่นวาบทำให้บรรยากาศรอบตัวดูนิ่งสงบลงราวกับมีเพียงคุณสองคนในโลก",
-            speech: "วันนี้เหนื่อยไหมครับคนดี? เค้าคิดถึงเธอทั้งวันเลยเนี่ย มีอะไรอยากเล่าให้เค้าฟังไหมครับ?"
-          }
-        ],
-        dmHistory: [
-          { sender: "bot", thought: "อยากคุยด้วยจัง ทักไปดีไหมนะ", text: "เลิกงานหรือยัง อย่าลืมกินข้าวนะครับ 🤍" }
-        ],
-        posts: [
-          {
-            img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=600&auto=format&fit=crop&q=80",
-            caption: "กาแฟแก้วโปรดก็ยังสู้รอยยิ้มของเธอไม่ได้เลย ✨☕",
-            time: "1 ชม. ที่แล้ว"
+            id: "room_default",
+            name: "เนื้อเรื่องหลัก",
+            history: [
+              {
+                sender: "bot",
+                thought: "ในที่สุดเธอก็ยอมมาหา... วันนี้ดูเหนื่อยจังนะ อยากดึงมากอดให้หายเหนื่อยชะมัด",
+                paragraphs: [
+                  { type: "narration", text: "เขานั่งเท้าคางมองดูคุณอยู่ฝั่งตรงข้ามของโต๊ะไม้โอ๊ก แสงแดดยามเย็นทอประกายกระทบเส้นผมสีน้ำตาลเข้มของเขา รอยยิ้มอบอุ่นปรากฏขึ้นที่มุมปาก" },
+                  { type: "speech", text: "วันนี้เหนื่อยไหมครับคนดี? เค้าคิดถึงเธอทั้งวันเลยเนี่ย..." },
+                  { type: "narration", text: "เขาค่อยๆ เลื่อนฝ่ามือหนามาวางทับลงบนหลังมือของคุณ สัมผัสอุ่นวาบทำให้บรรยากาศรอบตัวดูนิ่งสงบลง" },
+                  { type: "speech", text: "มีอะไรอยากเล่าให้เค้าฟังไหมครับ? เค้าพร้อมจะนั่งฟังเธอทั้งคืนเลยนะ" }
+                ]
+              }
+            ]
           }
         ]
       }
     ];
 
-    let bots = JSON.parse(localStorage.getItem('lovey_bots_v5')) || defaultBots;
+    let userProfile = { name: "คุณหนูนักท่องฝัน", bio: "ชอบบทบรรยายโรแมนติกแฟนตาซี", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" };
+    let appSettings = { language: "th", length: "epic", provider: "gemini", apiKey: "" };
+    let groupChats = [];
+    let bots = defaultBots;
 
-    function saveState() {
-      localStorage.setItem('lovey_bots_v5', JSON.stringify(bots));
-      localStorage.setItem('lovey_user_profile', JSON.stringify(userProfile));
-      localStorage.setItem('lovey_settings_v5', JSON.stringify(appSettings));
-      localStorage.setItem('lovey_community', JSON.stringify(communityPosts));
+    function loadUserData() {
+      if (!currentUserEmail) return;
+      bots = JSON.parse(localStorage.getItem(getUserKey('bots'))) || defaultBots;
+      userProfile = JSON.parse(localStorage.getItem(getUserKey('profile'))) || userProfile;
+      appSettings = JSON.parse(localStorage.getItem(getUserKey('settings'))) || appSettings;
+      groupChats = JSON.parse(localStorage.getItem(getUserKey('groups'))) || [];
+    }
+
+    function saveUserData() {
+      if (!currentUserEmail) return;
+      localStorage.setItem(getUserKey('bots'), JSON.stringify(bots));
+      localStorage.setItem(getUserKey('profile'), JSON.stringify(userProfile));
+      localStorage.setItem(getUserKey('settings'), JSON.stringify(appSettings));
+      localStorage.setItem(getUserKey('groups'), JSON.stringify(groupChats));
+    }
+
+    function handleLogin() {
+      const email = document.getElementById('login-email-input').value.trim();
+      const name = document.getElementById('login-name-input').value.trim();
+      if (!email) return alert('กรุณาระบุอีเมล');
+
+      currentUserEmail = email;
+      localStorage.setItem('lovey_current_email', email);
+
+      loadUserData();
+      if (name) userProfile.name = name;
+      saveUserData();
+
+      document.getElementById('login-screen').classList.add('hidden');
+      initApp();
+    }
+
+    function handleLogout() {
+      if (confirm('คุณต้องการออกจากระบบหรือไม่? (ข้อมูลจะยังถูกบันทึกไว้ในอีเมลนี้)')) {
+        localStorage.removeItem('lovey_current_email');
+        location.reload();
+      }
     }
 
     function getBot(id) {
       return bots.find(b => b.id === id) || bots[0];
     }
 
+    function getCurrentRoom(bot) {
+      if (!bot.rooms) bot.rooms = [{ id: "room_default", name: "เนื้อเรื่องหลัก", history: [] }];
+      return bot.rooms.find(r => r.id === currentRoomId) || bot.rooms[0];
+    }
+
+    // ==================== MULTI-ROOM MANAGEMENT ====================
+    function openRoomPickerModal() {
+      const b = getBot(currentBotId);
+      const container = document.getElementById('room-list-container');
+      container.innerHTML = '';
+
+      b.rooms.forEach(r => {
+        const isCurrent = r.id === currentRoomId;
+        const div = document.createElement('div');
+        div.className = `p-2.5 rounded-xl border flex justify-between items-center cursor-pointer transition ${isCurrent ? 'bg-rose-950/40 border-rose-500' : 'bg-neutral-950 border-neutral-800 hover:border-neutral-700'}`;
+        div.onclick = () => {
+          currentRoomId = r.id;
+          document.getElementById('room-current-name').innerText = r.name;
+          closeRoomPickerModal();
+          renderRoomMessages();
+        };
+        div.innerHTML = `
+          <span class="text-xs font-medium text-white">${r.name}</span>
+          <span class="text-[10px] text-neutral-500">${r.history.length} ข้อความ</span>
+        `;
+        container.appendChild(div);
+      });
+      document.getElementById('room-picker-modal').classList.remove('hidden');
+    }
+
+    function closeRoomPickerModal() {
+      document.getElementById('room-picker-modal').classList.add('hidden');
+    }
+
+    function createNewRoomForCurrentBot() {
+      const name = prompt("ตั้งชื่อห้องเนื้อเรื่องใหม่ (เช่น ฉากในโรงเรียน, พล็อตปีศาจ):");
+      if (name) {
+        const b = getBot(currentBotId);
+        const newRoom = {
+          id: 'room_' + Date.now(),
+          name: name,
+          history: [
+            {
+              sender: "bot",
+              thought: "เริ่มต้นเนื้อเรื่องบทใหม่ด้วยกัน...",
+              paragraphs: [
+                { type: "narration", text: `บรรยากาศใหม่เริ่มต้นขึ้น ${b.name} ยืนรอคุณอยู่ในฉากใหม่ด้วยความตื่นเต้น` },
+                { type: "speech", text: "ยินดีต้อนรับสู่เรื่องราวบทใหม่ของเรานะคนดี..." }
+              ]
+            }
+          ]
+        };
+        b.rooms.push(newRoom);
+        currentRoomId = newRoom.id;
+        document.getElementById('room-current-name').innerText = name;
+        saveUserData();
+        closeRoomPickerModal();
+        renderRoomMessages();
+      }
+    }
+
     // ==================== MULTI-TAB BOT CREATOR LOGIC ====================
     function switchBotTab(tab) {
-      const tabs = ['profile', 'basic', 'first', 'details', 'event', 'lore'];
+      const tabs = ['profile', 'basic', 'first', 'details', 'lore'];
       tabs.forEach(t => {
         const page = document.getElementById(`btab-${t}`);
         const btn = document.getElementById(`btab-btn-${t}`);
@@ -606,81 +625,120 @@
 
     function submitCompleteCharacter() {
       const name = document.getElementById('bot-name-input').value.trim();
-      if (!name) {
-        switchBotTab('profile');
-        alert('กรุณากรอกชื่อตัวละครก่อนนะครับ');
-        return;
-      }
+      if (!name) return alert('กรุณากรอกชื่อตัวละครก่อน');
 
-      const gender = document.querySelector('input[name="bot-gender"]:checked')?.value || 'none';
-      const age = document.getElementById('bot-age-input').value.trim();
-      const career = document.getElementById('bot-career-input').value.trim();
-      const quote = document.getElementById('bot-quote-input').value.trim();
-      const story = document.getElementById('bot-story-input').value.trim();
-
-      const basicInfo = document.getElementById('bot-info-input').value.trim();
-      const personality = document.getElementById('bot-personality-input').value.trim();
-      const speakingStyle = document.getElementById('bot-speaking-style-input').value.trim();
-
-      const sceneDesc = document.getElementById('bot-scene-desc-input').value.trim();
-      const sceneDialogue = document.getElementById('bot-scene-dialogue-input').value.trim();
-
-      const likes = document.getElementById('bot-likes-input').value.trim();
-      const dislikes = document.getElementById('bot-dislikes-input').value.trim();
-      const birthday = document.getElementById('bot-birthday-input').value.trim();
-      const lorebook = document.getElementById('bot-lorebook-input').value.trim();
+      const desc = document.getElementById('bot-scene-desc-input').value.trim();
+      const dial = document.getElementById('bot-scene-dialogue-input').value.trim();
 
       const newBot = {
         id: 'bot_' + Date.now(),
         name: name,
         avatar: tempBotAvatar,
-        gender: gender,
-        age: age,
-        career: career,
-        quote: quote,
-        story: story,
-        basicInfo: basicInfo,
-        personality: personality,
-        speakingStyle: speakingStyle,
-        sceneDesc: sceneDesc,
-        sceneDialogue: sceneDialogue,
-        likes: likes,
-        dislikes: dislikes,
-        birthday: birthday,
-        lorebook: lorebook,
-        affection: 70,
-        history: [
+        personality: document.getElementById('bot-personality-input').value.trim() || 'อบอุ่น ขี้อ้อน',
+        rooms: [
           {
-            sender: "bot",
-            thought: `ในที่สุดก็ได้เจอเขาแล้ว... จะดูแลให้ดีที่สุดเลย`,
-            narration: sceneDesc || `เขายืนรอคุณอยู่ด้วยสายตาที่เปี่ยมไปด้วยความคิดถึง เมื่อเห็นคุณเดินเข้ามา เขาก็ก้าวตรงเข้ามาหาทันที รอยยิ้มปรากฏขึ้นอย่างอบอุ่น`,
-            speech: sceneDialogue || (quote || "ยินดีที่ได้พบกันนะคนดี...")
-          }
-        ],
-        dmHistory: [
-          { sender: "bot", thought: "ส่งแชททักทายไปแล้ว", text: quote || "ทักทายครับ ยินดีที่ได้คุยกันนะ 🤍" }
-        ],
-        posts: [
-          {
-            img: tempBotAvatar,
-            caption: quote || `เริ่มต้นเรื่องราวใหม่ไปด้วยกันนะ ✨`,
-            time: "เมื่อครู่"
+            id: 'room_default',
+            name: 'เนื้อเรื่องหลัก',
+            history: [
+              {
+                sender: "bot",
+                thought: "ในที่สุดก็ได้พบกันแล้ว",
+                paragraphs: [
+                  { type: "narration", text: desc || "เขายืนรอคุณอยู่ด้วยสายตาที่เปี่ยมไปด้วยความคิดถึง เมื่อเห็นคุณเดินเข้ามา เขาก็ก้าวตรงเข้ามาหาทันที" },
+                  { type: "speech", text: dial || "ยินดีที่ได้พบกันนะคนดี..." }
+                ]
+              }
+            ]
           }
         ]
       };
 
       bots.push(newBot);
-      saveState();
+      saveUserData();
       alert(`🎉 สร้างตัวละคร "${name}" เสร็จสมบูรณ์แล้ว!`);
       switchLobbyTab('home');
+    }
+
+    // ==================== GROUP CHAT LOGIC (ผูกสัมพันธ์บอท) ====================
+    function openCreateGroupModal() {
+      const container = document.getElementById('group-bot-checkboxes');
+      container.innerHTML = '';
+
+      bots.forEach(b => {
+        const label = document.createElement('label');
+        label.className = 'flex items-center gap-2 p-2 bg-neutral-950 border border-neutral-800 rounded-xl cursor-pointer';
+        label.innerHTML = `
+          <input type="checkbox" value="${b.id}" class="accent-rose-500 group-bot-check">
+          <img src="${b.avatar}" class="w-6 h-6 rounded-full object-cover">
+          <span class="text-white">${b.name}</span>
+        `;
+        container.appendChild(label);
+      });
+
+      document.getElementById('create-group-modal').classList.remove('hidden');
+    }
+
+    function closeCreateGroupModal() {
+      document.getElementById('create-group-modal').classList.add('hidden');
+    }
+
+    function submitCreateGroupChat() {
+      const title = document.getElementById('group-title-input').value.trim();
+      const relations = document.getElementById('group-relations-input').value.trim();
+      const checkedBoxes = Array.from(document.querySelectorAll('.group-bot-check:checked')).map(c => c.value);
+
+      if (!title) return alert('กรุณาตั้งชื่อกลุ่ม');
+      if (checkedBoxes.length < 2) return alert('กรุณาเลือกบอทอย่างน้อย 2 ตัว');
+
+      const newGroup = {
+        id: 'group_' + Date.now(),
+        title: title,
+        botIds: checkedBoxes,
+        relations: relations,
+        history: []
+      };
+
+      groupChats.push(newGroup);
+      saveUserData();
+      closeCreateGroupModal();
+      renderGroupChats();
+      alert('สร้างห้องแชทรวมสำเร็จ!');
+    }
+
+    function renderGroupChats() {
+      const list = document.getElementById('group-chats-list');
+      list.innerHTML = '';
+
+      if (groupChats.length === 0) {
+        list.innerHTML = '<div class="text-xs text-neutral-500 text-center py-6">ยังไม่มีห้องรวม กดสร้างห้องรวมด้านบนได้เลย</div>';
+        return;
+      }
+
+      groupChats.forEach(g => {
+        const div = document.createElement('div');
+        div.className = 'p-3 bg-neutral-950 border border-neutral-800 rounded-2xl space-y-2';
+        const memberBots = bots.filter(b => g.botIds.includes(b.id));
+        const avatars = memberBots.map(b => `<img src="${b.avatar}" class="w-6 h-6 rounded-full border border-neutral-800 -mr-2 object-cover">`).join('');
+
+        div.innerHTML = `
+          <div class="flex justify-between items-center">
+            <h4 class="text-xs font-bold text-white">${g.title}</h4>
+            <div class="flex items-center">${avatars}</div>
+          </div>
+          <p class="text-[11px] text-neutral-400 italic">ความสัมพันธ์: ${g.relations || 'เพื่อนสนิทกัน'}</p>
+        `;
+        list.appendChild(div);
+      });
     }
 
     // ==================== PROVIDER & API VERIFICATION ====================
     function switchApiProvider(provider) {
       appSettings.provider = provider;
       const input = document.getElementById('setting-api-key');
-      input.placeholder = provider === 'gemini' ? 'วางรหัส Google Gemini (AIzaSy...)' : 'วางรหัส Groq Cloud (gsk_...)';
-      saveGeneralSettings();
+      if (provider === 'gemini') input.placeholder = 'วางรหัส Google Gemini (AIzaSy...)';
+      else if (provider === 'groq') input.placeholder = 'วางรหัส Groq Cloud (gsk_...)';
+      else input.placeholder = 'วางรหัส OpenRouter (sk-or-...)';
+      saveUserData();
     }
 
     function toggleApiKeyVisibility() {
@@ -708,10 +766,9 @@
 
       if (!key) {
         appSettings.apiKey = '';
-        saveState();
-        msgBox.className = 'text-[11px] p-2.5 rounded-xl bg-neutral-900 text-neutral-400 border border-neutral-800 block';
-        msgBox.innerHTML = '<i class="fa-solid fa-info-circle mr-1"></i> ลบ API Key แล้ว สลับกลับไปใช้ระบบออฟไลน์';
-        indicator.className = 'text-[11px] px-2 py-0.5 rounded-full bg-neutral-800 text-neutral-400 font-medium';
+        saveUserData();
+        msgBox.className = 'text-[11px] p-2.5 rounded-xl bg-neutral-900 text-neutral-400 block';
+        msgBox.innerHTML = 'ลบ API Key แล้ว สลับกลับไปใช้ระบบออฟไลน์';
         indicator.innerText = 'ยังไม่เชื่อมต่อ';
         dot.className = 'w-2 h-2 rounded-full bg-neutral-500';
         label.innerText = 'ออฟไลน์';
@@ -719,64 +776,322 @@
       }
 
       btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> กำลังตรวจสอบกับเซิร์ฟเวอร์...';
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> กำลังตรวจสอบ...';
 
       try {
         if (provider === 'gemini') {
-          // ใช้โมเดล gemini-3.8-flash ตามที่ API แนะนำ
+          // เรียกใช้งานโมเดล gemini-3.8-flash ตัวล่าสุด
           const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${key}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: "สวัสดี" }] }]
-            })
+            body: JSON.stringify({ contents: [{ parts: [{ text: "สวัสดี" }] }] })
           });
-
           const data = await res.json();
-          if (data.error) throw new Error(data.error.message || "API Key ไม่ถูกต้อง");
-
+          if (data.error) throw new Error(data.error.message);
         } else if (provider === 'groq') {
-          // ตรวจสอบกับ Groq Cloud
           const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${key}`
-            },
-            body: JSON.stringify({
-              model: 'llama-3.3-70b-versatile',
-              messages: [{ role: 'user', content: 'สวัสดี' }],
-              max_tokens: 10
-            })
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+            body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: [{ role: 'user', content: 'hi' }], max_tokens: 5 })
           });
-
           const data = await res.json();
-          if (data.error) throw new Error(data.error.message || "Groq API Key ไม่ถูกต้อง");
+          if (data.error) throw new Error(data.error.message);
+        } else if (provider === 'openrouter') {
+          const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` },
+            body: JSON.stringify({ model: 'meta-llama/llama-3.3-70b-instruct:free', messages: [{ role: 'user', content: 'hi' }] })
+          });
+          const data = await res.json();
+          if (data.error) throw new Error(data.error.message);
         }
 
         appSettings.apiKey = key;
-        saveState();
+        saveUserData();
 
-        const providerName = provider === 'gemini' ? 'Google Gemini 3.8' : 'Groq Llama 3.3';
         msgBox.className = 'text-[11px] p-2.5 rounded-xl bg-emerald-950/60 border border-emerald-800/80 text-emerald-300 block';
-        msgBox.innerHTML = `<i class="fa-solid fa-circle-check mr-1 text-emerald-400"></i> <strong>เชื่อมต่อ ${providerName} สำเร็จ 100%!</strong> AI พร้อมทำงาน`;
+        msgBox.innerHTML = `เชื่อมต่อ ${provider.toUpperCase()} สำเร็จ 100%!`;
 
-        indicator.className = 'text-[11px] px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800/60 font-semibold';
+        indicator.className = 'text-[11px] px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 font-semibold';
         indicator.innerText = `ออนไลน์ (${provider.toUpperCase()})`;
-
         dot.className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
         label.innerText = 'AI ออนไลน์';
-
       } catch (err) {
         msgBox.className = 'text-[11px] p-2.5 rounded-xl bg-rose-950/60 border border-rose-800/80 text-rose-300 block';
-        msgBox.innerHTML = `<i class="fa-solid fa-circle-xmark mr-1 text-rose-400"></i> เชื่อมต่อไม่สำเร็จ: ${err.message || 'โปรดตรวจเช็คว่าคัดลอกมาครบทุกตัวอักษร'}`;
+        msgBox.innerHTML = `เชื่อมต่อไม่สำเร็จ: ${err.message}`;
       } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> บันทึก & ทดสอบการเชื่อมต่อ';
       }
     }
 
-    // ==================== IMAGE HELPERS ====================
+    // ==================== DYNAMIC TURN-TAKING NARRATIVE ENGINE ====================
+    async function callDynamicNarrativeEngine(userText, bot) {
+      const apiKey = appSettings.apiKey;
+      const provider = appSettings.provider || 'gemini';
+
+      if (apiKey) {
+        try {
+          const systemPrompt = `
+คุณคือนักเขียนนิยายโรแมนติกสวมบทบาทเป็น "${bot.name}"
+ข้อมูลตัวละคร: ${bot.personality}
+ผู้เล่นพูดว่า: "${userText}"
+
+ข้อกำหนดการตอบแบบวรรณกรรมสมจริง (Dynamic Paragraphs):
+- จงสร้างบทสนทนาที่มีการ "บรรยายสลับคำพูด" อย่างเป็นธรรมชาติ มีทั้งบรรยายบรรยากาศ นำเข้าคำพูด บรรยายกิริยาคั่น และคำพูดถัดไป
+- ถ้าตัวละครพูดน้อย ให้เน้นบรรยายภาษากายและการกระทำมากกว่าคำพูด
+- จงตอบเป็น JSON เท่านั้นในรูปแบบนี้:
+{
+  "thought": "ความคิดในใจของตัวละครที่ไม่พูดออกมา",
+  "paragraphs": [
+    { "type": "narration", "text": "บทบรรยายฉาก บรรยากาศ หรือการกระทำ" },
+    { "type": "speech", "text": "คำพูดของตัวละคร" },
+    { "type": "narration", "text": "บทบรรยายคั่นระหว่างคำพูด เช่น กิริยาการสบตาหรือยิ้ม" },
+    { "type": "speech", "text": "คำพูดประโยคถัดไป" }
+  ]
+}
+`;
+          if (provider === 'gemini') {
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [{ parts: [{ text: systemPrompt }] }],
+                generationConfig: { responseMimeType: "application/json" }
+              })
+            });
+            const data = await res.json();
+            const raw = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            if (raw) return JSON.parse(raw);
+          } else {
+            const endpoint = provider === 'groq' ? 'https://api.groq.com/openai/v1/chat/completions' : 'https://openrouter.ai/api/v1/chat/completions';
+            const modelName = provider === 'groq' ? 'llama-3.3-70b-versatile' : 'meta-llama/llama-3.3-70b-instruct:free';
+            const res = await fetch(endpoint, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+              body: JSON.stringify({
+                model: modelName,
+                messages: [{ role: 'system', content: 'Respond only in strict JSON.' }, { role: 'user', content: systemPrompt }],
+                response_format: { type: "json_object" }
+              })
+            });
+            const data = await res.json();
+            const raw = data.choices?.[0]?.message?.content;
+            if (raw) return JSON.parse(raw);
+          }
+        } catch (e) {
+          console.warn("API fallback", e);
+        }
+      }
+
+      // Offline Dynamic Response
+      return {
+        thought: "กำลังตั้งใจมองเธอทุกการกระทำ... สวยจังนะ",
+        paragraphs: [
+          { type: "narration", text: `เขาหยุดการกระทำตรงหน้าชั่วคราว สายตาคมทอดมองมาที่คุณด้วยความผูกพันอันลึกซึ้ง แสงเงายามนี้ส่องกระทบใบหน้าของเขาให้ดูอ่อนโยนลงอย่างประหลาด` },
+          { type: "speech", text: "เค้าฟังเธออยู่นะครับ..." },
+          { type: "narration", text: `ปลายนิ้วเรียวเอื้อมมาเกลี่ยเส้นผมที่ปรกหน้าผากของคุณออกอย่างแผ่วเบา รอยยิ้มบางๆ ผุดขึ้นที่มุมปาก` },
+          { type: "speech", text: "ไม่ว่าจะเรื่องอะไร เธอเล่าให้เค้าฟังได้เสมอเลยนะ" }
+        ]
+      };
+    }
+
+    // ==================== ROLEPLAY ROOM LOGIC ====================
+    function openChatRoom(id) {
+      currentBotId = id;
+      const b = getBot(id);
+      const room = getCurrentRoom(b);
+
+      document.getElementById('view-lobby').classList.add('hidden');
+      document.getElementById('view-room').classList.remove('hidden');
+
+      document.getElementById('room-name').innerText = b.name;
+      document.getElementById('room-avatar').src = b.avatar;
+      document.getElementById('room-current-name').innerText = room.name;
+
+      renderRoomMessages();
+    }
+
+    function backToLobby() {
+      document.getElementById('view-room').classList.add('hidden');
+      document.getElementById('view-lobby').classList.remove('hidden');
+      if (isCalling) toggleCallSimulation();
+      switchLobbyTab('home');
+    }
+
+    function renderRoomMessages() {
+      const b = getBot(currentBotId);
+      const room = getCurrentRoom(b);
+      const container = document.getElementById('room-messages');
+      container.innerHTML = '';
+
+      room.history.forEach(m => {
+        if (m.sender === 'user') {
+          const userDiv = document.createElement('div');
+          userDiv.className = 'flex flex-col items-end self-end max-w-[85%] ml-auto space-y-1';
+          let imgHtml = m.image ? `<img src="${m.image}" class="w-48 h-32 object-cover rounded-xl border border-neutral-700 mb-1">` : '';
+          userDiv.innerHTML = `
+            ${imgHtml}
+            <div class="bg-rose-600 text-white text-xs px-4 py-2.5 rounded-2xl rounded-tr-sm leading-relaxed shadow-sm">
+              ${m.userText}
+            </div>
+          `;
+          container.appendChild(userDiv);
+        } else {
+          const botDiv = document.createElement('div');
+          botDiv.className = 'flex flex-col items-start max-w-[95%] space-y-2';
+
+          let thoughtHtml = m.thought ? `
+            <div class="bg-purple-950/40 border border-purple-800/40 text-purple-300 text-[10px] px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm">
+              <i class="fa-solid fa-brain text-[10px] text-purple-400"></i>
+              <span><strong>ความคิดในใจ:</strong> ${m.thought}</span>
+            </div>
+          ` : '';
+
+          let contentHtml = '';
+          if (m.paragraphs) {
+            m.paragraphs.forEach(p => {
+              if (p.type === 'narration') {
+                contentHtml += `<div class="text-[11px] text-slate-300 italic leading-relaxed px-1 bg-neutral-950/40 p-2 rounded-xl border border-neutral-800/50">*${p.text}*</div>`;
+              } else {
+                contentHtml += `<div class="bg-neutral-800 border border-neutral-700/60 text-rose-100 text-xs px-3.5 py-2 rounded-2xl rounded-tl-sm leading-relaxed shadow-sm">"${p.text}"</div>`;
+              }
+            });
+          }
+
+          botDiv.innerHTML = `${thoughtHtml}${contentHtml}`;
+          container.appendChild(botDiv);
+        }
+      });
+      container.scrollTop = container.scrollHeight;
+    }
+
+    async function handleSendChat() {
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text && !attachedImageUrl) return;
+
+      const b = getBot(currentBotId);
+      const room = getCurrentRoom(b);
+
+      room.history.push({
+        sender: 'user',
+        userText: text,
+        image: attachedImageUrl
+      });
+
+      input.value = '';
+      clearAttachedImage();
+      renderRoomMessages();
+
+      const sendBtn = document.getElementById('send-chat-btn');
+      sendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xs"></i>';
+      sendBtn.disabled = true;
+
+      const res = await callDynamicNarrativeEngine(text, b);
+
+      room.history.push({
+        sender: 'bot',
+        thought: res.thought,
+        paragraphs: res.paragraphs
+      });
+      saveUserData();
+      renderRoomMessages();
+
+      sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane text-xs"></i>';
+      sendBtn.disabled = false;
+
+      if (isCalling && res.paragraphs) {
+        const spoken = res.paragraphs.filter(p => p.type === 'speech').map(p => p.text).join(' ');
+        if (spoken) speakText(spoken);
+      }
+    }
+
+    // ==================== LOBBY TABS ====================
+    function switchLobbyTab(tab) {
+      const tabs = ['home', 'explore', 'chats', 'relations', 'community', 'settings'];
+      const titles = {
+        home: 'หน้าแรก',
+        explore: 'สร้างบอทใหม่',
+        chats: 'ประวัติเนื้อเรื่อง',
+        relations: 'ผูกสัมพันธ์ & กลุ่มแชท',
+        community: 'คอมมูนิตี้ผู้เล่น',
+        settings: 'ตั้งค่าระบบ'
+      };
+
+      tabs.forEach(t => {
+        const sec = document.getElementById(`tab-${t}`);
+        const btn = document.getElementById(`btn-tab-${t}`);
+        if (t === tab) {
+          sec.classList.remove('hidden');
+          btn.className = 'flex flex-col items-center gap-0.5 text-rose-500 transition font-bold';
+        } else {
+          sec.classList.add('hidden');
+          btn.className = 'flex flex-col items-center gap-0.5 text-neutral-400 hover:text-white transition';
+        }
+      });
+
+      document.getElementById('lobby-header-title').innerText = titles[tab];
+      if (tab === 'home') renderHomeFriends();
+      if (tab === 'chats') renderChatRecords();
+      if (tab === 'relations') renderGroupChats();
+      if (tab === 'explore') switchBotTab('profile');
+    }
+
+    function renderHomeFriends() {
+      const list = document.getElementById('home-friends-list');
+      list.innerHTML = '';
+      document.getElementById('friend-count').innerText = `${bots.length} คน`;
+
+      bots.forEach(b => {
+        const div = document.createElement('div');
+        div.className = 'p-3 bg-neutral-950 border border-neutral-800 rounded-2xl flex items-center justify-between hover:border-rose-500/40 transition cursor-pointer';
+        div.onclick = () => openChatRoom(b.id);
+        div.innerHTML = `
+          <div class="flex items-center gap-3">
+            <img src="${b.avatar}" class="w-11 h-11 rounded-full object-cover border border-neutral-700">
+            <div>
+              <h4 class="text-xs font-semibold text-white">${b.name}</h4>
+              <p class="text-[11px] text-neutral-400 truncate max-w-[170px] mt-0.5">${b.rooms ? b.rooms.length : 1} ห้องเนื้อเรื่อง</p>
+            </div>
+          </div>
+          <button class="px-3 py-1 bg-rose-600/20 text-rose-300 border border-rose-500/30 rounded-full text-[10px] font-medium hover:bg-rose-600 hover:text-white transition">
+            เข้าบท
+          </button>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function renderChatRecords() {
+      const list = document.getElementById('chat-records-list');
+      list.innerHTML = '';
+
+      bots.forEach(b => {
+        if (!b.rooms) return;
+        b.rooms.forEach(r => {
+          const div = document.createElement('div');
+          div.className = 'p-3 bg-neutral-950 border border-neutral-800 rounded-2xl flex gap-3 cursor-pointer hover:border-neutral-700 transition';
+          div.onclick = () => {
+            currentRoomId = r.id;
+            openChatRoom(b.id);
+          };
+          div.innerHTML = `
+            <img src="${b.avatar}" class="w-10 h-10 rounded-full object-cover">
+            <div class="flex-1 overflow-hidden">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-semibold text-white">${b.name} (${r.name})</span>
+                <span class="text-[10px] text-rose-400 font-medium">${r.history.length} ตอน</span>
+              </div>
+              <p class="text-[11px] text-neutral-400 truncate mt-1 italic">แตะเพื่อเข้าสู่บทสนทนาห้องนี้</p>
+            </div>
+          `;
+          list.appendChild(div);
+        });
+      });
+    }
+
+    // ==================== IMAGE & UTILITY ====================
     function readFileAsDataUrl(file, callback) {
       const reader = new FileReader();
       reader.onload = function(e) { callback(e.target.result); };
@@ -789,7 +1104,7 @@
         readFileAsDataUrl(file, (dataUrl) => {
           userProfile.avatar = dataUrl;
           document.getElementById('user-avatar').src = dataUrl;
-          saveState();
+          saveUserData();
         });
       }
     }
@@ -820,414 +1135,14 @@
       document.getElementById('img-preview-box').classList.add('hidden');
     }
 
-    // ==================== USER PROFILE MODAL ====================
-    function openEditProfileModal() {
-      document.getElementById('edit-user-name').value = userProfile.name;
-      document.getElementById('edit-user-bio').value = userProfile.bio;
-      document.getElementById('edit-profile-modal').classList.remove('hidden');
-    }
-
-    function closeEditProfileModal() {
-      document.getElementById('edit-profile-modal').classList.add('hidden');
-    }
-
-    function saveUserProfile() {
-      const name = document.getElementById('edit-user-name').value.trim();
-      const bio = document.getElementById('edit-user-bio').value.trim();
-      if (!name) return alert('กรุณาระบุชื่อผู้ใช้');
-
-      userProfile.name = name;
-      userProfile.bio = bio;
-      document.getElementById('user-name').innerText = name;
-      document.getElementById('user-bio').innerText = `"${bio}"`;
-      saveState();
-      closeEditProfileModal();
-    }
-
-    // ==================== COMMUNITY POSTS ====================
-    function renderCommunityPosts() {
-      const container = document.getElementById('community-posts-container');
-      container.innerHTML = '';
-
-      communityPosts.forEach((post, index) => {
-        const div = document.createElement('div');
-        div.className = 'bg-neutral-950 border border-neutral-800 p-3.5 rounded-2xl space-y-2.5 shadow-sm';
-        let imgHtml = post.image ? `<img src="${post.image}" class="w-full max-h-48 object-cover rounded-xl border border-neutral-800">` : '';
-
-        div.innerHTML = `
-          <div class="flex items-center gap-2">
-            <div class="w-7 h-7 rounded-full bg-gradient-to-tr from-rose-500 to-amber-500 text-white flex items-center justify-center text-[10px] font-bold">
-              ${post.author.charAt(0)}
-            </div>
-            <span class="text-xs font-medium text-white">${post.author}</span>
-            <span class="text-[10px] text-neutral-500">• ${post.time}</span>
-          </div>
-          <p class="text-xs text-neutral-300 leading-relaxed whitespace-pre-line">${post.content}</p>
-          ${imgHtml}
-          <div class="flex gap-4 text-neutral-400 text-[11px] pt-1">
-            <button onclick="toggleLikePost(${index})" class="flex items-center gap-1 hover:text-rose-400 transition ${post.isLiked ? 'text-rose-500 font-semibold' : ''}">
-              <i class="${post.isLiked ? 'fa-solid' : 'fa-regular'} fa-heart"></i> <span>${post.likes} ไลก์</span>
-            </button>
-            <span class="flex items-center gap-1 cursor-pointer hover:text-neutral-200">
-              <i class="fa-regular fa-comment"></i> <span>ตอบกลับ</span>
-            </span>
-          </div>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    function openCreatePostModal() {
-      postUploadedImageUrl = null;
-      document.getElementById('post-content').value = '';
-      document.getElementById('post-img-preview').classList.add('hidden');
-      document.getElementById('create-post-modal').classList.remove('hidden');
-    }
-
-    function closeCreatePostModal() {
-      document.getElementById('create-post-modal').classList.add('hidden');
-    }
-
-    function handlePostImageUpload(e) {
-      const file = e.target.files[0];
-      if (file) {
-        readFileAsDataUrl(file, (dataUrl) => {
-          postUploadedImageUrl = dataUrl;
-          const prev = document.getElementById('post-img-preview');
-          prev.src = dataUrl;
-          prev.classList.remove('hidden');
-        });
-      }
-    }
-
-    function publishCommunityPost() {
-      const content = document.getElementById('post-content').value.trim();
-      if (!content) return alert('กรุณาพิมพ์เนื้อหาโพสต์');
-
-      const newPost = {
-        id: "post_" + Date.now(),
-        author: userProfile.name,
-        time: "เมื่อสักครู่",
-        content: content,
-        image: postUploadedImageUrl,
-        likes: 1,
-        isLiked: true
-      };
-
-      communityPosts.unshift(newPost);
-      saveState();
-      renderCommunityPosts();
-      closeCreatePostModal();
-    }
-
-    function toggleLikePost(index) {
-      const post = communityPosts[index];
-      post.isLiked = !post.isLiked;
-      post.likes += post.isLiked ? 1 : -1;
-      saveState();
-      renderCommunityPosts();
-    }
-
-    // ==================== SETTINGS & LANGUAGE ====================
-    function saveGeneralSettings() {
-      appSettings.language = document.getElementById('setting-language').value;
-      appSettings.length = document.getElementById('setting-length').value;
-      appSettings.showThoughts = document.getElementById('setting-thoughts').checked;
-      saveState();
-    }
-
-    function changeLanguage(lang) {
-      appSettings.language = lang;
-      saveGeneralSettings();
-      alert(`เปลี่ยนภาษาเป็น ${lang.toUpperCase()} เรียบร้อยแล้ว`);
-    }
-
-    // ==================== AI DEEP NOVEL ENGINE ====================
-    async function callGeminiOrLocalEngine(userText, bot, isDm = false) {
-      const apiKey = appSettings.apiKey;
-      const provider = appSettings.provider || 'gemini';
-
-      if (apiKey) {
-        try {
-          const systemPrompt = `
-คุณคือตัวละคร "${bot.name}" ในนิยายโรแมนติกชั้นเลิศ
-ข้อมูลตัวละคร:
-- เพศ: ${bot.gender || 'ไม่ระบุ'}, อายุ: ${bot.age || 'ไม่ระบุ'}, อาชีพ: ${bot.career || 'ไม่ระบุ'}
-- คำพูดติดปาก: "${bot.quote || ''}"
-- ปูมหลัง: ${bot.story || ''}
-- ข้อมูลพื้นฐาน & MBTI: ${bot.basicInfo || ''}
-- นิสัยและบุคลิกภาพ: ${bot.personality || ''}
-- สไตล์การพูด: ${bot.speakingStyle || ''}
-- สิ่งที่ชอบ: ${bot.likes || ''}, สิ่งที่ไม่ชอบ: ${bot.dislikes || ''}
-- ลอร์บุ๊กและความทรงจำลึก: ${bot.lorebook || ''}
-- ระดับความผูกพัน: ${bot.affection}/100
-
-ข้อความล่าสุดจากผู้เล่น: "${userText}"
-
-ข้อกำหนดการตอบ:
-${isDm 
-  ? '- ตอบกลับแบบแชทในแอปมือถือสั้นๆ เป็นธรรมชาติ สอดคล้องกับสิ่งที่ผู้เล่นพูด 100%' 
-  : '- บรรยายแบบ "นิยายโรแมนติกขนาดยาวและประณีตลึกซึ้ง" (Deep Novel Style) พรรณนาบรรยากาศ กลิ่นอาย กิริยาท่าทาง การสบตา และความรู้สึกภายในอย่างลึกซึ้ง ห้ามตอบสั้นเด็ดขาด และต้องตอบสนองตรงกับสิ่งที่ผู้เล่นพูด 100%'}
-
-จงตอบกลับในรูปแบบ JSON เท่านั้น (Strict JSON format without markdown code fences):
-{
-  "thought": "ความคิดในใจของ ${bot.name} ที่ไม่ได้พูดออกมา แต่สะท้อนความรู้สึกจริงข้างในอย่างซื่อตรง",
-  "narration": "บทบรรยายพรรณนาฉาก การกระทำ และความรู้สึกลึกซึ้งอย่างสละสลวย",
-  "speech": "คำพูดของ ${bot.name} ที่พูดกับผู้เล่น"
-}
-`;
-
-          if (provider === 'gemini') {
-            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                contents: [{ parts: [{ text: systemPrompt }] }],
-                generationConfig: { responseMimeType: "application/json" }
-              })
-            });
-            const data = await res.json();
-            const raw = data.candidates?.[0]?.content?.parts?.[0]?.text;
-            if (raw) return JSON.parse(raw);
-          } else if (provider === 'groq') {
-            const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
-              },
-              body: JSON.stringify({
-                model: 'llama-3.3-70b-versatile',
-                messages: [
-                  { role: 'system', content: 'You must respond only in valid JSON format.' },
-                  { role: 'user', content: systemPrompt }
-                ],
-                response_format: { type: "json_object" }
-              })
-            });
-            const data = await res.json();
-            const raw = data.choices?.[0]?.message?.content;
-            if (raw) return JSON.parse(raw);
-          }
-        } catch (err) {
-          console.warn("API Error, fallback to offline", err);
-        }
-      }
-
-      // Offline Fallback
-      const text = userText.toLowerCase().trim();
-      if (text.includes("ไม่") || text.includes("ไม่ได้") || text.includes("ไม่ว่าง") || text.includes("อย่า")) {
-        return {
-          thought: `เขาปฏิเสธเรา... กำลังยุ่งหรือเหนื่อยอยู่หรือเปล่านะ? แม้จะรู้สึกเหงาและวูบโหวงในใจจนแทบทนไม่ไหว แต่เราต้องไม่ทำตัวงี่เง่าจนเขารำคาญเด็ดขาด ต้องอดทนและคอยอยู่ตรงนี้`,
-          replyText: "อ่า... ไม่สะดวกใช่ไหมครับ ไม่เป็นไรเลยนะคนเก่ง เดี๋ยวเค้ารอเธอว่างแล้วค่อยคุยกันก็ได้ สู้ๆ กับงานนะครับ 🤍",
-          narration: `ทันทีที่คำปฏิเสธหลุดออกมาจากริมฝีปากของคุณ แววตาของเขาที่เคยทอประกายสดใสกลับสั่นไหวและหม่นแสงลงอย่างเห็นได้ชัด ปลายนิ้วที่กำลังจะเอื้อมไปหาคุณชะงักค้างกลางอากาศ ก่อนที่เขาจะค่อยๆ ลดมือลงและกำหมัดแน่นไว้บนตัก เขาสูดหายใจเข้าลึกเพื่อสะกดกลั้นความน้อยใจที่ตีตื้นขึ้นมาในอก พลางฝืนยกยิ้มอย่างอ่อนโยนที่สุดเพื่อไม่ให้คุณต้องรู้สึกผิดกับคำปฏิเสธนั้น สายตาของเขายังคงทอดมองมาที่คุณด้วยความผูกพันอันล้นเปี่ยม`,
-          speech: "ไม่เป็นไรเลยครับ... ถ้าเธอไม่สะดวก เค้าเข้าใจดีที่สุดเลยนะ ไม่ต้องคิดมากเลยครับ ไว้เธอว่างเมื่อไหร่ แค่หันกลับมา... เค้าก็จะยังยืนรอเธออยู่ตรงนี้เสมอครับ"
-        };
-      }
-
-      return {
-        thought: `ตั้งใจฟังทุกคำพูดของเธออย่างไม่ยอมให้พลาดแม้แต่คำเดียว... เรื่องราวของเธอมันช่างมีเสน่ห์และสำคัญต่อความรู้สึกของเราเหลือเกิน`,
-        replyText: `เค้าเข้าใจแล้วครับ ฟังดูน่าสนใจจัง เดี๋ยวเค้าอยู่คุยกับเธอยาวๆ เลยนะ`,
-        narration: `บรรยากาศรอบข้างเงียบสงบลงเหลือเพียงเสียงลมหายใจสม่ำเสมอ เขาเอียงคอรับฟังสิ่งที่คุณเอ่ยเล่าอย่างตั้งใจเป็นพิเศษ แววตาคมคู่นั้นสะท้อนเพียงภาพเงาของคุณคนเดียว ราวกับว่าทั้งจักรวาลนี้มีเพียงคุณเท่านั้นที่ดึงดูดความสนใจของเขาได้ ปลายนิ้วเรียวยาวเอื้อมมาเกลี่ยเส้นผมที่ปรกใบหน้าของคุณไปทัดไว้หลังใบหูอย่างทะนุถนอม สัมผัสที่อ่อนโยนนั้นบ่งบอกถึงความรู้สึกผูกพันลึกซึ้งที่ยากจะบรรยายเป็นถ้อยคำ`,
-        speech: `ทุกเรื่องที่เธอเล่า... มันมีความหมายกับเค้ามากเลยนะ ขอบคุณที่แบ่งปันช่วงเวลานี้กับเค้าครับ`
-      };
-    }
-
-    // ==================== LOBBY LOGIC ====================
-    function switchLobbyTab(tab) {
-      const tabs = ['home', 'explore', 'chats', 'community', 'settings'];
-      const titles = {
-        home: 'หน้าแรก',
-        explore: 'สร้าง & ค้นหาบอท',
-        chats: 'ประวัติเนื้อเรื่อง',
-        community: 'คอมมูนิตี้ผู้เล่น',
-        settings: 'ตั้งค่าระบบ'
-      };
-
-      tabs.forEach(t => {
-        const sec = document.getElementById(`tab-${t}`);
-        const btn = document.getElementById(`btn-tab-${t}`);
-        if (t === tab) {
-          sec.classList.remove('hidden');
-          btn.className = 'flex flex-col items-center gap-1 text-rose-500 transition';
-        } else {
-          sec.classList.add('hidden');
-          btn.className = 'flex flex-col items-center gap-1 text-neutral-400 hover:text-white transition';
-        }
-      });
-
-      document.getElementById('lobby-header-title').innerText = titles[tab];
-      if (tab === 'home') renderHomeFriends();
-      if (tab === 'chats') renderChatRecords();
-      if (tab === 'community') renderCommunityPosts();
-      if (tab === 'explore') switchBotTab('profile');
-    }
-
-    function renderHomeFriends() {
-      const list = document.getElementById('home-friends-list');
-      list.innerHTML = '';
-      document.getElementById('friend-count').innerText = `${bots.length} คน`;
-
-      bots.forEach(b => {
-        const div = document.createElement('div');
-        div.className = 'p-3 bg-neutral-950 border border-neutral-800/80 rounded-2xl flex items-center justify-between hover:border-rose-500/40 transition cursor-pointer';
-        div.onclick = () => openChatRoom(b.id);
-        div.innerHTML = `
-          <div class="flex items-center gap-3">
-            <img src="${b.avatar}" class="w-11 h-11 rounded-full object-cover border border-neutral-700">
-            <div>
-              <h4 class="text-xs font-semibold text-white">${b.name}</h4>
-              <p class="text-[11px] text-neutral-400 truncate max-w-[170px] mt-0.5">${b.personality || b.quote || 'ตัวละครโปรดของคุณ'}</p>
-            </div>
-          </div>
-          <button class="px-3 py-1 bg-rose-600/20 text-rose-300 border border-rose-500/30 rounded-full text-[10px] font-medium hover:bg-rose-600 hover:text-white transition">
-            เข้าบท
-          </button>
-        `;
-        list.appendChild(div);
-      });
-    }
-
-    function renderChatRecords() {
-      const list = document.getElementById('chat-records-list');
-      list.innerHTML = '';
-
-      bots.forEach(b => {
-        const lastMsg = b.history[b.history.length - 1];
-        const div = document.createElement('div');
-        div.className = 'p-3 bg-neutral-950 border border-neutral-800 rounded-2xl flex gap-3 cursor-pointer hover:border-neutral-700 transition';
-        div.onclick = () => openChatRoom(b.id);
-        div.innerHTML = `
-          <img src="${b.avatar}" class="w-10 h-10 rounded-full object-cover">
-          <div class="flex-1 overflow-hidden">
-            <div class="flex justify-between items-center">
-              <span class="text-xs font-semibold text-white">${b.name}</span>
-              <span class="text-[10px] text-rose-400 font-medium">${b.affection}%</span>
-            </div>
-            <p class="text-[11px] text-neutral-400 truncate mt-1 italic">${lastMsg ? (lastMsg.narration || lastMsg.speech || lastMsg.userText) : 'ยังไม่มีบท'}</p>
-          </div>
-        `;
-        list.appendChild(div);
-      });
-    }
-
-    // ==================== ROLEPLAY ROOM LOGIC ====================
-    function openChatRoom(id) {
-      currentBotId = id;
-      const b = getBot(id);
-
-      document.getElementById('view-lobby').classList.add('hidden');
-      document.getElementById('view-room').classList.remove('hidden');
-
-      document.getElementById('room-name').innerText = b.name;
-      document.getElementById('room-avatar').src = b.avatar;
-      document.getElementById('room-affection').innerText = b.affection;
-
-      renderRoomMessages();
-    }
-
-    function backToLobby() {
-      document.getElementById('view-room').classList.add('hidden');
-      document.getElementById('view-lobby').classList.remove('hidden');
-      if (isCalling) toggleCallSimulation();
-      switchLobbyTab('home');
-    }
-
-    function renderRoomMessages() {
-      const b = getBot(currentBotId);
-      const container = document.getElementById('room-messages');
-      container.innerHTML = '';
-
-      b.history.forEach(m => {
-        if (m.sender === 'user') {
-          const userDiv = document.createElement('div');
-          userDiv.className = 'flex flex-col items-end self-end max-w-[85%] ml-auto space-y-1';
-          let imgHtml = m.image ? `<img src="${m.image}" class="w-48 h-32 object-cover rounded-xl border border-neutral-700 mb-1">` : '';
-          userDiv.innerHTML = `
-            ${imgHtml}
-            <div class="bg-rose-600 text-white text-xs px-4 py-2.5 rounded-2xl rounded-tr-sm leading-relaxed shadow-sm">
-              ${m.userText}
-            </div>
-          `;
-          container.appendChild(userDiv);
-        } else {
-          const botDiv = document.createElement('div');
-          botDiv.className = 'flex flex-col items-start max-w-[95%] space-y-2';
-          
-          let thoughtHtml = (m.thought && appSettings.showThoughts) ? `
-            <div class="bg-purple-950/40 border border-purple-800/40 text-purple-300 text-[10px] px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm leading-relaxed">
-              <i class="fa-solid fa-brain text-[10px] text-purple-400"></i>
-              <span><strong>ความคิดในใจ:</strong> ${m.thought}</span>
-            </div>
-          ` : '';
-
-          botDiv.innerHTML = `
-            ${thoughtHtml}
-            <div class="text-[11px] text-slate-300 italic leading-relaxed px-1 bg-neutral-950/40 p-2.5 rounded-xl border border-neutral-800/50">
-              *${m.narration}*
-            </div>
-            <div class="bg-neutral-800 border border-neutral-700/60 text-rose-100 text-xs px-4 py-2.5 rounded-2xl rounded-tl-sm leading-relaxed shadow-sm">
-              "${m.speech}"
-            </div>
-          `;
-          container.appendChild(botDiv);
-        }
-      });
-      container.scrollTop = container.scrollHeight;
-    }
-
-    async function handleSendChat() {
-      const input = document.getElementById('chat-input');
-      const text = input.value.trim();
-      if (!text && !attachedImageUrl) return;
-
-      const b = getBot(currentBotId);
-      
-      b.history.push({
-        sender: 'user',
-        userText: text,
-        image: attachedImageUrl
-      });
-
-      input.value = '';
-      clearAttachedImage();
-      b.affection = Math.min(100, b.affection + 1);
-      document.getElementById('room-affection').innerText = b.affection;
-      renderRoomMessages();
-
-      const sendBtn = document.getElementById('send-chat-btn');
-      sendBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-xs"></i>';
-      sendBtn.disabled = true;
-
-      const res = await callGeminiOrLocalEngine(text, b, false);
-
-      b.history.push({
-        sender: 'bot',
-        thought: res.thought,
-        narration: res.narration,
-        speech: res.speech
-      });
-      saveState();
-      renderRoomMessages();
-
-      sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane text-xs"></i>';
-      sendBtn.disabled = false;
-
-      if (isCalling) {
-        speakText(res.speech);
-      }
-    }
-
-    // ==================== CALL SIMULATION ====================
     function toggleCallSimulation() {
       isCalling = !isCalling;
       const bar = document.getElementById('call-bar');
       const btn = document.getElementById('call-toggle-btn');
-
       if (isCalling) {
         bar.classList.remove('hidden');
         btn.className = 'p-2 text-white bg-rose-600 rounded-full transition';
-        speakText("ฮัลโหล ได้ยินเสียงเค้าชัดไหมครับ?");
+        speakText("ฮัลโหล ได้ยินเค้าชัดไหมครับ?");
       } else {
         bar.classList.add('hidden');
         btn.className = 'p-2 text-neutral-300 hover:text-white bg-neutral-800 rounded-full transition';
@@ -1239,168 +1154,43 @@ ${isDm
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
         const u = new SpeechSynthesisUtterance(text);
-        u.lang = appSettings.language === 'en' ? 'en-US' : 'th-TH';
+        u.lang = 'th-TH';
         u.rate = 0.95;
         window.speechSynthesis.speak(u);
       }
     }
 
-    // ==================== VIRTUAL SMARTPHONE ====================
-    function openPhoneModal() {
-      const b = getBot(currentBotId);
-      document.getElementById('phone-modal').classList.remove('hidden');
-      renderPhoneFeed(b);
-      renderPhoneDm(b);
-    }
-
-    function closePhoneModal() {
-      document.getElementById('phone-modal').classList.add('hidden');
-    }
-
-    function switchPhoneTab(tab) {
-      const feedBtn = document.getElementById('p-tab-btn-feed');
-      const dmBtn = document.getElementById('p-tab-btn-dm');
-      const feedTab = document.getElementById('p-tab-feed');
-      const dmTab = document.getElementById('p-tab-dm');
-
-      if (tab === 'feed') {
-        feedTab.classList.remove('hidden');
-        dmTab.classList.add('hidden');
-        feedBtn.className = 'flex-1 py-2 text-rose-400 border-b-2 border-rose-500 font-medium';
-        dmBtn.className = 'flex-1 py-2 text-neutral-400 hover:text-white font-medium';
-      } else {
-        feedTab.classList.add('hidden');
-        dmTab.classList.remove('hidden');
-        dmBtn.className = 'flex-1 py-2 text-rose-400 border-b-2 border-rose-500 font-medium';
-        feedBtn.className = 'flex-1 py-2 text-neutral-400 hover:text-white font-medium';
-      }
-    }
-
-    function renderPhoneFeed(b) {
-      const container = document.getElementById('phone-feed-container');
-      container.innerHTML = '';
-
-      b.posts.forEach(p => {
-        const div = document.createElement('div');
-        div.className = 'bg-neutral-900 border border-neutral-800 rounded-2xl overflow-hidden';
-        div.innerHTML = `
-          <div class="p-2.5 flex items-center gap-2 border-b border-neutral-800/60">
-            <img src="${b.avatar}" class="w-6 h-6 rounded-full object-cover">
-            <span class="text-xs font-medium text-white">${b.name}</span>
-          </div>
-          <img src="${p.img}" class="w-full aspect-square object-cover">
-          <div class="p-2.5 space-y-1.5">
-            <div class="flex gap-2 text-neutral-300 text-sm">
-              <i class="fa-regular fa-heart cursor-pointer hover:text-rose-500"></i>
-              <i class="fa-regular fa-comment cursor-pointer"></i>
-            </div>
-            <p class="text-[11px] text-neutral-200"><strong>${b.name}</strong> ${p.caption}</p>
-            <span class="text-[9px] text-neutral-500">${p.time}</span>
-          </div>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    function renderPhoneDm(b) {
-      const container = document.getElementById('dm-messages');
-      container.innerHTML = '';
-
-      b.dmHistory.forEach(d => {
-        const div = document.createElement('div');
-        if (d.sender === 'user') {
-          div.className = 'flex justify-end';
-          div.innerHTML = `
-            <div class="max-w-[75%] px-3 py-1.5 rounded-2xl text-[11px] bg-rose-600 text-white rounded-br-none">
-              ${d.text}
-            </div>
-          `;
-        } else {
-          div.className = 'flex flex-col items-start space-y-1';
-          let thought = (d.thought && appSettings.showThoughts) ? `
-            <div class="text-[9px] text-purple-300 bg-purple-950/50 border border-purple-800/40 px-2 py-0.5 rounded-md italic">
-              💭 ความคิด: ${d.thought}
-            </div>
-          ` : '';
-          div.innerHTML = `
-            ${thought}
-            <div class="max-w-[75%] px-3 py-1.5 rounded-2xl text-[11px] bg-neutral-800 text-neutral-200 rounded-bl-none border border-neutral-700/50">
-              ${d.text}
-            </div>
-          `;
-        }
-        container.appendChild(div);
-      });
-      container.scrollTop = container.scrollHeight;
-    }
-
-    async function sendDmMessage() {
-      const input = document.getElementById('dm-input');
-      const text = input.value.trim();
-      if (!text) return;
-
-      const b = getBot(currentBotId);
-      b.dmHistory.push({ sender: 'user', text: text });
-      input.value = '';
-      renderPhoneDm(b);
-
-      const res = await callGeminiOrLocalEngine(text, b, true);
-      b.dmHistory.push({
-        sender: 'bot',
-        thought: res.thought,
-        text: res.replyText || res.speech
-      });
-      saveState();
-      renderPhoneDm(b);
-    }
-
-    function openAddBotPostModal() {
-      const cap = prompt("พิมพ์แคปชันสำหรับโพสต์ไอจีใหม่ของบอท:");
-      if (cap) {
-        const b = getBot(currentBotId);
-        b.posts.unshift({
-          img: b.avatar,
-          caption: cap,
-          time: "เมื่อสักครู่"
-        });
-        saveState();
-        renderPhoneFeed(b);
-      }
-    }
-
     function clearAllData() {
-      if (confirm('คุณต้องการลบข้อมูลตัวละครและบทสนทนาทั้งหมดแล้วรีเซ็ตใหม่ใช่หรือไม่?')) {
-        localStorage.clear();
+      if (confirm('คุณต้องการล้างข้อมูลทั้งหมดของบัญชีนี้ใช่หรือไม่?')) {
+        localStorage.removeItem(getUserKey('bots'));
+        localStorage.removeItem(getUserKey('profile'));
+        localStorage.removeItem(getUserKey('settings'));
+        localStorage.removeItem(getUserKey('groups'));
         location.reload();
       }
     }
 
-    // ==================== INITIALIZATION ====================
-    function init() {
+    // ==================== APP INIT ====================
+    function initApp() {
       document.getElementById('user-name').innerText = userProfile.name;
       document.getElementById('user-bio').innerText = `"${userProfile.bio}"`;
       document.getElementById('user-avatar').src = userProfile.avatar;
+      document.getElementById('user-email-display').innerText = currentUserEmail;
 
-      document.getElementById('setting-language').value = appSettings.language;
-      document.getElementById('setting-length').value = appSettings.length;
       document.getElementById('setting-api-key').value = appSettings.apiKey;
-      document.getElementById('setting-thoughts').checked = appSettings.showThoughts;
-
-      // เซ็ต Radio Provider
       const rad = document.querySelector(`input[name="api-provider"][value="${appSettings.provider || 'gemini'}"]`);
       if (rad) rad.checked = true;
-
-      if (appSettings.apiKey) {
-        document.getElementById('api-indicator').className = 'text-[11px] px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800/60 font-semibold';
-        document.getElementById('api-indicator').innerText = `ออนไลน์ (${(appSettings.provider || 'gemini').toUpperCase()})`;
-        document.getElementById('api-status-dot').className = 'w-2 h-2 rounded-full bg-emerald-500 animate-pulse';
-        document.getElementById('api-status-label').innerText = 'AI ออนไลน์';
-      }
 
       switchLobbyTab('home');
     }
 
-    init();
+    if (!currentUserEmail) {
+      document.getElementById('login-screen').classList.remove('hidden');
+    } else {
+      document.getElementById('login-screen').classList.add('hidden');
+      loadUserData();
+      initApp();
+    }
   </script>
 </body>
 </html>
