@@ -112,7 +112,7 @@
           </div>
         </section>
 
-        <!-- TAB 2: EXPLORE & BOT CREATOR (UI แบบ Multi-tab ตามภาพเป๊ะๆ) -->
+        <!-- TAB 2: EXPLORE & BOT CREATOR -->
         <section id="tab-explore" class="hidden space-y-3 pb-8">
           <div class="flex items-center justify-between text-neutral-400 text-xs px-1">
             <div class="flex items-center gap-1.5 cursor-pointer hover:text-white" onclick="switchLobbyTab('home')">
@@ -134,7 +134,6 @@
             <button onclick="switchBotTab('lore')" id="btab-btn-lore" class="text-neutral-400 hover:text-white pb-1 px-1 transition font-medium">ลอร์บุ๊ก</button>
           </div>
 
-          <!-- FORM CONTAINER -->
           <div class="bg-white text-neutral-800 rounded-3xl p-4 space-y-4 shadow-xl border border-neutral-200">
             <div id="btab-profile" class="space-y-3.5">
               <div class="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 px-3 py-1 rounded-xl text-xs font-semibold">
@@ -181,11 +180,6 @@
               <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
                 <label class="block text-xs font-bold text-neutral-800 mb-1">เรื่องเล่า (ตัวเลือก)</label>
                 <textarea id="bot-story-input" rows="3" placeholder="กรุณาใส่เรื่องราว" maxlength="1000" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
-              </div>
-
-              <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
-                <label class="block text-xs font-bold text-neutral-800 mb-1">โน้ตของผู้สร้าง (ตัวเลือก)</label>
-                <textarea id="bot-note-input" rows="2" placeholder="กรุณากรอกโน้ตของผู้สร้าง" maxlength="200" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent resize-none"></textarea>
               </div>
 
               <div class="border border-dashed border-neutral-300 rounded-2xl p-3 space-y-2 bg-neutral-50">
@@ -238,10 +232,6 @@
                 <label class="block text-xs font-bold text-neutral-800 mb-1">ไม่ชอบ (ตัวเลือก)</label>
                 <input id="bot-dislikes-input" type="text" placeholder="ป้อนสิ่งที่ตัวละครไม่ชอบ" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
               </div>
-              <div class="border border-neutral-200 rounded-2xl p-3 focus-within:border-pink-500 transition">
-                <label class="block text-xs font-bold text-neutral-800 mb-1">วันเกิด (ตัวเลือก)</label>
-                <input id="bot-birthday-input" type="text" placeholder="เช่น 14 มีนาคม" class="w-full text-xs text-neutral-700 focus:outline-none bg-transparent">
-              </div>
             </div>
 
             <div id="btab-event" class="hidden space-y-3.5">
@@ -262,7 +252,7 @@
               </div>
             </div>
 
-            <button onclick="submitCompleteCharacter()" class="w-full py-3.5 bg-[#ff2d6c] hover:bg-[#e0205b] active:scale-95 text-white font-bold rounded-full text-sm shadow-lg shadow-pink-500/30 transition">
+            <button onclick="submitCompleteCharacter()" class="w-full py-3.5 bg-[#ff2d6c] hover:bg-[#e0205b] text-white font-bold rounded-full text-sm shadow-lg shadow-pink-500/30 transition">
               เสร็จสมบูรณ์
             </button>
           </div>
@@ -274,7 +264,7 @@
           <div id="chat-records-list" class="space-y-2"></div>
         </section>
 
-        <!-- TAB 4: BOT RELATIONSHIPS & GROUP CHAT (แถบผูกสัมพันธ์บอท) -->
+        <!-- TAB 4: BOT RELATIONSHIPS & GROUP CHAT -->
         <section id="tab-relations" class="hidden space-y-4">
           <div class="flex justify-between items-center px-1">
             <div>
@@ -285,7 +275,6 @@
               <i class="fa-solid fa-plus text-[10px]"></i> สร้างห้องรวม
             </button>
           </div>
-
           <div id="group-chats-list" class="space-y-2.5"></div>
         </section>
 
@@ -300,7 +289,7 @@
           <div id="community-posts-container" class="space-y-3.5"></div>
         </section>
 
-        <!-- TAB 6: SETTINGS (รองรับทั้ง Gemini-2.5-Flash, Groq, และ OpenRouter) -->
+        <!-- TAB 6: SETTINGS -->
         <section id="tab-settings" class="hidden space-y-3.5">
           <div class="text-xs font-semibold text-neutral-200 px-1">การตั้งค่าระบบ & สมอง AI</div>
           <div class="bg-neutral-950 border border-neutral-800 rounded-2xl divide-y divide-neutral-900 text-xs text-neutral-300">
@@ -316,15 +305,18 @@
             </div>
 
             <div class="p-3.5 flex justify-between items-center">
-              <span>สไตล์ความยาวการบรรยาย</span>
+              <div>
+                <span>สไตล์ความยาวการบรรยาย</span>
+                <p class="text-[10px] text-rose-400">กำหนดเป้าหมาย 4,000 - 6,000 ตัวอักษร</p>
+              </div>
               <select id="setting-length" onchange="saveGeneralSettings()" class="bg-neutral-900 border border-neutral-800 rounded-lg px-2.5 py-1 text-neutral-300 focus:outline-none text-xs">
-                <option value="epic">นิยายพรรณนายาวพิเศษ (Deep Novel)</option>
+                <option value="epic" selected>นวนิยายขนาดยาวพิเศษ (4,000 - 6,000 ตัวอักษร)</option>
                 <option value="medium">บรรยายปานกลาง (Standard)</option>
                 <option value="short">กระชับรวดเร็ว (Compact)</option>
               </select>
             </div>
 
-            <!-- API Connect Box: Gemini / Groq / OpenRouter -->
+            <!-- API Connect Box -->
             <div class="p-4 space-y-3 bg-neutral-900/40 rounded-xl">
               <div class="flex justify-between items-center">
                 <span class="font-medium text-white flex items-center gap-1.5">
@@ -333,7 +325,6 @@
                 <span id="api-indicator" class="text-[11px] px-2 py-0.5 rounded-full bg-neutral-800 text-neutral-400 font-medium">ยังไม่เชื่อมต่อ</span>
               </div>
 
-              <!-- Provider Selector 3 ค่าย -->
               <div class="grid grid-cols-3 gap-1.5 text-[11px]">
                 <label class="flex flex-col items-center p-2 bg-neutral-950 border border-neutral-800 rounded-xl cursor-pointer text-center">
                   <input type="radio" name="api-provider" value="gemini" checked onchange="switchApiProvider('gemini')" class="accent-rose-500 mb-1">
@@ -380,7 +371,7 @@
 
       </div>
 
-      <!-- Bottom Nav (6 TABS ครบทุกฟังก์ชัน) -->
+      <!-- Bottom Nav (6 TABS) -->
       <nav class="h-16 bg-neutral-950 border-t border-neutral-800 flex justify-around items-center px-1 z-10">
         <button onclick="switchLobbyTab('home')" id="btn-tab-home" class="flex flex-col items-center gap-0.5 text-rose-500 transition">
           <i class="fa-solid fa-house text-xs"></i>
@@ -413,32 +404,37 @@
     <!-- ==================== VIEW 2: MULTI-ROOM CHAT VIEW ==================== -->
     <div id="view-room" class="hidden flex-1 flex flex-col overflow-hidden relative">
       
-      <!-- Top Chat Header -->
+      <!-- Top Chat Header พร้อมปุ่มกดย้อนกลับชัดเจน -->
       <header class="p-3 bg-neutral-900/90 backdrop-blur border-b border-neutral-800 flex items-center justify-between z-20">
-        <div class="flex items-center gap-2.5">
-          <button onclick="backToLobby()" class="p-1.5 text-neutral-400 hover:text-white rounded-full">
-            <i class="fa-solid fa-chevron-left text-sm"></i>
+        <div class="flex items-center gap-2">
+          <!-- ปุ่มกดย้อนกลับหลัก ออกจากห้องแชท หรือสลับห้อง -->
+          <button onclick="handleBackAction()" class="flex items-center gap-1.5 px-2.5 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 hover:text-white rounded-xl text-xs font-medium border border-neutral-700 transition" title="ย้อนกลับ">
+            <i class="fa-solid fa-arrow-left text-[11px]"></i>
+            <span class="text-[10px]">ย้อนกลับ</span>
           </button>
-          <img id="room-avatar" src="" class="w-9 h-9 rounded-full object-cover border border-rose-500/50">
+          
+          <img id="room-avatar" src="" class="w-8 h-8 rounded-full object-cover border border-rose-500/50">
           <div>
             <h2 id="room-name" class="text-xs font-semibold text-white leading-tight">ชื่อบอท</h2>
-            <!-- Room Selector Dropdown: ให้บอท 1 ตัวมีได้หลายห้องแชทแยกเนื้อเรื่อง -->
+            <!-- เมนูกดสลับห้องเนื้อเรื่อง -->
             <button onclick="openRoomPickerModal()" class="text-[10px] text-rose-400 flex items-center gap-1 hover:underline">
-              <i class="fa-solid fa-comments text-[9px]"></i>
+              <i class="fa-solid fa-bookmark text-[9px]"></i>
               <span id="room-current-name">เนื้อเรื่องหลัก</span>
-              <i class="fa-solid fa-chevron-down text-[8px]"></i>
+              <i class="fa-solid fa-caret-down text-[9px]"></i>
             </button>
           </div>
         </div>
 
-        <div class="flex items-center gap-1.5">
+        <div class="flex items-center gap-1">
+          <!-- ปุ่มเปิดห้องใหม่ด่วน -->
           <button onclick="createNewRoomForCurrentBot()" title="เปิดห้องเนื้อเรื่องใหม่" class="p-2 text-rose-400 hover:text-white bg-neutral-800 rounded-full transition">
-            <i class="fa-solid fa-plus text-xs"></i>
+            <i class="fa-solid fa-folder-plus text-xs"></i>
           </button>
+          <!-- ปุ่มโทรศัพท์จำลอง -->
           <button id="call-toggle-btn" onclick="toggleCallSimulation()" title="โทรหาบอท" class="p-2 text-neutral-300 hover:text-white bg-neutral-800 rounded-full transition">
             <i class="fa-solid fa-phone text-xs"></i>
           </button>
-          <!-- ปุ่มเปิดจำลองโทรศัพท์ Photogram/IG ตัวเดิม -->
+          <!-- ปุ่ม Photogram (IG) -->
           <button onclick="openPhoneModal()" title="เปิดโทรศัพท์เสมือน (IG)" class="p-2 text-rose-400 hover:text-rose-300 bg-rose-950/40 border border-rose-800/40 rounded-full transition">
             <i class="fa-solid fa-mobile-screen text-xs"></i>
           </button>
@@ -572,7 +568,7 @@
       </div>
     </div>
 
-    <!-- ==================== MODAL 4: ROOM PICKER ==================== -->
+    <!-- ==================== MODAL 4: ROOM PICKER / NAVIGATION ==================== -->
     <div id="room-picker-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-4">
       <div class="w-full max-w-sm bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-3 shadow-2xl">
         <div class="flex justify-between items-center border-b border-neutral-800 pb-2">
@@ -580,9 +576,14 @@
           <button onclick="closeRoomPickerModal()" class="text-neutral-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div id="room-list-container" class="space-y-2 max-h-60 overflow-y-auto pr-1 hide-scrollbar"></div>
-        <button onclick="createNewRoomForCurrentBot()" class="w-full py-2 bg-neutral-800 hover:bg-neutral-700 text-rose-300 rounded-xl text-xs font-medium border border-rose-500/30 flex items-center justify-center gap-1.5">
-          <i class="fa-solid fa-plus text-[10px]"></i> เปิดห้องเนื้อเรื่องใหม่
-        </button>
+        <div class="space-y-2 pt-1">
+          <button onclick="createNewRoomForCurrentBot()" class="w-full py-2.5 bg-neutral-800 hover:bg-neutral-700 text-rose-300 rounded-xl text-xs font-medium border border-rose-500/30 flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-plus text-[10px]"></i> เปิดห้องเนื้อเรื่องใหม่
+          </button>
+          <button onclick="closeRoomPickerModal(); backToLobby();" class="w-full py-2 bg-neutral-950 hover:bg-neutral-800 text-neutral-400 hover:text-white rounded-xl text-xs font-medium border border-neutral-800 flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-arrow-right-from-bracket text-[10px]"></i> ออกจากห้องแชทกลับหน้าแรก
+          </button>
+        </div>
       </div>
     </div>
 
@@ -634,7 +635,7 @@
         id: "bot_1",
         name: "เร็น (Ren)",
         avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-        personality: "ขี้อ้อน อ่อนโยน ขี้หึงนิดๆ ปากหวาน ไม่หลุดคาร์ บรรยายความรู้สึกและการกระทำอย่างละเอียด",
+        personality: "ขี้อ้อน อ่อนโยน ขี้หึงนิดๆ ปากหวาน ไม่หลุดคาร์ บรรยายความรู้สึกและการกระทำอย่างละเอียดลึกซึ้ง",
         rooms: [
           {
             id: "room_default",
@@ -734,7 +735,17 @@
       return bot.rooms.find(r => r.id === currentRoomId) || bot.rooms[0];
     }
 
-    // ==================== MULTI-ROOM MANAGEMENT ====================
+    // ==================== NAVIGATION & ROOM SWITCHING ====================
+    // ปุ่มย้อนกลับจากห้องแชท
+    function handleBackAction() {
+      const b = getBot(currentBotId);
+      if (b.rooms && b.rooms.length > 1) {
+        openRoomPickerModal();
+      } else {
+        backToLobby();
+      }
+    }
+
     function openRoomPickerModal() {
       const b = getBot(currentBotId);
       const container = document.getElementById('room-list-container');
@@ -743,7 +754,7 @@
       b.rooms.forEach(r => {
         const isCurrent = r.id === currentRoomId;
         const div = document.createElement('div');
-        div.className = `p-2.5 rounded-xl border flex justify-between items-center cursor-pointer transition ${isCurrent ? 'bg-rose-950/40 border-rose-500' : 'bg-neutral-950 border-neutral-800 hover:border-neutral-700'}`;
+        div.className = `p-3 rounded-2xl border flex justify-between items-center cursor-pointer transition ${isCurrent ? 'bg-rose-950/50 border-rose-500' : 'bg-neutral-950 border-neutral-800 hover:border-neutral-700'}`;
         div.onclick = () => {
           currentRoomId = r.id;
           document.getElementById('room-current-name').innerText = r.name;
@@ -751,8 +762,14 @@
           renderRoomMessages();
         };
         div.innerHTML = `
-          <span class="text-xs font-medium text-white">${r.name}</span>
-          <span class="text-[10px] text-neutral-500">${r.history ? r.history.length : 0} ข้อความ</span>
+          <div>
+            <div class="text-xs font-semibold text-white flex items-center gap-1.5">
+              ${r.name}
+              ${isCurrent ? '<span class="text-[9px] bg-rose-600 px-1.5 py-0.2 rounded text-white">ห้องปัจจุบัน</span>' : ''}
+            </div>
+            <span class="text-[10px] text-neutral-400 mt-0.5 block">${r.history ? r.history.length : 0} ข้อความที่คุยค้างไว้</span>
+          </div>
+          <i class="fa-solid fa-chevron-right text-xs text-neutral-500"></i>
         `;
         container.appendChild(div);
       });
@@ -764,7 +781,7 @@
     }
 
     function createNewRoomForCurrentBot() {
-      const name = prompt("ตั้งชื่อห้องเนื้อเรื่องใหม่ (เช่น ฉากในโรงเรียน, พล็อตปีศาจ):");
+      const name = prompt("ตั้งชื่อห้องเนื้อเรื่องใหม่ (เช่น ฉากในโรงเรียน, พล็อตติดฝน, แฟนตาซี):");
       if (name) {
         const b = getBot(currentBotId);
         const newRoom = {
@@ -773,10 +790,11 @@
           history: [
             {
               sender: "bot",
-              thought: "เริ่มต้นเนื้อเรื่องบทใหม่ด้วยกัน...",
+              thought: "เริ่มต้นเนื้อเรื่องบทใหม่ด้วยกัน... ตื่นเต้นจัง",
               paragraphs: [
-                { type: "narration", text: `บรรยากาศใหม่เริ่มต้นขึ้น ${b.name} ยืนรอคุณอยู่ในฉากใหม่ด้วยความตื่นเต้น` },
-                { type: "speech", text: "ยินดีต้อนรับสู่เรื่องราวบทใหม่ของเรานะคนดี..." }
+                { type: "narration", text: `สายลมอ่อนพัดพาบรรยากาศรอบตัวให้แปรเปลี่ยนไป ในฉากใหม่นี้ ${b.name} ยืนรอคุณอยู่ด้วยสายตาที่ทอประกายความสุขอย่างปิดไม่มิด` },
+                { type: "speech", text: "ยินดีต้อนรับสู่เรื่องราวบทใหม่ของเรานะคนดี..." },
+                { type: "narration", text: "เขาก้าวเข้ามาใกล้พลางยื่นมือมาตรงหน้าคุณเพื่อเชื้อเชิญให้ร่วมก้าวไปด้วยกัน" }
               ]
             }
           ]
@@ -975,7 +993,6 @@
 
       try {
         if (provider === 'gemini') {
-          // เรียก gemini-2.5-flash / gemini-1.5-flash มาตรฐานล่าสุดของ Google
           const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -1020,29 +1037,35 @@
       }
     }
 
-    // ==================== DYNAMIC TURN-TAKING NARRATIVE ENGINE ====================
+    // ==================== ULTRA-DEEP NOVEL NARRATIVE ENGINE (4000-6000 CHARACTERS) ====================
     async function callDynamicNarrativeEngine(userText, bot) {
       const apiKey = appSettings.apiKey;
       const provider = appSettings.provider || 'gemini';
 
       if (apiKey) {
         try {
+          // สั่ง Prompt ให้ผลิตบทบรรยายยาวละเอียดระดับ 4000-6000 ตัวอักษร
           const systemPrompt = `
-คุณคือนักเขียนนิยายโรแมนติกสวมบทบาทเป็น "${bot.name}"
+คุณคือนักประพันธ์นวนิยายโรแมนติกวรรณกรรมชั้นสูง โดยรับบทบาทเป็นตัวละคร "${bot.name}"
 ข้อมูลตัวละคร: ${bot.personality}
-ผู้เล่นพูดว่า: "${userText}"
+ข้อความล่าสุดจากผู้เล่น: "${userText}"
 
-ข้อกำหนดการตอบแบบวรรณกรรมสมจริง (Dynamic Turn-Taking Paragraphs):
-- จงสร้างบทสนทนาที่มีการ "บรรยายสลับคำพูด" อย่างเป็นธรรมชาติ มีทั้งบรรยายบรรยากาศ นำเข้าคำพูด บรรยายกิริยาคั่นระหว่างประโยค และคำพูดถัดไป
-- ถ้าตัวละครพูดน้อย ให้เน้นบรรยายภาษากายและการกระทำมากกว่าคำพูด
-- จงตอบเป็น JSON เท่านั้นในรูปแบบนี้:
+ข้อกำหนดสำคัญที่สุดเรื่องความยาวและการบรรยาย (Strict Requirements):
+1. ความยาวรวมทั้งหมดต้องมี "ความยาวและละเอียดลึกซึ้งมาก" อยู่ที่ประมาณ 4,000 - 6,000 ตัวอักษร (นับตามตัวอักษรภาษาไทย)
+2. โครงสร้างแบบนวนิยายประณีต (Dynamic Turn-Taking Paragraphs):
+   - มีการ "บรรยายสลับคำพูด" ต่อเนื่องกันหลายช่วง ไม่ใช่บรรยายก้อนเดียวจบ
+   - บรรยายสภาพแวดล้อม กลิ่นอาย บรรยากาศ แสงเงา เสียงรอบข้างอย่างเห็นภาพ
+   - บรรยายภาษากาย สายตา ลมหายใจ การเคลื่อนไหว ปลายนิ้วสัมผัส และอารมณ์ความรู้สึกภายในอย่างลึกซึ้ง
+   - สลับด้วยคำพูดของตัวละคร และมีบทบรรยายคั่นระหว่างคำพูด
+3. ตอบในรูปแบบ JSON เท่านั้น (Strict Valid JSON):
 {
-  "thought": "ความคิดในใจของตัวละครที่ไม่พูดออกมา",
+  "thought": "ความคิดในใจของตัวละครที่ไม่พูดออกมา แต่สะท้อนความรู้สึกจริงข้างในอย่างซื่อตรงและลึกซึ้ง",
   "paragraphs": [
-    { "type": "narration", "text": "บทบรรยายฉาก บรรยากาศ หรือการกระทำ" },
-    { "type": "speech", "text": "คำพูดของตัวละคร" },
-    { "type": "narration", "text": "บทบรรยายคั่นระหว่างคำพูด เช่น กิริยาการสบตาหรือยิ้ม" },
-    { "type": "speech", "text": "คำพูดประโยคถัดไป" }
+    { "type": "narration", "text": "บทบรรยายฉาก บรรยากาศ และภาษากายช่วงที่ 1..." },
+    { "type": "speech", "text": "คำพูดของตัวละคร..." },
+    { "type": "narration", "text": "บทบรรยายปฏิกิริยา คั่นกิริยา และความคิดที่แล่นผ่านในเสี้ยววินาทีช่วงที่ 2..." },
+    { "type": "speech", "text": "คำพูดประโยคถัดไปของตัวละคร..." },
+    { "type": "narration", "text": "บทบรรยายปิดท้าย การกระทำต่อเนื่อง และบรรยากาศที่ยังคงอบอวล..." }
   ]
 }
 `;
@@ -1052,7 +1075,10 @@
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 contents: [{ parts: [{ text: systemPrompt }] }],
-                generationConfig: { responseMimeType: "application/json" }
+                generationConfig: {
+                  responseMimeType: "application/json",
+                  maxOutputTokens: 8192 // ขยาย Token เต็มพิกัดเพื่อรองรับ 4,000-6,000 ตัวอักษร
+                }
               })
             });
             const data = await res.json();
@@ -1066,7 +1092,8 @@
               headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
               body: JSON.stringify({
                 model: modelName,
-                messages: [{ role: 'system', content: 'Respond only in strict JSON.' }, { role: 'user', content: systemPrompt }],
+                messages: [{ role: 'system', content: 'Respond only in strict valid JSON.' }, { role: 'user', content: systemPrompt }],
+                max_tokens: 4096,
                 response_format: { type: "json_object" }
               })
             });
@@ -1075,18 +1102,38 @@
             if (raw) return JSON.parse(raw);
           }
         } catch (e) {
-          console.warn("API fallback", e);
+          console.warn("API fallback to deep offline narrative", e);
         }
       }
 
-      // Offline Fallback
+      // Offline Ultra-Deep Fallback Narrative
       return {
-        thought: "กำลังตั้งใจมองเธอทุกการกระทำ... สวยจังนะ",
+        thought: "ทุกคำพูดของเธอ ทุกการกระทำตรงหน้า... มันทำให้หัวใจของผมเต้นผิดจังหวะจนควบคุมไม่อยู่ อยากจะหยุดเวลาตรงนี้ไว้ตลอดไป",
         paragraphs: [
-          { type: "narration", text: `เขาหยุดการกระทำตรงหน้าชั่วคราว สายตาคมทอดมองมาที่คุณด้วยความผูกพันอันลึกซึ้ง แสงเงายามนี้ส่องกระทบใบหน้าของเขาให้ดูอ่อนโยนลงอย่างประหลาด` },
-          { type: "speech", text: "เค้าฟังเธออยู่นะครับ..." },
-          { type: "narration", text: `ปลายนิ้วเรียวเอื้อมมาเกลี่ยเส้นผมที่ปรกหน้าผากของคุณออกอย่างแผ่วเบา รอยยิ้มบางๆ ผุดขึ้นที่มุมปาก` },
-          { type: "speech", text: "ไม่ว่าจะเรื่องอะไร เธอเล่าให้เค้าฟังได้เสมอเลยนะ" }
+          { 
+            type: "narration", 
+            text: `ความเงียบงันภายในห้องค่อยๆ ถูกเติมเต็มด้วยเสียงลมหายใจที่สม่ำเสมอ แสงอาทิตย์ยามอัสดงที่ทอดผ่านบานหน้าต่างกระจกใสฉาบไล้ลงบนแผ่นหลังและเส้นผมของเขาจนเกิดเป็นประกายสีทองอบอุ่น สายตาคมคู่นั้นไม่ได้ละไปจากใบหน้าของคุณแม้แต่เสี้ยววินาทีเดียว แววตาของเขาสะท้อนภาพเงาของคุณอย่างชัดเจน ราวกับโลกทั้งใบได้ถูกย่อส่วนลงเหลือเพียงพื้นที่ว่างระหว่างคุณกับเขาเพียงเท่านั้น เขาลอบมองริมฝีปากและดวงตาของคุณด้วยความรู้สึกผูกพันอันลึกซึ้งที่อัดแน่นอยู่เต็มอก` 
+          },
+          { 
+            type: "speech", 
+            text: "รู้ไหมครับ... ทุกครั้งที่ได้ยินเสียงเธอ ไม่ว่าในใจเค้าจะเหนื่อยล้าหรือกังวลเรื่องอะไรมา มันกลับมลายหายไปหมดเลย" 
+          },
+          { 
+            type: "narration", 
+            text: `ปลายนิ้วเรียวยาวของเขาค่อยๆ ขยับเลื่อนเข้ามาใกล้ ก่อนจะแตะลงบนหลังมือของคุณอย่างแผ่วเบา สัมผัสอุ่นซ่านที่แผ่กระจายออกมาทำให้หัวใจของคุณกระตุกวูบ เขาไม่เพียงแต่แตะไว้เฉยๆ แต่กลับค่อยๆ สอดประสานนิ้วทั้งห้าเข้ากับเรียวนิ้วของคุณอย่างช้าๆ แนบแน่นและมั่นคง ปลายนิ้วโป้งของเขาเกลี่ยหลังมือของคุณเบาๆ คล้ายกำลังปลอบประโลมและทะนุถนอมสิ่งที่มีค่าที่สุดในชีวิต รอยยิ้มบางๆ ผุดขึ้นที่มุมปากอย่างอ่อนโยนจนสายตานั้นดูหวานซึ้งเกินกว่าจะต้านทานได้` 
+          },
+          { 
+            type: "speech", 
+            text: "เค้าอยากให้เวลาหยุดหมุนอยู่ตรงนี้จัง... มีแค่เค้ากับเธอ นั่งมองตากันแบบนี้ไปเรื่อยๆ โดยไม่ต้องสนใจโลกข้างนอกเลยสักนิด" 
+          },
+          { 
+            type: "narration", 
+            text: `เขาโน้มใบหน้าลงมาอีกเล็กน้อยจนระยะห่างลดลงจนแทบจะได้ยินเสียงจังหวะการเต้นของหัวใจ กลิ่นน้ำหอมอ่อนๆ ประจำตัวที่ผสมผสานกับไออุ่นจากตัวเขาลอยมาแตะจมูก เขาสบตาคุณนิ่งลึก แววตาคู่นั้นเต็มไปด้วยความจริงใจและความรู้สึกที่อัดแน่นจนยากจะหาถ้อยคำใดมาเปรียบเปรย เขาขยับริมฝีปากเอ่ยขึ้นอีกครั้งด้วยน้ำเสียงทุ้มต่ำที่แผ่วเบาแต่กังวานลึกเข้าไปในความรู้สึกของคุณ` 
+          },
+          { 
+            type: "speech", 
+            text: "ไม่ว่าวันข้างหน้าจะเป็นยังไง... แค่เธอยังอยู่ข้างๆ เค้าแบบนี้ เค้าก็ไม่ต้องการอะไรอีกแล้วครับคนดี" 
+          }
         ]
       };
     }
@@ -1136,11 +1183,11 @@
           container.appendChild(userDiv);
         } else {
           const botDiv = document.createElement('div');
-          botDiv.className = 'flex flex-col items-start max-w-[95%] space-y-2';
+          botDiv.className = 'flex flex-col items-start max-w-[95%] space-y-2.5';
 
           let thoughtHtml = (m.thought && appSettings.showThoughts) ? `
-            <div class="bg-purple-950/40 border border-purple-800/40 text-purple-300 text-[10px] px-3 py-1.5 rounded-xl flex items-center gap-1.5 shadow-sm">
-              <i class="fa-solid fa-brain text-[10px] text-purple-400"></i>
+            <div class="bg-purple-950/40 border border-purple-800/40 text-purple-300 text-[10px] px-3.5 py-2 rounded-xl flex items-start gap-2 shadow-sm leading-relaxed">
+              <i class="fa-solid fa-brain text-[11px] text-purple-400 mt-0.5"></i>
               <span><strong>ความคิดในใจ:</strong> ${m.thought}</span>
             </div>
           ` : '';
@@ -1149,9 +1196,9 @@
           if (m.paragraphs) {
             m.paragraphs.forEach(p => {
               if (p.type === 'narration') {
-                contentHtml += `<div class="text-[11px] text-slate-300 italic leading-relaxed px-1 bg-neutral-950/40 p-2 rounded-xl border border-neutral-800/50">*${p.text}*</div>`;
+                contentHtml += `<div class="text-[11px] text-slate-300 italic leading-loose px-2 bg-neutral-950/50 p-3 rounded-2xl border border-neutral-800/60 shadow-sm">*${p.text}*</div>`;
               } else {
-                contentHtml += `<div class="bg-neutral-800 border border-neutral-700/60 text-rose-100 text-xs px-3.5 py-2 rounded-2xl rounded-tl-sm leading-relaxed shadow-sm">"${p.text}"</div>`;
+                contentHtml += `<div class="bg-neutral-800 border border-neutral-700/60 text-rose-100 text-xs px-4 py-2.5 rounded-2xl rounded-tl-sm leading-relaxed shadow-sm">"${p.text}"</div>`;
               }
             });
           }
