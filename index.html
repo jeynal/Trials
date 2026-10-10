@@ -252,7 +252,7 @@
               </div>
             </div>
 
-            <button onclick="submitCompleteCharacter()" class="w-full py-3.5 bg-[#ff2d6c] hover:bg-[#e0205b] text-white font-bold rounded-full text-sm shadow-lg shadow-pink-500/30 transition">
+            <button onclick="submitCompleteCharacter()" class="w-full py-3.5 bg-[#ff2d6c] hover:bg-[#e0205b] active:scale-95 text-white font-bold rounded-full text-sm shadow-lg shadow-pink-500/30 transition">
               เสร็จสมบูรณ์
             </button>
           </div>
@@ -404,10 +404,9 @@
     <!-- ==================== VIEW 2: MULTI-ROOM CHAT VIEW ==================== -->
     <div id="view-room" class="hidden flex-1 flex flex-col overflow-hidden relative">
       
-      <!-- Top Chat Header พร้อมปุ่มกดย้อนกลับชัดเจน -->
+      <!-- Top Chat Header -->
       <header class="p-3 bg-neutral-900/90 backdrop-blur border-b border-neutral-800 flex items-center justify-between z-20">
         <div class="flex items-center gap-2">
-          <!-- ปุ่มกดย้อนกลับหลัก ออกจากห้องแชท หรือสลับห้อง -->
           <button onclick="handleBackAction()" class="flex items-center gap-1.5 px-2.5 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 hover:text-white rounded-xl text-xs font-medium border border-neutral-700 transition" title="ย้อนกลับ">
             <i class="fa-solid fa-arrow-left text-[11px]"></i>
             <span class="text-[10px]">ย้อนกลับ</span>
@@ -416,7 +415,6 @@
           <img id="room-avatar" src="" class="w-8 h-8 rounded-full object-cover border border-rose-500/50">
           <div>
             <h2 id="room-name" class="text-xs font-semibold text-white leading-tight">ชื่อบอท</h2>
-            <!-- เมนูกดสลับห้องเนื้อเรื่อง -->
             <button onclick="openRoomPickerModal()" class="text-[10px] text-rose-400 flex items-center gap-1 hover:underline">
               <i class="fa-solid fa-bookmark text-[9px]"></i>
               <span id="room-current-name">เนื้อเรื่องหลัก</span>
@@ -426,15 +424,12 @@
         </div>
 
         <div class="flex items-center gap-1">
-          <!-- ปุ่มเปิดห้องใหม่ด่วน -->
           <button onclick="createNewRoomForCurrentBot()" title="เปิดห้องเนื้อเรื่องใหม่" class="p-2 text-rose-400 hover:text-white bg-neutral-800 rounded-full transition">
             <i class="fa-solid fa-folder-plus text-xs"></i>
           </button>
-          <!-- ปุ่มโทรศัพท์จำลอง -->
           <button id="call-toggle-btn" onclick="toggleCallSimulation()" title="โทรหาบอท" class="p-2 text-neutral-300 hover:text-white bg-neutral-800 rounded-full transition">
             <i class="fa-solid fa-phone text-xs"></i>
           </button>
-          <!-- ปุ่ม Photogram (IG) -->
           <button onclick="openPhoneModal()" title="เปิดโทรศัพท์เสมือน (IG)" class="p-2 text-rose-400 hover:text-rose-300 bg-rose-950/40 border border-rose-800/40 rounded-full transition">
             <i class="fa-solid fa-mobile-screen text-xs"></i>
           </button>
@@ -486,7 +481,7 @@
     </div>
 
 
-    <!-- ==================== MODAL 1: EDIT PROFILE ==================== -->
+    <!-- ==================== MODALS ==================== -->
     <div id="edit-profile-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-4">
       <div class="w-full max-w-sm bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-3.5 shadow-2xl">
         <div class="flex justify-between items-center border-b border-neutral-800 pb-2">
@@ -509,7 +504,6 @@
       </div>
     </div>
 
-    <!-- ==================== MODAL 2: CREATE COMMUNITY POST ==================== -->
     <div id="create-post-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-4">
       <div class="w-full max-w-sm bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-3.5 shadow-2xl">
         <div class="flex justify-between items-center border-b border-neutral-800 pb-2">
@@ -536,7 +530,6 @@
       </div>
     </div>
 
-    <!-- ==================== MODAL 3: VIRTUAL SMARTPHONE (PHOTOGRAM/IG) ==================== -->
     <div id="phone-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-3">
       <div class="w-full max-w-xs h-[640px] bg-neutral-950 border-2 border-neutral-700 rounded-[32px] flex flex-col overflow-hidden shadow-2xl relative">
         <div class="h-6 bg-neutral-950 flex justify-center items-center">
@@ -568,7 +561,6 @@
       </div>
     </div>
 
-    <!-- ==================== MODAL 4: ROOM PICKER / NAVIGATION ==================== -->
     <div id="room-picker-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-4">
       <div class="w-full max-w-sm bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-3 shadow-2xl">
         <div class="flex justify-between items-center border-b border-neutral-800 pb-2">
@@ -587,7 +579,6 @@
       </div>
     </div>
 
-    <!-- ==================== MODAL 5: CREATE GROUP CHAT ==================== -->
     <div id="create-group-modal" class="hidden absolute inset-0 bg-black/85 backdrop-blur-md z-40 flex items-center justify-center p-4">
       <div class="w-full max-w-sm bg-neutral-900 border border-neutral-800 rounded-3xl p-5 space-y-3.5 shadow-2xl">
         <div class="flex justify-between items-center border-b border-neutral-800 pb-2">
@@ -736,7 +727,6 @@
     }
 
     // ==================== NAVIGATION & ROOM SWITCHING ====================
-    // ปุ่มย้อนกลับจากห้องแชท
     function handleBackAction() {
       const b = getBot(currentBotId);
       if (b.rooms && b.rooms.length > 1) {
@@ -872,7 +862,7 @@
       switchLobbyTab('home');
     }
 
-    // ==================== GROUP CHAT LOGIC (ผูกสัมพันธ์บอท) ====================
+    // ==================== GROUP CHAT LOGIC ====================
     function openCreateGroupModal() {
       const container = document.getElementById('group-bot-checkboxes');
       container.innerHTML = '';
@@ -966,6 +956,7 @@
       }
     }
 
+    // ตรวจสอบ API KEY โดยเรียก gemini-3.8-flash ตามที่ Google แจ้งเตือน 100%
     async function verifyAndSaveApiKey() {
       const input = document.getElementById('setting-api-key');
       const btn = document.getElementById('btn-verify-key');
@@ -993,13 +984,23 @@
 
       try {
         if (provider === 'gemini') {
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
+          // ใช้ gemini-3.8-flash และ fallback gemini-1.5-flash
+          let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${key}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ contents: [{ parts: [{ text: "สวัสดี" }] }] })
           });
-          const data = await res.json();
-          if (data.error) throw new Error(data.error.message);
+          let data = await res.json();
+          if (data.error) {
+            // ลอง fallback ไป gemini-1.5-flash เผื่อกรณีบัญชีรองรับ
+            res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ contents: [{ parts: [{ text: "สวัสดี" }] }] })
+            });
+            data = await res.json();
+            if (data.error) throw new Error(data.error.message);
+          }
         } else if (provider === 'groq') {
           const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
             method: 'POST',
@@ -1037,27 +1038,24 @@
       }
     }
 
-    // ==================== ULTRA-DEEP NOVEL NARRATIVE ENGINE (4000-6000 CHARACTERS) ====================
+    // ==================== NARRATIVE ENGINE (4,000-6,000 CHARACTERS) ====================
     async function callDynamicNarrativeEngine(userText, bot) {
       const apiKey = appSettings.apiKey;
       const provider = appSettings.provider || 'gemini';
 
       if (apiKey) {
         try {
-          // สั่ง Prompt ให้ผลิตบทบรรยายยาวละเอียดระดับ 4000-6000 ตัวอักษร
           const systemPrompt = `
 คุณคือนักประพันธ์นวนิยายโรแมนติกวรรณกรรมชั้นสูง โดยรับบทบาทเป็นตัวละคร "${bot.name}"
 ข้อมูลตัวละคร: ${bot.personality}
 ข้อความล่าสุดจากผู้เล่น: "${userText}"
 
-ข้อกำหนดสำคัญที่สุดเรื่องความยาวและการบรรยาย (Strict Requirements):
-1. ความยาวรวมทั้งหมดต้องมี "ความยาวและละเอียดลึกซึ้งมาก" อยู่ที่ประมาณ 4,000 - 6,000 ตัวอักษร (นับตามตัวอักษรภาษาไทย)
+ข้อกำหนดสำคัญที่สุดเรื่องความยาวและการบรรยาย:
+1. ความยาวรวมทั้งหมดต้องมี "ความยาวและละเอียดลึกซึ้งมาก" อยู่ที่ประมาณ 4,000 - 6,000 ตัวอักษร
 2. โครงสร้างแบบนวนิยายประณีต (Dynamic Turn-Taking Paragraphs):
-   - มีการ "บรรยายสลับคำพูด" ต่อเนื่องกันหลายช่วง ไม่ใช่บรรยายก้อนเดียวจบ
-   - บรรยายสภาพแวดล้อม กลิ่นอาย บรรยากาศ แสงเงา เสียงรอบข้างอย่างเห็นภาพ
-   - บรรยายภาษากาย สายตา ลมหายใจ การเคลื่อนไหว ปลายนิ้วสัมผัส และอารมณ์ความรู้สึกภายในอย่างลึกซึ้ง
-   - สลับด้วยคำพูดของตัวละคร และมีบทบรรยายคั่นระหว่างคำพูด
-3. ตอบในรูปแบบ JSON เท่านั้น (Strict Valid JSON):
+   - บรรยายสภาพแวดล้อม กลิ่นอาย แสงเงา ภาษากาย ลมหายใจ และอารมณ์ความรู้สึกภายในอย่างลึกซึ้ง
+   - สลับด้วยคำพูดของตัวละคร และมีบทบรรยายคั่นระหว่างคำพูดต่อเนื่องหลายช่วง
+3. ตอบในรูปแบบ JSON เท่านั้น:
 {
   "thought": "ความคิดในใจของตัวละครที่ไม่พูดออกมา แต่สะท้อนความรู้สึกจริงข้างในอย่างซื่อตรงและลึกซึ้ง",
   "paragraphs": [
@@ -1070,18 +1068,31 @@
 }
 `;
           if (provider === 'gemini') {
-            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+            // เรียกโมเดล gemini-3.8-flash ตัวล่าสุด
+            let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 contents: [{ parts: [{ text: systemPrompt }] }],
                 generationConfig: {
                   responseMimeType: "application/json",
-                  maxOutputTokens: 8192 // ขยาย Token เต็มพิกัดเพื่อรองรับ 4,000-6,000 ตัวอักษร
+                  maxOutputTokens: 8192
                 }
               })
             });
-            const data = await res.json();
+            let data = await res.json();
+            if (data.error) {
+              // fallback gemini-1.5-flash
+              res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  contents: [{ parts: [{ text: systemPrompt }] }],
+                  generationConfig: { responseMimeType: "application/json", maxOutputTokens: 8192 }
+                })
+              });
+              data = await res.json();
+            }
             const raw = data.candidates?.[0]?.content?.parts?.[0]?.text;
             if (raw) return JSON.parse(raw);
           } else {
